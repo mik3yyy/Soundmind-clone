@@ -1,0 +1,85 @@
+name: sound_mind
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.4 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons:
+  go_router: 
+  hive_flutter: 
+  bloc_test: 
+  mocktail: 
+  gap: 
+  flutter_dotenv:
+  loading_animation_widget: 
+  image_picker: 
+  bottom_sheet: 
+  smooth_page_indicator: 
+  cached_network_image: 
+  pinput: 
+  permission_handler: 
+  intl: 
+  equatable: 
+  dartz: 
+  bloc: 
+  flutter_bloc: 
+  get_it: 
+  flutter_gen: 
+  dartx: 
+  url_launcher:
+  dio:
+  flutter_local_notifications: 
+  firebase_core: 
+  firebase_messaging: 
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: 
+  flutter_lints: ^3.0.0
+
+  hive_generator: 
+  flutter_gen_runner: 
+
+flutter_gen:
+  output: lib/core/gen/ # Optional (default: lib/core/gen/)
+  line_length: 80 # Optional (default: 80)
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - .env
+    - application/assets/
+    - application/assets/images/
+    - application/assets/fonts/
+
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: application/assets/fonts/Montserrat-Thin.ttf
+          weight: 100
+        - asset: application/assets/fonts/Montserrat-ExtraLight.ttf
+          weight: 200
+        - asset: application/assets/fonts/Montserrat-Light.ttf
+          weight: 300
+        - asset: application/assets/fonts/Montserrat-Regular.ttf
+          weight: 400
+        - asset: application/assets/fonts/Montserrat-Medium.ttf
+          weight: 500
+        - asset: application/assets/fonts/Montserrat-SemiBold.ttf
+          weight: 600
+        - asset: application/assets/fonts/Montserrat-Bold.ttf
+          weight: 700
+        - asset: application/assets/fonts/Montserrat-ExtraBold.ttf
+          weight: 800
+        - asset: application/assets/fonts/Montserrat-Black.ttf
+          weight: 900
+

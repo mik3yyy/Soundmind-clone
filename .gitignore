@@ -1,0 +1,43 @@
+# Flutter/Dart/Pub related
+.dart_tool/
+.packages
+.pub/
+build/
+flutter_*.png
+
+# Visual Studio Code
+.vscode/
+
+# IntelliJ
+.idea/
+*.iml
+
+# Android Studio
+*.jks
+*.keystore
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/App.framework
+
+# Generated files
+*.flutter-plugins
+*.flutter-plugins-dependencies
+*.flutter-plugins-dependencies
+*.flutter-plugins
+*.flutter-plugins-dependencies
+*.dart_tool/
+.packages
+.pub-cache/
+.pub/
+.buildlog
+.lock
+.dart_tool/
+.packages
+
+# Environment variable files
+application/.env
+application/.env.*
