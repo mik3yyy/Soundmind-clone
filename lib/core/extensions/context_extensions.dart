@@ -10,6 +10,7 @@ extension ContextExtensions on BuildContext {
 
   // Access the primary color from the theme
   Color get primaryColor => Theme.of(this).primaryColor;
+  Color get secondaryColor => Theme.of(this).colorScheme.secondary;
 
   // Access the text theme
   TextTheme get textTheme => Theme.of(this).textTheme;

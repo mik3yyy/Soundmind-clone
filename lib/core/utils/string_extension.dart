@@ -28,7 +28,8 @@ extension StringExtension on String? {
     return this!;
   }
 
-  List<T> parseJsonList<T extends JsonConvertible<T>>(T Function(Map<String, dynamic>) fromJsonFactory) {
+  List<T> parseJsonList<T extends JsonConvertible<T>>(
+      T Function(Map<String, dynamic>) fromJsonFactory) {
     if (this == null) {
       return [];
     }

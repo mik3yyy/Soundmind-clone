@@ -1,6 +1,8 @@
 library theme;
 
 import 'package:flutter/material.dart';
+import 'package:sound_mind/core/gen/assets.gen.dart';
+import 'package:sound_mind/core/gen/fonts.gen.dart';
 
 part 'colors.dart';
 part 'text_styles.dart';
@@ -21,6 +23,7 @@ ThemeData _buildLightTheme() {
 
   final themeData = ThemeData(
     useMaterial3: false,
+    fontFamily: FontFamily.outfit,
     primaryColor: primaryColor,
     scaffoldBackgroundColor: _Colors.scaffoldColor,
     cardColor: _Colors.white,
@@ -91,6 +94,7 @@ ThemeData _buildLightTheme() {
       bodySmall: _AppTextStyles.bodySmall,
       displayLarge: _AppTextStyles.displayLarge,
       displayMedium: _AppTextStyles.displayMedium,
+      displaySmall: _AppTextStyles.displaySmall,
       titleLarge: _AppTextStyles.titleLarge,
       titleMedium: _AppTextStyles.titleMedium,
       titleSmall: _AppTextStyles.titleSmall,

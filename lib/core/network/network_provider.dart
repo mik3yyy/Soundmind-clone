@@ -3,6 +3,7 @@ part of 'network.dart';
 class Network {
   static const connectTimeOut = Duration(seconds: 120);
   static const receiverTimeOut = Duration(seconds: 120);
+  static const subPath = '/api';
   late Dio dio;
   late bool showLog;
 
@@ -50,6 +51,7 @@ class Network {
     bool useUrlEncoded = false,
   }) async {
     Response? response;
+    path = subPath + path;
     var params = queryParams ?? {};
     final headerOverride = useUrlEncoded
         ? {
@@ -104,13 +106,13 @@ class Network {
       }
       // if (showLog) devLog("$path API response: $response");
       return response;
-    } on DioException catch (error, stackTrace) {
+    } on DioException catch (error) {
       final apiError = ApiError.fromDioError(error);
       if (showLog) {
         // devLog("$path: ${error.response?.statusCode} code");
         // devLog("API response: ${error.response}");
       }
-      return Future.error(apiError, stackTrace);
+      throw apiError;
     } catch (_) {
       rethrow;
     }
@@ -154,4 +156,3 @@ class Network {
 }
 
 enum RequestMethod { post, get, put, delete, upload, patch }
-
