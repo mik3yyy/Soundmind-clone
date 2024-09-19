@@ -9,16 +9,22 @@ import 'package:sound_mind/features/Authentication/presentation/views/login/logi
 import 'package:sound_mind/features/Onboarding/presentation/views/Onboarding_page.dart';
 import 'package:sound_mind/features/Onboarding/presentation/views/Splash_screen.dart';
 import 'package:sound_mind/features/Security/presentation/views/Security_page.dart';
+import 'package:sound_mind/features/Security/presentation/views/pin_page.dart';
+import 'package:sound_mind/features/Security/presentation/views/set_pin_page.dart';
+import 'package:sound_mind/features/main/presentation/views/main_page.dart';
 
 // Define route constants
 class Routes {
-  static const String home = '/';
+  static const String homeName = 'home';
+  static const String homePath = '/home';
   static const String chat = '/chat';
   static const String settings = '/settings';
   static const String termsOfService = 'terms-of-services';
 
   static const String splashName = 'splash';
   static const String splashPath = '/';
+  static const String pinhName = 'pin';
+  static const String pinhPath = '/pin';
 
   static const String onboardingName = 'onboarding';
   static const String onboardingPath = 'onboarding';
@@ -28,6 +34,9 @@ class Routes {
 
   static const String questionName = 'question';
   static const String questionPath = 'question';
+
+  static const String setPinName = 'setPin';
+  static const String setPinPath = 'setPin';
 
   static const String createAccountName = 'createAccount';
 
@@ -87,8 +96,13 @@ class Routes {
             path: loginPath,
             name: loginName,
             builder: (context, state) => const Loginscreen(),
-          )
+          ),
         ],
+      ),
+      GoRoute(
+        path: pinhPath,
+        name: pinhName,
+        builder: (context, state) => const PinPage(),
       ),
       GoRoute(
         path: verifyPath,
@@ -98,16 +112,26 @@ class Routes {
         ),
       ),
       GoRoute(
-        path: securityPath,
-        name: securityName,
-        builder: (context, state) => const SecurityScreen(),
-      ),
+          path: securityPath,
+          name: securityName,
+          builder: (context, state) => const SecurityScreen(),
+          routes: [
+            GoRoute(
+              path: setPinPath,
+              name: setPinName,
+              builder: (context, state) =>
+                  SetPinPage(), // Replace with actual screen widget
+            ),
+          ]),
       ShellRoute(
         navigatorKey: shellNavigatorKey,
-        builder: (context, state, child) => Placeholder(),
+        builder: (context, state, child) => MainPage(
+          child: child,
+        ),
         routes: [
           GoRoute(
-            path: home,
+            path: homePath,
+            name: homeName,
             parentNavigatorKey: shellNavigatorKey,
             builder: (context, state) =>
                 Placeholder(), // Replace with actual screen widget

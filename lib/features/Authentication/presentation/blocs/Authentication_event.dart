@@ -14,13 +14,18 @@ class CreateAccountEvent extends AuthenticationEvent {
   final String password;
   final String confirmPassword;
   final String phoneNumber;
+  final String dob;
+  final int gender;
+
   final String depressionScore;
 
   const CreateAccountEvent(
       {required this.firstName,
+      required this.dob,
       required this.lastName,
       required this.email,
       required this.password,
+      required this.gender,
       required this.depressionScore,
       required this.confirmPassword,
       required this.phoneNumber});
@@ -30,12 +35,14 @@ class LoginEvent extends AuthenticationEvent {
   final String email;
   final String password;
 
-  LoginEvent({required this.email, required this.password});
+  const LoginEvent({required this.email, required this.password});
 }
 
 class VerifyEmailEvent extends AuthenticationEvent {
   final DataMap verificationData;
   final String otp;
 
-  VerifyEmailEvent({required this.verificationData, required this.otp});
+  const VerifyEmailEvent({required this.verificationData, required this.otp});
 }
+
+class CheckUser extends AuthenticationEvent {}

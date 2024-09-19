@@ -6,6 +6,7 @@ import 'package:sound_mind/core/services/injection_container.dart' as di;
 import 'package:sound_mind/core/services/injection_container.dart';
 import 'package:sound_mind/core/theme/theme.dart';
 import 'package:sound_mind/features/Authentication/presentation/blocs/Authentication_bloc.dart';
+import 'package:sound_mind/features/Security/presentation/blocs/Security_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +27,9 @@ class MyApp extends StatelessWidget {
         // l<AuthenticationBloc>(),
         BlocProvider(
           create: (context) => sl<AuthenticationBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<SecurityBloc>(),
         ),
       ],
       child: MaterialApp.router(

@@ -33,8 +33,9 @@ extension WidgetExtensions on Widget {
     );
   }
 
-  Widget withExpanded() {
+  Widget withExpanded({int flex = 1}) {
     return Expanded(
+      flex: flex,
       child: this,
     );
   }

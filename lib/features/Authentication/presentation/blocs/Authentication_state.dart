@@ -11,6 +11,8 @@ class AuthenticationInitial extends AuthenticationState {}
 
 class CreatingAccount extends AuthenticationState {}
 
+class SetUserState extends AuthenticationState {}
+
 class CreatingAccountFailure extends AuthenticationState {
   final String message;
 

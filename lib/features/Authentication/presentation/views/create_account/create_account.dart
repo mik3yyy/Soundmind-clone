@@ -9,8 +9,12 @@ import 'package:sound_mind/core/extensions/list_extensions.dart';
 import 'package:sound_mind/core/extensions/widget_extensions.dart';
 import 'package:sound_mind/core/gen/assets.gen.dart';
 import 'package:sound_mind/core/routes/routes.dart';
+import 'package:sound_mind/core/utils/constants.dart';
+import 'package:sound_mind/core/utils/date_formater.dart';
 import 'package:sound_mind/core/utils/validators.dart';
 import 'package:sound_mind/core/widgets/custom_button.dart';
+import 'package:sound_mind/core/widgets/custom_date_picker.dart';
+import 'package:sound_mind/core/widgets/custom_dropdown_widget.dart';
 import 'package:sound_mind/core/widgets/custom_phone_number_field.dart';
 import 'package:sound_mind/core/widgets/custom_text_field.dart';
 import 'package:sound_mind/features/Authentication/presentation/blocs/Authentication_bloc.dart';
@@ -33,6 +37,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
   final TextEditingController _phoneNumberController = TextEditingController();
   String phoneNumber = '';
   final signupForm = GlobalKey<FormState>();
+  String? gender;
+  String? dob;
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthenticationBloc, AuthenticationState>(
@@ -101,6 +108,24 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
                 hintText: "Enter your email",
                 validator: validateEmail,
               ),
+              CustomDropdown(
+                title: "Gender",
+                items: Constants.genders,
+                itemToString: (String item) => item,
+                onChanged: (value) {
+                  setState(() {
+                    gender = value;
+                  });
+                },
+              ),
+              CustomDatePicker(
+                title: "Date of birth",
+                onDateChanged: (DateTime dateTime) {
+                  setState(() {
+                    dob = DateFormater.formatDate(dateTime);
+                  });
+                },
+              ),
               CustomTextField(
                 controller: _passwordController,
                 isPasswordField: true,
@@ -127,15 +152,25 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
               CustomButton(
                 label: "Sign up",
                 onPressed: () async {
+                  if (gender == null) {
+                    context.showSnackBar("Select Gender");
+                    return;
+                  }
+                  if (dob == null) {
+                    context.showSnackBar("Select Date of birth");
+                    return;
+                  }
                   if (!signupForm.currentState!.validate()) return;
                   context.read<AuthenticationBloc>().add(
                         CreateAccountEvent(
                           firstName: _firstNameController.text,
                           lastName: _lasttNameController.text,
                           email: _emailController.text,
+                          dob: dob!,
                           password: _passwordController.text,
                           confirmPassword: _cpasswordController.text,
                           phoneNumber: phoneNumber,
+                          gender: Constants.convertGender(gender!),
                           depressionScore: widget.depressionScore.toString(),
                         ),
                       );

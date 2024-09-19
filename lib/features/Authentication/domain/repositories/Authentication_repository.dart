@@ -9,6 +9,8 @@ abstract class AuthenticationRepository {
     required String firstName,
     required String lastName,
     required String depressionScore,
+    required int gender,
+    required String dob,
     required String phoneNumber,
   });
   ResultFuture<UserModel> login({
@@ -19,4 +21,5 @@ abstract class AuthenticationRepository {
     required String otp,
     required String securityKey,
   });
+  ResultFuture<UserModel> checkUser();
 }

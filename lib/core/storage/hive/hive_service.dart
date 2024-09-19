@@ -10,6 +10,7 @@ class HiveService {
   Future<void> init() async {
     await Hive.initFlutter();
     // Register adapters here
+    openBox("securityBox");
   }
 
   Future<Box> openBox(String boxName) async {

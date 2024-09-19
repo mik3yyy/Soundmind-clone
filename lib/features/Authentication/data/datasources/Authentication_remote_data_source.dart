@@ -13,6 +13,8 @@ abstract class AuthenticationRemoteDataSource {
       required String depressionScore,
       required String firstName,
       required String lastName,
+      required int gender,
+      required String dob,
       required String phoneNumber});
   Future<DataMap> login({required String email, required String password});
   Future<UserModel> verifyEmail(
@@ -32,6 +34,8 @@ class AuthenticationRemoteDataSourceImpl
       required String confirmPassword,
       required String depressionScore,
       required String firstName,
+      required int gender,
+      required String dob,
       required String lastName,
       required String phoneNumber}) async {
     Response response = await _network.call(
@@ -45,6 +49,8 @@ class AuthenticationRemoteDataSourceImpl
         "lastName": lastName,
         "password": password,
         "phoneNumber": phoneNumber,
+        "gender": gender,
+        "dob": dob,
         "passwordConfirmation": confirmPassword,
         "depressionSeverityScore": double.parse(depressionScore).toInt()
       }),
@@ -78,6 +84,6 @@ class AuthenticationRemoteDataSourceImpl
       },
     );
     print(response.data);
-    return UserModel.fromJson(response.data);
+    return UserModel.fromLoginResponse(response.data);
   }
 }

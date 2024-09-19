@@ -50,19 +50,22 @@ class UserModel extends User {
       'firstName': firstName,
       'lastName': lastName,
       'phoneNumber': phoneNumber,
+      'isEmailVerified': isEmailVerified,
+      'token': token,
+      'expires': expires,
     };
   }
 
-  factory UserModel.fromMap(Map<String, dynamic> map) {
+  factory UserModel.fromMap(Map<dynamic, dynamic> data) {
     return UserModel(
-      email: map['email'] as String,
-      expires: map['expires'] as int,
-      token: map['token'] as String,
-      isEmailVerified: map['isEmailVerified'] as bool,
-      uid: map['uid'] as int,
-      firstName: map['firstName'] as String,
-      lastName: map['lastName'] as String,
-      phoneNumber: map['phoneNumber'] as String,
+      email: data['email'] as String,
+      expires: data['expires'] as int,
+      token: data['token'] as String,
+      isEmailVerified: data['isEmailVerified'] as bool,
+      uid: data['uid'] as int,
+      firstName: data['firstName'] as String,
+      lastName: data['lastName'] as String,
+      phoneNumber: (data['middleName'] as String?).nullToEmpty,
     );
   }
   factory UserModel.fromLoginResponse(Map<String, dynamic> map) {

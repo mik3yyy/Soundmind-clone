@@ -1,3 +1,8 @@
+import 'package:sound_mind/core/utils/typedef.dart';
+
 abstract class SecurityRepository {
-  // Define abstract methods here
+  ResultFuture<bool> checkPin({required String pin});
+  ResultVoid savePin({required String pin});
+  ResultVoid clearPin();
+  ResultFuture<bool> isPinSet();
 }

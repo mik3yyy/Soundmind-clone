@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:sound_mind/core/utils/typedef.dart';
 import 'package:sound_mind/features/Authentication/data/models/User_model.dart';
+import 'package:sound_mind/features/Authentication/domain/usecases/check_user.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/create_account.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/login.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/verify_email.dart';
@@ -14,14 +15,27 @@ class AuthenticationBloc
   final CreateAccount createAccount;
   final VerifyEmail verifyEmail;
   final Login login;
+  final CheckUserUseCase checkUser;
   AuthenticationBloc(
       {required this.createAccount,
       required this.verifyEmail,
+      required this.checkUser,
       required this.login})
       : super(AuthenticationInitial()) {
     on<CreateAccountEvent>(_createAccountEventHandler);
     on<LoginEvent>(_loginEventtHandler);
     on<VerifyEmailEvent>(_verifyEmailHandler);
+    on<CheckUser>(_checkUser);
+  }
+  _checkUser(CheckUser event, Emitter emit) async {
+    var result = await checkUser.call();
+
+    result.fold((failure) {
+      print(failure.message);
+      emit(SetUserState());
+    }, (userModel) {
+      emit(UserAccount(user: userModel));
+    });
   }
 
   _verifyEmailHandler(VerifyEmailEvent event, Emitter emit) async {
@@ -43,6 +57,8 @@ class AuthenticationBloc
       CreateAccountParams(
         email: event.email,
         password: event.password,
+        gender: event.gender,
+        dob: event.dob,
         confirmPassword: event.confirmPassword,
         depressionScore: event.depressionScore,
         firstName: event.firstName,

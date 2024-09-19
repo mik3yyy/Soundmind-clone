@@ -7,10 +7,10 @@
 // ignore_for_file: type=lint
 // ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
 
-import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:vector_graphics/vector_graphics.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart' as _svg;
+import 'package:vector_graphics/vector_graphics.dart' as _vg;
 
 class $ApplicationGen {
   const $ApplicationGen();
@@ -133,6 +133,14 @@ class $ApplicationAssetsFontsGen {
 class $ApplicationAssetsImagesGen {
   const $ApplicationAssetsImagesGen();
 
+  /// File path: application/assets/images/fingerprint.png
+  AssetGenImage get fingerprint =>
+      const AssetGenImage('application/assets/images/fingerprint.png');
+
+  /// File path: application/assets/images/lock-pin.png
+  AssetGenImage get lockPin =>
+      const AssetGenImage('application/assets/images/lock-pin.png');
+
   /// File path: application/assets/images/logo_purple.png
   AssetGenImage get logoPurple =>
       const AssetGenImage('application/assets/images/logo_purple.png');
@@ -146,22 +154,31 @@ class $ApplicationAssetsImagesGen {
       const AssetGenImage('application/assets/images/splash_image.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [logoPurple, splashImage];
+  List<AssetGenImage> get values =>
+      [fingerprint, lockPin, logoPurple, splashImage];
 }
 
 class $ApplicationAssetsSvgsGen {
   const $ApplicationAssetsSvgsGen();
 
+  /// File path: application/assets/svgs/Vector.svg
+  SvgGenImage get vector =>
+      const SvgGenImage('application/assets/svgs/Vector.svg');
+
   /// File path: application/assets/svgs/email.svg
   SvgGenImage get email =>
       const SvgGenImage('application/assets/svgs/email.svg');
+
+  /// File path: application/assets/svgs/fi_16973516.svg
+  SvgGenImage get fi16973516 =>
+      const SvgGenImage('application/assets/svgs/fi_16973516.svg');
 
   /// File path: application/assets/svgs/question.svg
   SvgGenImage get question =>
       const SvgGenImage('application/assets/svgs/question.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [email, question];
+  List<SvgGenImage> get values => [vector, email, fi16973516, question];
 }
 
 class $ApplicationAssetsFontsOutfitGen {
@@ -341,7 +358,7 @@ class SvgGenImage {
   final Set<String> flavors;
   final bool _isVecFormat;
 
-  SvgPicture svg({
+  _svg.SvgPicture svg({
     Key? key,
     bool matchTextDirection = false,
     AssetBundle? bundle,
@@ -354,29 +371,29 @@ class SvgGenImage {
     WidgetBuilder? placeholderBuilder,
     String? semanticsLabel,
     bool excludeFromSemantics = false,
-    SvgTheme? theme,
+    _svg.SvgTheme? theme,
     ColorFilter? colorFilter,
     Clip clipBehavior = Clip.hardEdge,
     @deprecated Color? color,
     @deprecated BlendMode colorBlendMode = BlendMode.srcIn,
     @deprecated bool cacheColorFilter = false,
   }) {
-    final BytesLoader loader;
+    final _svg.BytesLoader loader;
     if (_isVecFormat) {
-      loader = AssetBytesLoader(
+      loader = _vg.AssetBytesLoader(
         _assetName,
         assetBundle: bundle,
         packageName: package,
       );
     } else {
-      loader = SvgAssetLoader(
+      loader = _svg.SvgAssetLoader(
         _assetName,
         assetBundle: bundle,
         packageName: package,
         theme: theme,
       );
     }
-    return SvgPicture(
+    return _svg.SvgPicture(
       loader,
       key: key,
       matchTextDirection: matchTextDirection,

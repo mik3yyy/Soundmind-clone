@@ -2,21 +2,26 @@ import 'package:dartz/dartz.dart';
 import 'package:sound_mind/core/error/failures.dart';
 import 'package:sound_mind/core/network/network.dart';
 import 'package:sound_mind/core/utils/typedef.dart';
+import 'package:sound_mind/features/Authentication/data/datasources/Authentication_hive_data_source.dart';
 import 'package:sound_mind/features/Authentication/data/datasources/Authentication_remote_data_source.dart';
 import 'package:sound_mind/features/Authentication/data/models/User_model.dart';
 import 'package:sound_mind/features/Authentication/domain/repositories/Authentication_repository.dart';
 
 class AuthenticationRepositoryImpl extends AuthenticationRepository {
   final AuthenticationRemoteDataSource _authenticationRemoteDataSource;
-
+  final AuthenticationHiveDataSource _authenticationHiveDataSource;
   AuthenticationRepositoryImpl(
-      {required AuthenticationRemoteDataSource authenticationRemoteDataSource})
-      : _authenticationRemoteDataSource = authenticationRemoteDataSource;
+      {required AuthenticationRemoteDataSource authenticationRemoteDataSource,
+      required AuthenticationHiveDataSource authenticationHiveDataSource})
+      : _authenticationRemoteDataSource = authenticationRemoteDataSource,
+        _authenticationHiveDataSource = authenticationHiveDataSource;
   @override
   ResultFuture<DataMap> createAccount(
       {required String email,
       required String password,
       required String depressionScore,
+      required int gender,
+      required String dob,
       required String confirmPassword,
       required String firstName,
       required String lastName,
@@ -27,9 +32,11 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
         email: email,
         password: password,
         depressionScore: depressionScore,
+        gender: gender,
         confirmPassword: confirmPassword,
         firstName: firstName,
         lastName: lastName,
+        dob: dob,
         phoneNumber: phoneNumber,
       );
       return Right(verificationData);
@@ -48,7 +55,10 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       );
       print(userData);
       if (userData['data']['isEmailVerified']) {
-        return Right(UserModel.fromLoginResponse(userData));
+        UserModel userModel = UserModel.fromLoginResponse(userData);
+
+        _authenticationHiveDataSource.saveUser(userModel: userModel);
+        return Right(userModel);
       } else {
         return Left(ServerFailure("User Not verified", data: userData));
       }
@@ -63,11 +73,24 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
     try {
       UserModel userModel = await _authenticationRemoteDataSource.verifyEmail(
           otp: otp, securityKey: securityKey);
+      _authenticationHiveDataSource.saveUser(userModel: userModel);
       return Right(userModel);
     } on ApiError catch (e) {
       return Left(ServerFailure(e.errorDescription));
     } catch (e) {
       return const Left(ServerFailure(ApiError.unknownError));
+    }
+  }
+
+  @override
+  ResultFuture<UserModel> checkUser() async {
+    try {
+      UserModel userModel = await _authenticationHiveDataSource.getUser();
+
+      return Right(userModel);
+    } catch (e) {
+      print(e.toString());
+      return const Left(CacheFailure("No User"));
     }
   }
 }
