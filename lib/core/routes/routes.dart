@@ -17,8 +17,19 @@ import 'package:sound_mind/features/main/presentation/views/main_page.dart';
 class Routes {
   static const String homeName = 'home';
   static const String homePath = '/home';
-  static const String chat = '/chat';
-  static const String settings = '/settings';
+
+  static const String findADocName = 'findADoc';
+  static const String findADocPath = '/findADoc';
+  static const String walletName = 'wallet';
+  static const String walletPath = '/wallet';
+  static const String blogName = 'blog';
+  static const String blogPath = '/blog';
+
+  static const String chatPath = '/chat';
+  static const String chatNAme = 'chat';
+  static const String settingsPath = '/settings';
+  static const String settingsName = 'settings';
+
   static const String termsOfService = 'terms-of-services';
 
   static const String splashName = 'splash';
@@ -137,13 +148,36 @@ class Routes {
                 Placeholder(), // Replace with actual screen widget
           ),
           GoRoute(
-            path: chat,
+            path: chatPath,
+            name: chatNAme,
             parentNavigatorKey: shellNavigatorKey,
             builder: (context, state) =>
                 Placeholder(), // Replace with actual screen widget
           ),
           GoRoute(
-            path: settings,
+            path: findADocPath,
+            name: findADocName,
+            parentNavigatorKey: shellNavigatorKey,
+            builder: (context, state) =>
+                Placeholder(), // Replace with actual screen widget
+          ),
+          GoRoute(
+            path: blogPath,
+            name: blogName,
+            parentNavigatorKey: shellNavigatorKey,
+            builder: (context, state) =>
+                Placeholder(), // Replace with actual screen widget
+          ),
+          GoRoute(
+            path: walletPath,
+            name: walletName,
+            parentNavigatorKey: shellNavigatorKey,
+            builder: (context, state) =>
+                Placeholder(), // Replace with actual screen widget
+          ),
+          GoRoute(
+            path: settingsPath,
+            name: settingsName,
             parentNavigatorKey: shellNavigatorKey,
             builder: (context, state) =>
                 Placeholder(), // Replace with actual screen widget

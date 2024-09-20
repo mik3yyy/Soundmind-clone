@@ -24,6 +24,21 @@ import 'package:sound_mind/features/Security/domain/usecases/clear_pin.dart';
 import 'package:sound_mind/features/Security/domain/usecases/is_pin_set.dart';
 import 'package:sound_mind/features/Security/domain/usecases/save_pin.dart';
 import 'package:sound_mind/features/Security/presentation/blocs/Security_bloc.dart';
+import 'package:sound_mind/features/chat/data/datasources/chat_hive_data_source.dart';
+import 'package:sound_mind/features/chat/data/datasources/chat_remote_data_source.dart';
+import 'package:sound_mind/features/chat/data/repositories/chat_repository_impl.dart';
+import 'package:sound_mind/features/chat/domain/repositories/chat_repository.dart';
+import 'package:sound_mind/features/chat/domain/usecases/get_chat_data.dart';
+import 'package:sound_mind/features/chat/presentation/blocs/chat_bloc.dart';
+import 'package:sound_mind/features/setting/data/datasources/setting_hive_data_source.dart';
+import 'package:sound_mind/features/setting/data/datasources/setting_remote_data_source.dart';
+import 'package:sound_mind/features/setting/data/repositories/setting_repository_impl.dart';
+import 'package:sound_mind/features/setting/domain/repositories/setting_repository.dart';
+import 'package:sound_mind/features/setting/domain/usecases/change_password.dart';
+import 'package:sound_mind/features/setting/domain/usecases/get_setting_data.dart';
+import 'package:sound_mind/features/setting/domain/usecases/get_user_data.dart';
+import 'package:sound_mind/features/setting/domain/usecases/update_user_details.dart';
+import 'package:sound_mind/features/setting/presentation/blocs/setting_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -70,6 +85,43 @@ Future<void> init() async {
         () => SecurityRepositoryImpl(securityHiveDataSource: sl()))
     ..registerLazySingleton<SecurityHiveDataSource>(
         () => SecurityHiveDataSourceImpl(box: sl()));
+
+  sl
+    ..registerFactory(() => SettingBloc(
+        getUserDetails: sl(),
+        updateUserDetails: sl(),
+        changePassword: sl(),
+        getSettingData: sl()))
+    ..registerLazySingleton(() => GetSettingData(repository: sl()))
+    ..registerLazySingleton(() => GetUserDetails(repository: sl()))
+    ..registerLazySingleton(() => UpdateUserDetails(repository: sl()))
+    ..registerLazySingleton(() => ChangePassword(repository: sl()))
+
+    // AuthenticationHiveDataSource
+    ..registerLazySingleton<SettingRepository>(() =>
+        SettingRepositoryImpl(remoteDataSource: sl(), hiveDataSource: sl()))
+    ..registerLazySingleton<SettingRemoteDataSource>(
+      () => SettingRemoteDataSourceImpl(network: sl()),
+    )
+    ..registerLazySingleton<SettingHiveDataSource>(
+      () => SettingHiveDataSourceImpl(box: sl()),
+    );
+
+  sl
+    ..registerFactory(() => ChatBloc(getChatData: sl()))
+    ..registerLazySingleton(() => GetChatData(repository: sl()))
+
+    // AuthenticationHiveDataSource
+    ..registerLazySingleton<ChatRepository>(
+      () => ChatRepositoryImpl(remoteDataSource: sl()),
+    )
+    ..registerLazySingleton<ChatRemoteDataSource>(
+      () => ChatRemoteDataSourceImpl(network: sl()),
+    )
+    ..registerLazySingleton<ChatHiveDataSource>(
+      () => ChatHiveDataSourceImpl(),
+    );
+
   final box = Hive.box('userBox');
   sl.registerSingleton<Box>(box);
 
