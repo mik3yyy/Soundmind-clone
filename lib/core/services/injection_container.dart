@@ -24,6 +24,19 @@ import 'package:sound_mind/features/Security/domain/usecases/clear_pin.dart';
 import 'package:sound_mind/features/Security/domain/usecases/is_pin_set.dart';
 import 'package:sound_mind/features/Security/domain/usecases/save_pin.dart';
 import 'package:sound_mind/features/Security/presentation/blocs/Security_bloc.dart';
+import 'package:sound_mind/features/appointment/data/datasources/appointment_hive_data_source.dart';
+import 'package:sound_mind/features/appointment/data/datasources/appointment_remote_data_source.dart';
+import 'package:sound_mind/features/appointment/domain/repositories/appointment_repository.dart';
+import 'package:sound_mind/features/appointment/domain/usecases/get_accepted_appointment.dart';
+import 'package:sound_mind/features/appointment/domain/usecases/get_doctor.detail.dart';
+import 'package:sound_mind/features/appointment/domain/usecases/get_doctors.dart';
+import 'package:sound_mind/features/appointment/domain/usecases/get_pending_appointment.dart';
+import 'package:sound_mind/features/appointment/domain/usecases/rejected_appointment.dart';
+import 'package:sound_mind/features/appointment/domain/usecases/upcoming_appointment.dart';
+import 'package:sound_mind/features/appointment/presentation/blocs/appointment_bloc.dart';
+import 'package:sound_mind/features/appointment/presentation/blocs/doctor/doctor_cubit.dart';
+import 'package:sound_mind/features/appointment/presentation/blocs/doctor_details/doctor_details_cubit.dart';
+
 import 'package:sound_mind/features/chat/data/datasources/chat_hive_data_source.dart';
 import 'package:sound_mind/features/chat/data/datasources/chat_remote_data_source.dart';
 import 'package:sound_mind/features/chat/data/repositories/chat_repository_impl.dart';
@@ -39,6 +52,16 @@ import 'package:sound_mind/features/setting/domain/usecases/get_setting_data.dar
 import 'package:sound_mind/features/setting/domain/usecases/get_user_data.dart';
 import 'package:sound_mind/features/setting/domain/usecases/update_user_details.dart';
 import 'package:sound_mind/features/setting/presentation/blocs/setting_bloc.dart';
+
+import '../../features/appointment/data/repositories/appointment_repository_impl.dart';
+
+// import 'package:sound_mind/features/appointment/domain/repositories/appointment_repository.dart';
+// import 'package:sound_mind/features/appointment/domain/usecases/get_accepted_appointment.dart';
+// import 'package:sound_mind/features/appointment/domain/usecases/get_pending_appointment.dart';
+// import 'package:sound_mind/features/appointment/domain/usecases/rejected_appointment.dart';
+// import 'package:sound_mind/features/appointment/domain/usecases/upcoming_appointment.dart';
+// import 'package:sound_mind/features/appointment/presentation/blocs/appointment_bloc.dart';
+// import '../../features/appointment/data/repositories/appointment_repository_impl.dart';
 
 final sl = GetIt.instance;
 
@@ -105,6 +128,37 @@ Future<void> init() async {
     )
     ..registerLazySingleton<SettingHiveDataSource>(
       () => SettingHiveDataSourceImpl(box: sl()),
+    );
+  sl
+    ..registerFactory(() => DoctorCubit(getDoctorsUseCase: sl()))
+    ..registerLazySingleton(() => GetDoctorsUseCase(repository: sl()));
+
+  sl
+    ..registerFactory(() => DoctorDetailsCubit(getDoctorDetailsUseCase: sl()))
+    ..registerLazySingleton(() => GetDoctorDetailsUseCase(repository: sl()));
+
+  sl
+    ..registerFactory(() => AppointmentBloc(
+        getUpcomingAppointments: sl(),
+        getAcceptedAppointments: sl(),
+        getPendingAppointments: sl(),
+        getRejectedAppointments: sl()))
+    ..registerLazySingleton(() => GetUpcomingAppointments(repository: sl()))
+    ..registerLazySingleton(() => GetAcceptedAppointments(repository: sl()))
+    ..registerLazySingleton(() => GetPendingAppointments(repository: sl()))
+    ..registerLazySingleton(() => GetRejectedAppointments(repository: sl()))
+
+    // AuthenticationHiveDataSource
+    ..registerLazySingleton<AppointmentRepository>(
+        () => AppointmentRepositoryImpl(
+              remoteDataSource: sl(),
+              appointmentHiveDataSource: sl(),
+            ))
+    ..registerLazySingleton<AppointmentRemoteDataSource>(
+      () => AppointmentRemoteDataSourceImpl(network: sl()),
+    )
+    ..registerLazySingleton<AppointmentHiveDataSource>(
+      () => AppointmentHiveDataSourceImpl(box: sl()),
     );
 
   sl

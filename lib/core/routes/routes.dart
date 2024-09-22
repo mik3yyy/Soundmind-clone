@@ -11,6 +11,10 @@ import 'package:sound_mind/features/Onboarding/presentation/views/Splash_screen.
 import 'package:sound_mind/features/Security/presentation/views/Security_page.dart';
 import 'package:sound_mind/features/Security/presentation/views/pin_page.dart';
 import 'package:sound_mind/features/Security/presentation/views/set_pin_page.dart';
+import 'package:sound_mind/features/appointment/presentation/views/appointment_page.dart';
+import 'package:sound_mind/features/appointment/presentation/views/booking/view_day.dart';
+import 'package:sound_mind/features/appointment/presentation/views/booking/view_time.dart';
+import 'package:sound_mind/features/appointment/presentation/views/view_doctor.dart';
 import 'package:sound_mind/features/main/presentation/views/main_page.dart';
 
 // Define route constants
@@ -28,8 +32,17 @@ class Routes {
   static const String chatPath = '/chat';
   static const String chatNAme = 'chat';
   static const String settingsPath = '/settings';
+
   static const String settingsName = 'settings';
 
+  static const String viewTimePath = 'viewTime';
+  static const String viewTimeName = 'viewTime';
+
+  static const String viewDayPath = 'viewDay';
+  static const String viewDayName = 'viewDay';
+
+  static const String view_docPath = 'view_doc';
+  static const String view_docName = 'view_doc';
   static const String termsOfService = 'terms-of-services';
 
   static const String splashName = 'splash';
@@ -158,8 +171,34 @@ class Routes {
             path: findADocPath,
             name: findADocName,
             parentNavigatorKey: shellNavigatorKey,
-            builder: (context, state) =>
-                Placeholder(), // Replace with actual screen widget
+            builder: (context, state) => AppointmentPage(),
+            routes: [
+              GoRoute(
+                path: view_docPath,
+                name: view_docName,
+                parentNavigatorKey: rootNavigatorKey,
+                builder: (context, state) => ViewDoctorPage(
+                  id: state.extra as int,
+                ),
+                routes: [
+                  GoRoute(
+                      path: viewDayName,
+                      name: verifyPath,
+                      parentNavigatorKey: rootNavigatorKey,
+                      builder: (context, state) =>
+                          SelectDayPage(), // Replace with actual screen widget
+                      routes: [
+                        GoRoute(
+                          path: viewTimePath,
+                          name: viewTimePath,
+                          parentNavigatorKey: rootNavigatorKey,
+                          builder: (context, state) =>
+                              SelectTimePage(), // Replace with actual screen widget
+                        ),
+                      ]),
+                ],
+              ),
+            ],
           ),
           GoRoute(
             path: blogPath,

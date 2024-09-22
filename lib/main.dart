@@ -7,6 +7,9 @@ import 'package:sound_mind/core/services/injection_container.dart';
 import 'package:sound_mind/core/theme/theme.dart';
 import 'package:sound_mind/features/Authentication/presentation/blocs/Authentication_bloc.dart';
 import 'package:sound_mind/features/Security/presentation/blocs/Security_bloc.dart';
+import 'package:sound_mind/features/appointment/presentation/blocs/appointment_bloc.dart';
+import 'package:sound_mind/features/appointment/presentation/blocs/doctor/doctor_cubit.dart';
+import 'package:sound_mind/features/appointment/presentation/blocs/doctor_details/doctor_details_cubit.dart';
 import 'package:sound_mind/features/setting/presentation/blocs/setting_bloc.dart';
 
 void main() async {
@@ -34,6 +37,15 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => sl<SettingBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<AppointmentBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<DoctorCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<DoctorDetailsCubit>(),
         ),
       ],
       child: MaterialApp.router(

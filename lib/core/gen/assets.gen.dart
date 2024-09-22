@@ -177,8 +177,11 @@ class $ApplicationAssetsSvgsGen {
   SvgGenImage get question =>
       const SvgGenImage('application/assets/svgs/question.svg');
 
+  /// File path: application/assets/svgs/star.svg
+  SvgGenImage get star => const SvgGenImage('application/assets/svgs/star.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [vector, email, fi16973516, question];
+  List<SvgGenImage> get values => [vector, email, fi16973516, question, star];
 }
 
 class $ApplicationAssetsFontsOutfitGen {

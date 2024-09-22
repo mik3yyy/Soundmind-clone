@@ -22,6 +22,7 @@ class CustomTextField extends StatefulWidget {
       this.borderColor,
       this.onTap,
       this.labelText,
+      this.radius = 6,
       this.focusNode,
       this.titleText,
       this.onEditingComplete,
@@ -47,6 +48,7 @@ class CustomTextField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final VoidCallback? onTap;
   final int? maxLength;
+  final double radius;
   final int? maxLines;
   final TextAlign? textAlign;
   final FormFieldValidator<String>? validator;
@@ -98,7 +100,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               labelText: widget.labelText,
               errorText: widget.errorText,
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(widget.radius),
                 borderSide: BorderSide(
                   color: widget.controller.text.isEmpty
                       ? context.colors.greyOutline
@@ -107,21 +109,21 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 gapPadding: 0,
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(widget.radius),
                 borderSide: BorderSide(
                   color: widget.borderColor ?? context.colors.greyOutline,
                 ),
                 gapPadding: 0,
               ),
               disabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(widget.radius),
                 borderSide: BorderSide(
                   color: widget.borderColor ?? context.colors.greyOutline,
                 ),
                 gapPadding: 0,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(widget.radius),
                 borderSide: BorderSide(
                   color: widget.borderColor ?? context.colors.greyOutline,
                 ),
