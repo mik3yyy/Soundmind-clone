@@ -13,8 +13,10 @@ import 'package:sound_mind/features/Security/presentation/views/pin_page.dart';
 import 'package:sound_mind/features/Security/presentation/views/set_pin_page.dart';
 import 'package:sound_mind/features/appointment/presentation/views/appointment_page.dart';
 import 'package:sound_mind/features/appointment/presentation/views/booking/view_day.dart';
+import 'package:sound_mind/features/appointment/presentation/views/booking/view_summary.dart';
 import 'package:sound_mind/features/appointment/presentation/views/booking/view_time.dart';
 import 'package:sound_mind/features/appointment/presentation/views/view_doctor.dart';
+import 'package:sound_mind/features/main/presentation/views/home_screen/home_screen.dart';
 import 'package:sound_mind/features/main/presentation/views/main_page.dart';
 
 // Define route constants
@@ -37,6 +39,9 @@ class Routes {
 
   static const String viewTimePath = 'viewTime';
   static const String viewTimeName = 'viewTime';
+
+  static const String ViewSummaryName = 'ViewSummary';
+  static const String ViewSummaryPath = 'ViewSummary';
 
   static const String viewDayPath = 'viewDay';
   static const String viewDayName = 'viewDay';
@@ -158,7 +163,7 @@ class Routes {
             name: homeName,
             parentNavigatorKey: shellNavigatorKey,
             builder: (context, state) =>
-                Placeholder(), // Replace with actual screen widget
+                HomeScreen(), // Replace with actual screen widget
           ),
           GoRoute(
             path: chatPath,
@@ -178,23 +183,37 @@ class Routes {
                 name: view_docName,
                 parentNavigatorKey: rootNavigatorKey,
                 builder: (context, state) => ViewDoctorPage(
-                  id: state.extra as int,
+                  id: state.extra,
                 ),
                 routes: [
                   GoRoute(
-                      path: viewDayName,
-                      name: verifyPath,
+                      path: viewDayPath,
+                      name: viewDayName,
                       parentNavigatorKey: rootNavigatorKey,
-                      builder: (context, state) =>
-                          SelectDayPage(), // Replace with actual screen widget
+                      builder: (context, state) => SelectDayPage(
+                            id: state.extra,
+                          ), // Replace with actual screen widget
                       routes: [
                         GoRoute(
-                          path: viewTimePath,
-                          name: viewTimePath,
-                          parentNavigatorKey: rootNavigatorKey,
-                          builder: (context, state) =>
-                              SelectTimePage(), // Replace with actual screen widget
-                        ),
+                            path: viewTimePath,
+                            name: viewTimeName,
+                            parentNavigatorKey: rootNavigatorKey,
+                            builder: (context, state) => SelectTimePage(
+                                  id: state.extra,
+                                  day: state.uri.queryParameters['day']
+                                      as String,
+                                ),
+                            // Replace with actual screen widget
+                            routes: [
+                              //        GoRoute(
+                              // path: ViewSummaryPath,
+                              // name: ViewSummaryName,
+                              // builder: (context, state) => ViewSummary(
+                              //   id: state.extra,
+                              //   physicianScheduleModel: state.,
+                              // ),
+                              // )
+                            ]),
                       ]),
                 ],
               ),

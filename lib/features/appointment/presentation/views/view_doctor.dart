@@ -15,7 +15,7 @@ import 'package:sound_mind/features/appointment/presentation/blocs/doctor_detail
 
 class ViewDoctorPage extends StatefulWidget {
   const ViewDoctorPage({super.key, required this.id});
-  final int id;
+  final Object? id;
   @override
   State<ViewDoctorPage> createState() => _ViewDoctorPageState();
 }
@@ -26,7 +26,7 @@ class _ViewDoctorPageState extends State<ViewDoctorPage> {
     // TODO: implement initState
     print(widget.id);
     super.initState();
-    context.read<DoctorDetailsCubit>().fetchDoctorDetails(widget.id);
+    context.read<DoctorDetailsCubit>().fetchDoctorDetails(widget.id as int);
   }
 
   String formatDate(DateTime date) {
@@ -84,10 +84,8 @@ class _ViewDoctorPageState extends State<ViewDoctorPage> {
                         AppBar(
                           backgroundColor: Colors.transparent,
                           leadingWidth: 30,
-                          leading: Icon(
-                            Icons.chevron_left,
+                          leading: BackButton(
                             color: context.colors.black,
-                            size: 30,
                           ),
                           actions: [
                             IconButton(
@@ -308,7 +306,7 @@ class _ViewDoctorPageState extends State<ViewDoctorPage> {
                 height: 100,
                 color: context.secondaryColor,
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -339,7 +337,7 @@ class _ViewDoctorPageState extends State<ViewDoctorPage> {
                       CustomButton(
                         label: "Book Now",
                         onPressed: () {
-                          context.goNamed(Routes.viewDayName);
+                          context.goNamed(Routes.viewDayName, extra: widget.id);
                         },
                         width: context.screenWidth * .4,
                       )
@@ -349,9 +347,7 @@ class _ViewDoctorPageState extends State<ViewDoctorPage> {
               ),
             );
           }
-          return Column(
-            children: [],
-          );
+          return CircularProgressIndicator().toCenter();
         },
       ),
     );

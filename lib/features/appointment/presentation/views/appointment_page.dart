@@ -126,7 +126,8 @@ class _AppointmentPageState extends State<AppointmentPage> {
             );
           }
 
-          return Center();
+          return CircularProgressIndicator();
+          // return ;
         },
       ),
     );

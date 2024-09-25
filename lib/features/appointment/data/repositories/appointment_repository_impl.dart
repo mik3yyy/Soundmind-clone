@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:sound_mind/core/error/exceptions.dart';
 import 'package:sound_mind/core/error/failures.dart';
+import 'package:sound_mind/core/network/network.dart';
 import 'package:sound_mind/core/utils/typedef.dart';
 import 'package:sound_mind/features/appointment/data/datasources/appointment_remote_data_source.dart';
 import 'package:sound_mind/features/appointment/data/datasources/appointment_hive_data_source.dart';
@@ -13,7 +14,7 @@ import 'package:sound_mind/features/appointment/data/models/doctor_detail.dart';
 import 'package:sound_mind/features/appointment/data/models/physician_schedule.dart';
 import 'package:sound_mind/features/appointment/domain/repositories/appointment_repository.dart';
 
-class AppointmentRepositoryImpl implements AppointmentRepository {
+class AppointmentRepositoryImpl extends AppointmentRepository {
   final AppointmentRemoteDataSource _remoteDataSource;
   final AppointmentHiveDataSource _appointmentHiveDataSource;
 
@@ -52,8 +53,8 @@ class AppointmentRepositoryImpl implements AppointmentRepository {
     try {
       final appointment = await _remoteDataSource.getUpcomingAppointment();
       return Right(appointment);
-    } catch (error) {
-      return const Left(ServerFailure("Failed to fetch upcoming appointments"));
+    } on ApiError catch (e) {
+      return Left(ServerFailure(e.errorDescription));
     }
   }
 
@@ -92,8 +93,8 @@ class AppointmentRepositoryImpl implements AppointmentRepository {
     try {
       await _remoteDataSource.createBooking(request);
       return const Right(null);
-    } catch (error) {
-      return const Left(ServerFailure("Failed to create booking"));
+    } on ApiError catch (e) {
+      return Left(ServerFailure(e.errorDescription));
     }
   }
 

@@ -27,15 +27,20 @@ import 'package:sound_mind/features/Security/presentation/blocs/Security_bloc.da
 import 'package:sound_mind/features/appointment/data/datasources/appointment_hive_data_source.dart';
 import 'package:sound_mind/features/appointment/data/datasources/appointment_remote_data_source.dart';
 import 'package:sound_mind/features/appointment/domain/repositories/appointment_repository.dart';
+import 'package:sound_mind/features/appointment/domain/usecases/create_booking.dart';
 import 'package:sound_mind/features/appointment/domain/usecases/get_accepted_appointment.dart';
 import 'package:sound_mind/features/appointment/domain/usecases/get_doctor.detail.dart';
 import 'package:sound_mind/features/appointment/domain/usecases/get_doctors.dart';
 import 'package:sound_mind/features/appointment/domain/usecases/get_pending_appointment.dart';
+import 'package:sound_mind/features/appointment/domain/usecases/get_physician_schedule.dart';
 import 'package:sound_mind/features/appointment/domain/usecases/rejected_appointment.dart';
 import 'package:sound_mind/features/appointment/domain/usecases/upcoming_appointment.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/appointment_bloc.dart';
+import 'package:sound_mind/features/appointment/presentation/blocs/booking/booking_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor/doctor_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor_details/doctor_details_cubit.dart';
+import 'package:sound_mind/features/appointment/presentation/blocs/physician_schedule/physician_schedule_cubit.dart';
+import 'package:sound_mind/features/appointment/presentation/blocs/upcoming_appointment/upcoming_appointment_cubit.dart';
 
 import 'package:sound_mind/features/chat/data/datasources/chat_hive_data_source.dart';
 import 'package:sound_mind/features/chat/data/datasources/chat_remote_data_source.dart';
@@ -133,9 +138,26 @@ Future<void> init() async {
     ..registerFactory(() => DoctorCubit(getDoctorsUseCase: sl()))
     ..registerLazySingleton(() => GetDoctorsUseCase(repository: sl()));
 
+  // ..registerLazySingleton(() => GetU[(repository: sl()));
+
+  sl
+    ..registerFactory(
+        () => PhysicianScheduleCubit(getPhysicianScheduleUseCase: sl()))
+    ..registerLazySingleton(
+        () => GetPhysicianScheduleUseCase(repository: sl()));
+
   sl
     ..registerFactory(() => DoctorDetailsCubit(getDoctorDetailsUseCase: sl()))
     ..registerLazySingleton(() => GetDoctorDetailsUseCase(repository: sl()));
+
+  sl
+    ..registerFactory(() => CreateBookingCubit(createBooking: sl()))
+    ..registerLazySingleton(() => CreateBooking(repository: sl()));
+
+  sl
+    ..registerFactory(
+        () => UpcomingAppointmentCubit(getUpcomingAppointments: sl()))
+    ..registerLazySingleton(() => GetUpcomingAppointments(repository: sl()));
 
   sl
     ..registerFactory(() => AppointmentBloc(
@@ -143,23 +165,23 @@ Future<void> init() async {
         getAcceptedAppointments: sl(),
         getPendingAppointments: sl(),
         getRejectedAppointments: sl()))
-    ..registerLazySingleton(() => GetUpcomingAppointments(repository: sl()))
     ..registerLazySingleton(() => GetAcceptedAppointments(repository: sl()))
     ..registerLazySingleton(() => GetPendingAppointments(repository: sl()))
     ..registerLazySingleton(() => GetRejectedAppointments(repository: sl()))
 
     // AuthenticationHiveDataSource
-    ..registerLazySingleton<AppointmentRepository>(
-        () => AppointmentRepositoryImpl(
-              remoteDataSource: sl(),
-              appointmentHiveDataSource: sl(),
-            ))
+
     ..registerLazySingleton<AppointmentRemoteDataSource>(
       () => AppointmentRemoteDataSourceImpl(network: sl()),
     )
     ..registerLazySingleton<AppointmentHiveDataSource>(
       () => AppointmentHiveDataSourceImpl(box: sl()),
-    );
+    )
+    ..registerLazySingleton<AppointmentRepository>(
+        () => AppointmentRepositoryImpl(
+              remoteDataSource: sl(),
+              appointmentHiveDataSource: sl(),
+            ));
 
   sl
     ..registerFactory(() => ChatBloc(getChatData: sl()))

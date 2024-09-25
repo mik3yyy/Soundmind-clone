@@ -3,7 +3,7 @@ import 'package:sound_mind/core/utils/typedef.dart';
 import 'package:sound_mind/core/usecases/usecase.dart';
 import 'package:sound_mind/features/appointment/data/models/appointment.dart';
 
-import '../../../Appointment/domain/repositories/appointment_repository.dart';
+import '../../../appointment/domain/repositories/appointment_repository.dart';
 
 class GetUpcomingAppointments extends UsecaseWithoutParams<AppointmentDto> {
   final AppointmentRepository repository;
