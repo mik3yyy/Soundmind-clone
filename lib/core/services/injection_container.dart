@@ -57,6 +57,17 @@ import 'package:sound_mind/features/setting/domain/usecases/get_setting_data.dar
 import 'package:sound_mind/features/setting/domain/usecases/get_user_data.dart';
 import 'package:sound_mind/features/setting/domain/usecases/update_user_details.dart';
 import 'package:sound_mind/features/setting/presentation/blocs/setting_bloc.dart';
+import 'package:sound_mind/features/wallet/data/datasources/wallet_remote_data_source.dart';
+import 'package:sound_mind/features/wallet/data/repositories/wallet_repository_impl.dart';
+import 'package:sound_mind/features/wallet/domain/repositories/wallet_repository.dart';
+import 'package:sound_mind/features/wallet/domain/usecases/get_banks.dart';
+import 'package:sound_mind/features/wallet/domain/usecases/get_user_transaction.dart';
+import 'package:sound_mind/features/wallet/domain/usecases/get_user_wallet.dart';
+import 'package:sound_mind/features/wallet/domain/usecases/withdraw_to_bank.dart';
+import 'package:sound_mind/features/wallet/presentation/blocs/get_bank/get_banks_cubit.dart';
+import 'package:sound_mind/features/wallet/presentation/blocs/get_bank_transactions/get_bank_transactions_cubit.dart';
+import 'package:sound_mind/features/wallet/presentation/blocs/wallet_bloc.dart';
+import 'package:sound_mind/features/wallet/presentation/blocs/withdraw_to_bank/withdraw_to_bank_cubit.dart';
 
 import '../../features/appointment/data/repositories/appointment_repository_impl.dart';
 
@@ -156,6 +167,18 @@ Future<void> init() async {
 
   sl
     ..registerFactory(
+        () => GetBankTransactionsCubit(getUserWalletTransactions: sl()))
+    ..registerLazySingleton(() => GetUserWalletTransactions(repository: sl()));
+  sl
+    ..registerFactory(() => GetBanksCubit(getBanks: sl()))
+    ..registerLazySingleton(() => GetBanks(repository: sl()));
+
+  sl
+    ..registerFactory(() => WithdrawToBankCubit(withdrawToBank: sl()))
+    ..registerLazySingleton(() => WithdrawToBank(repository: sl()));
+
+  sl
+    ..registerFactory(
         () => UpcomingAppointmentCubit(getUpcomingAppointments: sl()))
     ..registerLazySingleton(() => GetUpcomingAppointments(repository: sl()));
 
@@ -196,6 +219,16 @@ Future<void> init() async {
     )
     ..registerLazySingleton<ChatHiveDataSource>(
       () => ChatHiveDataSourceImpl(),
+    );
+
+  sl
+    ..registerFactory(() => WalletBloc(getUserWallet: sl()))
+    ..registerLazySingleton(() => GetUserWallet(repository: sl()))
+    ..registerLazySingleton<WalletRepository>(
+      () => WalletRepositoryImpl(remoteDataSource: sl()),
+    )
+    ..registerLazySingleton<WalletRemoteDataSource>(
+      () => WalletRemoteDataSourceImpl(network: sl()),
     );
 
   final box = Hive.box('userBox');

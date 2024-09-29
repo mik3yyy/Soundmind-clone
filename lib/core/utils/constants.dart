@@ -12,4 +12,6 @@ class Constants {
         return 1;
     }
   }
+
+  static String Naira = '₦';
 }

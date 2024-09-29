@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sound_mind/core/extensions/context_extensions.dart';
 import 'package:sound_mind/core/extensions/widget_extensions.dart';
+import 'package:sound_mind/core/routes/routes.dart';
 import 'package:sound_mind/features/Authentication/presentation/blocs/Authentication_bloc.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/upcoming_appointment/upcoming_appointment_cubit.dart';
+import 'package:sound_mind/features/wallet/presentation/views/withdraw_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     context.read<UpcomingAppointmentCubit>().fetchUpcomingAppointments();
   }
+
 //disclaimer, imfo
   @override
   Widget build(BuildContext context) {
@@ -60,7 +64,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context.goNamed(Routes.settingsName);
+                          },
                           icon: Icon(
                             Icons.settings_outlined,
                             color: context.colors.black,
@@ -96,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           ),
-          Gap(20),
+          const Gap(20),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

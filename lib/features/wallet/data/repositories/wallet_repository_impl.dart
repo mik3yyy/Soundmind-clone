@@ -1,7 +1,9 @@
 import 'package:dartz/dartz.dart';
+import 'package:sound_mind/core/error/exceptions.dart';
 import 'package:sound_mind/core/error/failures.dart';
+import 'package:sound_mind/core/network/network.dart';
 import 'package:sound_mind/core/utils/typedef.dart';
-import 'package:sound_mind/features/Wallet/data/datasources/wallet_remote_data_source.dart';
+import 'package:sound_mind/features/wallet/data/datasources/wallet_remote_data_source.dart';
 import 'package:sound_mind/features/wallet/domain/repositories/wallet_repository.dart';
 
 class WalletRepositoryImpl extends WalletRepository {
@@ -15,8 +17,8 @@ class WalletRepositoryImpl extends WalletRepository {
     try {
       final wallet = await _remoteDataSource.getUserWallet();
       return Right(wallet);
-    } catch (e) {
-      return Left(ServerFailure("Failed to fetch wallet details"));
+    } on ApiError catch (e) {
+      return Left(ServerFailure(e.errorDescription));
     }
   }
 
@@ -25,8 +27,8 @@ class WalletRepositoryImpl extends WalletRepository {
     try {
       final transactions = await _remoteDataSource.getUserWalletTransactions();
       return Right(transactions);
-    } catch (e) {
-      return const Left(ServerFailure("Failed to fetch wallet transactions"));
+    } on ApiError catch (e) {
+      return Left(ServerFailure(e.errorDescription));
     }
   }
 
@@ -37,8 +39,8 @@ class WalletRepositoryImpl extends WalletRepository {
       final result =
           await _remoteDataSource.initiateWalletTopUp(amount: amount);
       return Right(result);
-    } catch (e) {
-      return const Left(ServerFailure("Failed to initiate wallet top-up"));
+    } on ApiError catch (e) {
+      return Left(ServerFailure(e.errorDescription));
     }
   }
 
@@ -52,8 +54,8 @@ class WalletRepositoryImpl extends WalletRepository {
         flutterwaveTransactionID: flutterwaveTransactionID,
       );
       return const Right(null);
-    } catch (e) {
-      return const Left(ServerFailure("Failed to confirm wallet top-up"));
+    } on ApiError catch (e) {
+      return Left(ServerFailure(e.errorDescription));
     }
   }
 
@@ -62,8 +64,8 @@ class WalletRepositoryImpl extends WalletRepository {
     try {
       final banks = await _remoteDataSource.getBanks();
       return Right(banks);
-    } catch (e) {
-      return const Left(ServerFailure("Failed to fetch banks"));
+    } on ApiError catch (e) {
+      return Left(ServerFailure(e.errorDescription));
     }
   }
 
@@ -76,8 +78,8 @@ class WalletRepositoryImpl extends WalletRepository {
         accountBank: accountBank,
       );
       return Right(result);
-    } catch (e) {
-      return const Left(ServerFailure("Failed to resolve bank account"));
+    } on ApiError catch (e) {
+      return Left(ServerFailure(e.errorDescription));
     }
   }
 
@@ -93,8 +95,8 @@ class WalletRepositoryImpl extends WalletRepository {
         accountBank: accountBank,
       );
       return const Right(null);
-    } catch (e) {
-      return const Left(ServerFailure("Failed to withdraw to bank"));
+    } on ApiError catch (e) {
+      return Left(ServerFailure(e.errorDescription));
     }
   }
 }

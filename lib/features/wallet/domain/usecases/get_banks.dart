@@ -1,6 +1,6 @@
 import 'package:sound_mind/core/usecases/usecase.dart';
 import 'package:sound_mind/core/utils/typedef.dart';
-import 'package:sound_mind/features/Wallet/domain/repositories/wallet_repository.dart';
+import 'package:sound_mind/features/wallet/domain/repositories/wallet_repository.dart';
 
 class GetBanks extends UsecaseWithoutParams<List<Map<String, dynamic>>> {
   final WalletRepository _repository;

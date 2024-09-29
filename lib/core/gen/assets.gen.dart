@@ -180,8 +180,13 @@ class $ApplicationAssetsSvgsGen {
   /// File path: application/assets/svgs/star.svg
   SvgGenImage get star => const SvgGenImage('application/assets/svgs/star.svg');
 
+  /// File path: application/assets/svgs/wallet_bg.svg
+  SvgGenImage get walletBg =>
+      const SvgGenImage('application/assets/svgs/wallet_bg.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [vector, email, fi16973516, question, star];
+  List<SvgGenImage> get values =>
+      [vector, email, fi16973516, question, star, walletBg];
 }
 
 class $ApplicationAssetsFontsOutfitGen {

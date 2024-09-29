@@ -14,6 +14,11 @@ import 'package:sound_mind/features/appointment/presentation/blocs/doctor_detail
 import 'package:sound_mind/features/appointment/presentation/blocs/physician_schedule/physician_schedule_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/upcoming_appointment/upcoming_appointment_cubit.dart';
 import 'package:sound_mind/features/setting/presentation/blocs/setting_bloc.dart';
+import 'package:sound_mind/features/wallet/presentation/blocs/get_bank_transactions/get_bank_transactions_cubit.dart';
+import 'package:sound_mind/features/wallet/presentation/blocs/withdraw_to_bank/withdraw_to_bank_cubit.dart';
+import 'package:sound_mind/features/wallet/presentation/blocs/get_bank/get_banks_cubit.dart';
+import 'package:sound_mind/features/wallet/presentation/blocs/resolve_bank_account/resolve_bank_account_cubit.dart';
+import 'package:sound_mind/features/wallet/presentation/blocs/wallet_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,6 +66,22 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               sl<UpcomingAppointmentCubit>(), //UpcomingAppointmentCubit
+        ),
+        BlocProvider(
+          create: (context) => sl<WalletBloc>(), //UpcomingAppointmentCubit
+        ),
+        BlocProvider(
+          create: (context) =>
+              sl<WithdrawToBankCubit>(), //UpcomingAppointmentCubit
+        ),
+        BlocProvider(
+          create: (context) => sl<GetBanksCubit>(), //UpcomingAppointmentCubit
+        ),
+        BlocProvider(
+          create: (context) => sl<ResolveBankAccountCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<GetBankTransactionsCubit>(),
         ),
       ],
       child: MaterialApp.router(

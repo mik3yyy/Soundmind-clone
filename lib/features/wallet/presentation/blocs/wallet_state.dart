@@ -20,15 +20,6 @@ class WalletLoaded extends WalletState {
   List<Object?> get props => [wallet];
 }
 
-class WalletTransactionsLoaded extends WalletState {
-  final List<Map<String, dynamic>> transactions;
-
-  const WalletTransactionsLoaded({required this.transactions});
-
-  @override
-  List<Object?> get props => [transactions];
-}
-
 class WalletError extends WalletState {
   final String message;
 

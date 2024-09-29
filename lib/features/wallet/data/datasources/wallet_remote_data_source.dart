@@ -25,14 +25,14 @@ class WalletRemoteDataSourceImpl extends WalletRemoteDataSource {
   @override
   Future<Map<String, dynamic>> getUserWallet() async {
     final response =
-        await _network.call("/api/Wallet/GetUserWallet", RequestMethod.get);
+        await _network.call("/Wallet/GetUserWallet", RequestMethod.get);
     return response.data['data'];
   }
 
   @override
   Future<List<Map<String, dynamic>>> getUserWalletTransactions() async {
     final response = await _network.call(
-        "/api/Wallet/GetUserWalletTransactions", RequestMethod.get);
+        "/Wallet/GetUserWalletTransactions", RequestMethod.get);
     return (response.data['data'] as List)
         .map((transaction) => transaction as Map<String, dynamic>)
         .toList();
@@ -42,7 +42,7 @@ class WalletRemoteDataSourceImpl extends WalletRemoteDataSource {
   Future<Map<String, dynamic>> initiateWalletTopUp(
       {required double amount}) async {
     final response = await _network.call(
-      "/api/Wallet/InitiateWalletTopup",
+      "/Wallet/InitiateWalletTopup",
       RequestMethod.post,
       data: json.encode({"amount": amount}),
     );
@@ -54,7 +54,7 @@ class WalletRemoteDataSourceImpl extends WalletRemoteDataSource {
       {required String transactionReference,
       required String flutterwaveTransactionID}) async {
     await _network.call(
-      "/api/Wallet/ConfirmWalletTopup",
+      "/Wallet/ConfirmWalletTopup",
       RequestMethod.post,
       data: json.encode({
         "transactionReference": transactionReference,
@@ -65,8 +65,7 @@ class WalletRemoteDataSourceImpl extends WalletRemoteDataSource {
 
   @override
   Future<List<Map<String, dynamic>>> getBanks() async {
-    final response =
-        await _network.call("/api/Wallet/GetBanks", RequestMethod.get);
+    final response = await _network.call("/Wallet/GetBanks", RequestMethod.get);
     return (response.data['data'] as List)
         .map((bank) => bank as Map<String, dynamic>)
         .toList();
@@ -76,7 +75,7 @@ class WalletRemoteDataSourceImpl extends WalletRemoteDataSource {
   Future<Map<String, dynamic>> resolveBankAccount(
       {required String accountNumber, required String accountBank}) async {
     final response = await _network.call(
-      "/api/Wallet/ResolveBankAccount",
+      "/Wallet/ResolveBankAccount",
       RequestMethod.post,
       data: json.encode({
         "accountNumber": accountNumber,
@@ -92,7 +91,7 @@ class WalletRemoteDataSourceImpl extends WalletRemoteDataSource {
       required String accountNumber,
       required String accountBank}) async {
     await _network.call(
-      "/api/Wallet/WithdrawToBank",
+      "/Wallet/WithdrawToBank",
       RequestMethod.post,
       data: json.encode({
         "amount": amount,

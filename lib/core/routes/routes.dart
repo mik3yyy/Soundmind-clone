@@ -18,6 +18,11 @@ import 'package:sound_mind/features/appointment/presentation/views/booking/view_
 import 'package:sound_mind/features/appointment/presentation/views/view_doctor.dart';
 import 'package:sound_mind/features/main/presentation/views/home_screen/home_screen.dart';
 import 'package:sound_mind/features/main/presentation/views/main_page.dart';
+import 'package:sound_mind/features/setting/presentation/views/setting_page.dart';
+import 'package:sound_mind/features/wallet/presentation/views/add_amount.dart';
+import 'package:sound_mind/features/wallet/presentation/views/add_funds.dart';
+import 'package:sound_mind/features/wallet/presentation/views/wallet_page.dart';
+import 'package:sound_mind/features/wallet/presentation/views/withdraw_page.dart';
 
 // Define route constants
 class Routes {
@@ -39,6 +44,12 @@ class Routes {
 
   static const String viewTimePath = 'viewTime';
   static const String viewTimeName = 'viewTime';
+
+  static const String addFundPath = 'addFund';
+  static const String addFundName = 'addFund';
+
+  static const String withdrawPath = 'withdraw';
+  static const String withdrawName = 'withdraw';
 
   static const String ViewSummaryName = 'ViewSummary';
   static const String ViewSummaryPath = 'ViewSummary';
@@ -70,6 +81,9 @@ class Routes {
   static const String createAccountName = 'createAccount';
 
   static const String createAccountPath = 'createAccount';
+
+  static const String add_amountName = 'add_amount';
+  static const String add_amountPath = 'add_amount';
 
   static const String loginName = 'login';
   static const String loginPath = 'login';
@@ -227,26 +241,52 @@ class Routes {
                 Placeholder(), // Replace with actual screen widget
           ),
           GoRoute(
-            path: walletPath,
-            name: walletName,
-            parentNavigatorKey: shellNavigatorKey,
-            builder: (context, state) =>
-                Placeholder(), // Replace with actual screen widget
-          ),
+              path: walletPath,
+              name: walletName,
+              parentNavigatorKey: shellNavigatorKey,
+              builder: (context, state) =>
+                  WalletPage(), // Replace with actual screen widget
+
+              routes: [
+                GoRoute(
+                  path: addFundPath,
+                  name: addFundName,
+                  parentNavigatorKey: rootNavigatorKey,
+                  builder: (context, state) =>
+                      const AddFundsPage(), // Replace with actual screen widget
+                ),
+                GoRoute(
+                    path: withdrawPath,
+                    name: withdrawName,
+                    parentNavigatorKey: rootNavigatorKey,
+                    builder: (context, state) =>
+                        const WithdrawPage(), // Replace with actual screen widget
+                    routes: [
+                      GoRoute(
+                        path: add_amountPath,
+                        name: add_amountName,
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => AddAmountPage(
+                          number: state.extra as String,
+                          bank: state.uri.queryParameters,
+                        ), // Replace with actual screen widget
+                      ),
+                    ]),
+              ]),
+        ],
+      ),
+      GoRoute(
+        path: settingsPath,
+        name: settingsName,
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) =>
+            SettingPage(), // Replace with actual screen widget
+        routes: [
           GoRoute(
-            path: settingsPath,
-            name: settingsName,
-            parentNavigatorKey: shellNavigatorKey,
+            path: termsOfService,
+            parentNavigatorKey: rootNavigatorKey,
             builder: (context, state) =>
                 Placeholder(), // Replace with actual screen widget
-            routes: [
-              GoRoute(
-                path: termsOfService,
-                parentNavigatorKey: rootNavigatorKey,
-                builder: (context, state) =>
-                    Placeholder(), // Replace with actual screen widget
-              ),
-            ],
           ),
         ],
       ),
