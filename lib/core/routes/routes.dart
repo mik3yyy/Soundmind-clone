@@ -18,6 +18,11 @@ import 'package:sound_mind/features/appointment/presentation/views/booking/view_
 import 'package:sound_mind/features/appointment/presentation/views/view_doctor.dart';
 import 'package:sound_mind/features/main/presentation/views/home_screen/home_screen.dart';
 import 'package:sound_mind/features/main/presentation/views/main_page.dart';
+import 'package:sound_mind/features/setting/domain/usecases/change_password.dart';
+import 'package:sound_mind/features/setting/presentation/views/change_password.dart';
+import 'package:sound_mind/features/setting/presentation/views/change_pin.dart';
+import 'package:sound_mind/features/setting/presentation/views/new_pin.dart';
+import 'package:sound_mind/features/setting/presentation/views/personal_details.dart';
 import 'package:sound_mind/features/setting/presentation/views/setting_page.dart';
 import 'package:sound_mind/features/wallet/presentation/views/add_amount.dart';
 import 'package:sound_mind/features/wallet/presentation/views/add_funds.dart';
@@ -38,7 +43,7 @@ class Routes {
 
   static const String chatPath = '/chat';
   static const String chatNAme = 'chat';
-  static const String settingsPath = '/settings';
+  static const String settingsPath = 'settings';
 
   static const String settingsName = 'settings';
 
@@ -91,6 +96,18 @@ class Routes {
   static const String verifyPath = '/verify';
   static const String securityName = 'security';
   static const String securityPath = '/security';
+
+  static const String personal_detailsName = 'personal_details';
+  static const String personal_detailsPath = 'personal_details';
+
+  static const String change_passwordName = 'change_password';
+  static const String change_passwordPath = 'change_password';
+
+  static const String change_pinName = 'change_pin';
+  static const String change_pinPath = 'change_pin';
+
+  static const String input_new_pinName = 'input_new_pin';
+  static const String input_new_pinPath = 'input_new_pin';
   // Navigator keys for nested navigation
   static final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
@@ -173,12 +190,54 @@ class Routes {
         ),
         routes: [
           GoRoute(
-            path: homePath,
-            name: homeName,
-            parentNavigatorKey: shellNavigatorKey,
-            builder: (context, state) =>
-                HomeScreen(), // Replace with actual screen widget
-          ),
+              path: homePath,
+              name: homeName,
+              parentNavigatorKey: shellNavigatorKey,
+              builder: (context, state) =>
+                  HomeScreen(), // Replace with actual screen widget
+              routes: [
+                GoRoute(
+                  path: settingsPath,
+                  name: settingsName,
+                  parentNavigatorKey: rootNavigatorKey,
+                  builder: (context, state) =>
+                      SettingPage(), // Replace with actual screen widget
+                  routes: [
+                    GoRoute(
+                      path: termsOfService,
+                      parentNavigatorKey: rootNavigatorKey,
+                      builder: (context, state) =>
+                          Placeholder(), // Replace with actual screen widget
+                    ),
+                    GoRoute(
+                      path: personal_detailsPath,
+                      name: personal_detailsName,
+                      parentNavigatorKey: rootNavigatorKey,
+                      builder: (context, state) =>
+                          const PersonalDetailsScreen(),
+                    ),
+                    GoRoute(
+                      path: change_passwordPath,
+                      name: change_passwordName,
+                      parentNavigatorKey: rootNavigatorKey,
+                      builder: (context, state) => ChangePasswordScreen(),
+                    ),
+                    GoRoute(
+                        path: change_pinPath,
+                        name: change_pinName,
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => ChangePinScreen(),
+                        routes: [
+                          GoRoute(
+                            path: input_new_pinPath,
+                            name: input_new_pinName,
+                            parentNavigatorKey: rootNavigatorKey,
+                            builder: (context, state) => NewPinScreen(),
+                          ),
+                        ]),
+                  ],
+                ),
+              ]),
           GoRoute(
             path: chatPath,
             name: chatNAme,
@@ -273,21 +332,6 @@ class Routes {
                       ),
                     ]),
               ]),
-        ],
-      ),
-      GoRoute(
-        path: settingsPath,
-        name: settingsName,
-        parentNavigatorKey: rootNavigatorKey,
-        builder: (context, state) =>
-            SettingPage(), // Replace with actual screen widget
-        routes: [
-          GoRoute(
-            path: termsOfService,
-            parentNavigatorKey: rootNavigatorKey,
-            builder: (context, state) =>
-                Placeholder(), // Replace with actual screen widget
-          ),
         ],
       ),
     ],

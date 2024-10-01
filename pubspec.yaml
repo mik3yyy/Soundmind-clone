@@ -45,6 +45,8 @@ dependencies:
   intl_phone_number_field: ^0.2.0
   local_auth: ^2.3.0
   pin_input_text_field: ^4.5.2
+  flutterwave_standard_smart: ^1.0.4
+  webview_flutter: ^4.9.0
 
 
 dev_dependencies:

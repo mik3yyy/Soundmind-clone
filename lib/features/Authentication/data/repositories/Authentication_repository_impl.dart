@@ -93,4 +93,42 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       return const Left(CacheFailure("No User"));
     }
   }
+
+  @override
+  ResultFuture<void> changePassword(
+      {required String old,
+      required String newPassword,
+      required String confirmPassword}) async {
+    try {
+      await _authenticationRemoteDataSource.changePassword(
+          old: old, newPassword: newPassword, confirmPassword: confirmPassword);
+
+      return Right(null);
+    } on ApiError catch (e) {
+      print(e.toString());
+      return Left(ServerFailure(e.errorDescription));
+    }
+  }
+
+  @override
+  ResultFuture<UserModel> updateUserDetails({
+    required String firstName,
+    required String lastName,
+    required String phoneNumber,
+  }) async {
+    try {
+      var newDetail = await _authenticationRemoteDataSource.updateUserDetails(
+          firstName: firstName, lastName: lastName, phoneNumber: phoneNumber);
+      UserModel userModel = await _authenticationHiveDataSource.getUser();
+
+      UserModel newUser = userModel.copyWith(
+          lastName: lastName, firstName: firstName, phoneNumber: phoneNumber);
+
+      _authenticationHiveDataSource.saveUser(userModel: newUser);
+      return Right(userModel);
+    } on ApiError catch (e) {
+      print(e.toString());
+      return Left(ServerFailure(e.errorDescription));
+    }
+  }
 }

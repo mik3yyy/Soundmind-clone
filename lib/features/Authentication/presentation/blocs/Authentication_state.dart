@@ -52,3 +52,9 @@ class UserAccount extends AuthenticationState {
 
   const UserAccount({required this.user});
 }
+
+class UpdatingUser extends AuthenticationState {
+  final UserModel userModel;
+
+  UpdatingUser({required this.userModel});
+}

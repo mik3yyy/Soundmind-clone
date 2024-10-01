@@ -26,7 +26,18 @@ class AuthenticationBloc
     on<LoginEvent>(_loginEventtHandler);
     on<VerifyEmailEvent>(_verifyEmailHandler);
     on<CheckUser>(_checkUser);
+    on<UpdateUser>(_updateuser);
   }
+  _updateuser(UpdateUser event, Emitter emit) async {
+    var result = await checkUser.call();
+
+    result.fold((failure) {
+      print(failure.message);
+    }, (userModel) {
+      emit(UserAccount(user: userModel));
+    });
+  }
+
   _checkUser(CheckUser event, Emitter emit) async {
     var result = await checkUser.call();
 

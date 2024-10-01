@@ -6,7 +6,10 @@ import 'package:sound_mind/core/services/injection_container.dart' as di;
 import 'package:sound_mind/core/services/injection_container.dart';
 import 'package:sound_mind/core/theme/theme.dart';
 import 'package:sound_mind/features/Authentication/presentation/blocs/Authentication_bloc.dart';
+import 'package:sound_mind/features/Authentication/presentation/blocs/change_password/change_password_cubit.dart';
+import 'package:sound_mind/features/Authentication/presentation/blocs/update_user/update_user_cubit.dart';
 import 'package:sound_mind/features/Security/presentation/blocs/Security_bloc.dart';
+import 'package:sound_mind/features/Security/presentation/blocs/change_pin/change_pin_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/appointment_bloc.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/booking/booking_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor/doctor_cubit.dart';
@@ -15,6 +18,7 @@ import 'package:sound_mind/features/appointment/presentation/blocs/physician_sch
 import 'package:sound_mind/features/appointment/presentation/blocs/upcoming_appointment/upcoming_appointment_cubit.dart';
 import 'package:sound_mind/features/setting/presentation/blocs/setting_bloc.dart';
 import 'package:sound_mind/features/wallet/presentation/blocs/get_bank_transactions/get_bank_transactions_cubit.dart';
+import 'package:sound_mind/features/wallet/presentation/blocs/top_up/topup_wallet_cubit.dart';
 import 'package:sound_mind/features/wallet/presentation/blocs/withdraw_to_bank/withdraw_to_bank_cubit.dart';
 import 'package:sound_mind/features/wallet/presentation/blocs/get_bank/get_banks_cubit.dart';
 import 'package:sound_mind/features/wallet/presentation/blocs/resolve_bank_account/resolve_bank_account_cubit.dart';
@@ -82,6 +86,21 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => sl<GetBankTransactionsCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<ChangePasswordCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<UpdateUserCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<ChangePinCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<ResolveBankAccountCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<TopUpCubit>(),
         ),
       ],
       child: MaterialApp.router(

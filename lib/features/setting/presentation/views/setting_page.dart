@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sound_mind/core/extensions/context_extensions.dart';
 import 'package:sound_mind/core/extensions/widget_extensions.dart';
 import 'package:sound_mind/core/gen/assets.gen.dart';
+import 'package:sound_mind/core/routes/routes.dart';
 import 'package:sound_mind/core/widgets/custom_text_button.dart';
 import 'package:sound_mind/features/Authentication/data/models/User_model.dart';
 import 'package:sound_mind/features/Authentication/presentation/blocs/Authentication_bloc.dart';
@@ -15,10 +17,13 @@ class SettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Back'),
+        title: const Text('Back'),
         centerTitle: false,
         leading: BackButton(
           color: context.colors.black,
+          onPressed: () {
+            context.pop();
+          },
         ),
       ),
       body: Column(
@@ -42,7 +47,9 @@ class SettingPage extends StatelessWidget {
                         ),
                         IconButton(
                             padding: EdgeInsets.zero,
-                            onPressed: () {},
+                            onPressed: () {
+                              context.goNamed(Routes.personal_detailsName);
+                            },
                             icon: Icon(Icons.chevron_right_rounded)),
                       ],
                     ),
@@ -99,6 +106,9 @@ class SettingPage extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.lock),
             title: Text("Change PIN"),
+            onTap: () {
+              context.goNamed(Routes.change_pinName);
+            },
             trailing: Icon(Icons.chevron_right_rounded),
           ),
           ListTile(
@@ -107,10 +117,12 @@ class SettingPage extends StatelessWidget {
             trailing: IconButton(onPressed: () {}, icon: Icon(Icons.toggle_on)),
           ),
           ListTile(
-            leading: Icon(Icons.password),
-            title: Text("Change Password"),
+            leading: const Icon(Icons.password),
+            title: const Text("Change Password"),
             trailing: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                context.goNamed(Routes.change_passwordName);
+              },
               icon: Icon(
                 Icons.chevron_right,
               ),
@@ -119,10 +131,10 @@ class SettingPage extends StatelessWidget {
           ListTile(
             leading: Assets.application.assets.images.logoPurple
                 .image(height: 32, width: 32),
-            title: Text("About"),
+            title: const Text("About"),
             trailing: IconButton(
               onPressed: () {},
-              icon: Icon(
+              icon: const Icon(
                 Icons.chevron_right,
               ),
             ),

@@ -46,3 +46,5 @@ class VerifyEmailEvent extends AuthenticationEvent {
 }
 
 class CheckUser extends AuthenticationEvent {}
+
+class UpdateUser extends AuthenticationEvent {}

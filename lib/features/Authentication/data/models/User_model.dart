@@ -65,7 +65,7 @@ class UserModel extends User {
       uid: data['uid'] as int,
       firstName: data['firstName'] as String,
       lastName: data['lastName'] as String,
-      phoneNumber: (data['middleName'] as String?).nullToEmpty,
+      phoneNumber: (data['phoneNumber'] as String?).nullToEmpty,
     );
   }
   factory UserModel.fromLoginResponse(Map<String, dynamic> map) {
@@ -78,7 +78,7 @@ class UserModel extends User {
       uid: data['userId'] as int,
       firstName: data['firstName'] as String,
       lastName: data['lastName'] as String,
-      phoneNumber: (data['middleName'] as String?).nullToEmpty,
+      phoneNumber: (data['phoneNumber'] as String?).nullToEmpty,
     );
   }
 

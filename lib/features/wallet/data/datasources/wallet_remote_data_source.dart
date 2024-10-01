@@ -46,7 +46,7 @@ class WalletRemoteDataSourceImpl extends WalletRemoteDataSource {
       RequestMethod.post,
       data: json.encode({"amount": amount}),
     );
-    return response.data['data'];
+    return response.data;
   }
 
   @override

@@ -34,6 +34,7 @@ class _CustomPhoneNumberState extends State<CustomPhoneNumber> {
       onInputChanged: (phone) {
         widget.phoneNumberValue(phone.fullNumber.trim().replaceAll(" ", ''));
       },
+
       // loadFromJson: loadFromJson,
       dialogConfig: DialogConfig(
         backgroundColor: context.colors.greyDecor,

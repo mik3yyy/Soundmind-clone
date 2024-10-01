@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:sound_mind/core/network/network.dart';
 import 'package:sound_mind/core/utils/typedef.dart';
 import 'package:sound_mind/features/Authentication/data/models/User_model.dart';
+import 'package:sound_mind/features/setting/domain/usecases/change_password.dart';
 
 abstract class AuthenticationRemoteDataSource {
   Future<DataMap> createAccount(
@@ -19,6 +20,16 @@ abstract class AuthenticationRemoteDataSource {
   Future<DataMap> login({required String email, required String password});
   Future<UserModel> verifyEmail(
       {required String otp, required String securityKey});
+
+  Future<DataMap> updateUserDetails({
+    required String firstName,
+    required String lastName,
+    required String phoneNumber,
+  });
+  Future<DataMap> changePassword(
+      {required String old,
+      required String newPassword,
+      required String confirmPassword});
 }
 
 class AuthenticationRemoteDataSourceImpl
@@ -85,5 +96,39 @@ class AuthenticationRemoteDataSourceImpl
     );
     print(response.data);
     return UserModel.fromLoginResponse(response.data);
+  }
+
+  @override
+  Future<DataMap> changePassword(
+      {required String old,
+      required String newPassword,
+      required String confirmPassword}) async {
+    Response response = await _network.call(
+      "/Settings/ChangePassword",
+      RequestMethod.patch,
+      data: {
+        "oldPassword": old,
+        "newPassword": newPassword,
+        "confirmPassword": confirmPassword
+      },
+    );
+    return response.data;
+  }
+
+  @override
+  Future<DataMap> updateUserDetails(
+      {required String firstName,
+      required String lastName,
+      required String phoneNumber}) async {
+    Response response = await _network.call(
+      "/Settings/UpdateUserDetails",
+      RequestMethod.patch,
+      data: {
+        "firstName": firstName,
+        "lastName": lastName,
+        "phoneNumber": phoneNumber
+      },
+    );
+    return response.data;
   }
 }

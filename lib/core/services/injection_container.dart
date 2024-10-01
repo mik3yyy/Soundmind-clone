@@ -11,11 +11,15 @@ import 'package:sound_mind/features/Authentication/data/datasources/Authenticati
 import 'package:sound_mind/features/Authentication/data/datasources/Authentication_remote_data_source.dart';
 import 'package:sound_mind/features/Authentication/data/repositories/Authentication_repository_impl.dart';
 import 'package:sound_mind/features/Authentication/domain/repositories/Authentication_repository.dart';
+import 'package:sound_mind/features/Authentication/domain/usecases/change_password.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/check_user.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/create_account.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/login.dart';
+import 'package:sound_mind/features/Authentication/domain/usecases/update_user.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/verify_email.dart';
 import 'package:sound_mind/features/Authentication/presentation/blocs/Authentication_bloc.dart';
+import 'package:sound_mind/features/Authentication/presentation/blocs/change_password/change_password_cubit.dart';
+import 'package:sound_mind/features/Authentication/presentation/blocs/update_user/update_user_cubit.dart';
 import 'package:sound_mind/features/Security/data/datasources/Security_hive_data_source.dart';
 import 'package:sound_mind/features/Security/data/repositories/Security_repository_impl.dart';
 import 'package:sound_mind/features/Security/domain/repositories/Security_repository.dart';
@@ -24,6 +28,7 @@ import 'package:sound_mind/features/Security/domain/usecases/clear_pin.dart';
 import 'package:sound_mind/features/Security/domain/usecases/is_pin_set.dart';
 import 'package:sound_mind/features/Security/domain/usecases/save_pin.dart';
 import 'package:sound_mind/features/Security/presentation/blocs/Security_bloc.dart';
+import 'package:sound_mind/features/Security/presentation/blocs/change_pin/change_pin_cubit.dart';
 import 'package:sound_mind/features/appointment/data/datasources/appointment_hive_data_source.dart';
 import 'package:sound_mind/features/appointment/data/datasources/appointment_remote_data_source.dart';
 import 'package:sound_mind/features/appointment/domain/repositories/appointment_repository.dart';
@@ -60,12 +65,17 @@ import 'package:sound_mind/features/setting/presentation/blocs/setting_bloc.dart
 import 'package:sound_mind/features/wallet/data/datasources/wallet_remote_data_source.dart';
 import 'package:sound_mind/features/wallet/data/repositories/wallet_repository_impl.dart';
 import 'package:sound_mind/features/wallet/domain/repositories/wallet_repository.dart';
+import 'package:sound_mind/features/wallet/domain/usecases/confirm_wallet_top_up.dart';
 import 'package:sound_mind/features/wallet/domain/usecases/get_banks.dart';
 import 'package:sound_mind/features/wallet/domain/usecases/get_user_transaction.dart';
 import 'package:sound_mind/features/wallet/domain/usecases/get_user_wallet.dart';
+import 'package:sound_mind/features/wallet/domain/usecases/initiate_wallet_top_up.dart';
+import 'package:sound_mind/features/wallet/domain/usecases/resolve_bank.dart';
 import 'package:sound_mind/features/wallet/domain/usecases/withdraw_to_bank.dart';
 import 'package:sound_mind/features/wallet/presentation/blocs/get_bank/get_banks_cubit.dart';
 import 'package:sound_mind/features/wallet/presentation/blocs/get_bank_transactions/get_bank_transactions_cubit.dart';
+import 'package:sound_mind/features/wallet/presentation/blocs/resolve_bank_account/resolve_bank_account_cubit.dart';
+import 'package:sound_mind/features/wallet/presentation/blocs/top_up/topup_wallet_cubit.dart';
 import 'package:sound_mind/features/wallet/presentation/blocs/wallet_bloc.dart';
 import 'package:sound_mind/features/wallet/presentation/blocs/withdraw_to_bank/withdraw_to_bank_cubit.dart';
 
@@ -112,6 +122,24 @@ Future<void> init() async {
         () => AuthenticationHiveDataSourceImpl(box: sl()))
     ..registerLazySingleton(
         () => Network(baseUrl: UrlConfig.baseUrl, showLog: true));
+
+  sl..registerFactory(() => ChangePinCubit(checkPin: sl()));
+  sl
+    ..registerFactory(() => UpdateUserCubit(updateUserUseCase: sl()))
+    ..registerLazySingleton(() => UpdateUserUseCase(repository: sl()));
+
+  sl
+    ..registerFactory(() => ResolveBankAccountCubit(resolveBankAccount: sl()))
+    ..registerLazySingleton(() => ResolveBankAccount(repository: sl()));
+  sl
+    ..registerFactory(() => ChangePasswordCubit(changePasswordUseCase: sl()))
+    ..registerLazySingleton(() => ChangePasswordUseCase(repository: sl()));
+
+  sl
+    ..registerFactory(
+        () => TopUpCubit(initiateWalletTopUp: sl(), confirmWalletTopUp: sl()))
+    ..registerLazySingleton(() => InitiateWalletTopUp(repository: sl()))
+    ..registerLazySingleton(() => ConfirmWalletTopUp(repository: sl()));
 
   sl
     ..registerFactory(() => SecurityBloc(

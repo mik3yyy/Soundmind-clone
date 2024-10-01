@@ -22,4 +22,13 @@ abstract class AuthenticationRepository {
     required String securityKey,
   });
   ResultFuture<UserModel> checkUser();
+  ResultFuture<UserModel> updateUserDetails({
+    required String firstName,
+    required String lastName,
+    required String phoneNumber,
+  });
+  ResultFuture<void> changePassword(
+      {required String old,
+      required String newPassword,
+      required String confirmPassword});
 }
