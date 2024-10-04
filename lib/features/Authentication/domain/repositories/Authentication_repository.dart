@@ -22,6 +22,7 @@ abstract class AuthenticationRepository {
     required String securityKey,
   });
   ResultFuture<UserModel> checkUser();
+  ResultFuture<void> logout();
   ResultFuture<UserModel> updateUserDetails({
     required String firstName,
     required String lastName,

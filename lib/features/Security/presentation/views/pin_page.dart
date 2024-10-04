@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:sound_mind/core/extensions/context_extensions.dart';
 import 'package:sound_mind/core/extensions/widget_extensions.dart';
@@ -162,11 +163,17 @@ class _PinInputScreenState extends State<PinInputScreen> {
         bottomNavigationBar: Container(
           height: 100,
           child: CustomTextButton(
-            label: "Forgot Password?",
+            label: "Log out?",
             textStyle: context.textTheme.titleMedium?.copyWith(
               color: context.primaryColor,
             ),
-            onPressed: () {},
+            onPressed: () {
+              context.read<AuthenticationBloc>().add(LogoutEvent());
+
+              sl<Box>().deleteAll(["securityBox"]);
+
+              context.replaceNamed(Routes.splashName);
+            },
           ),
         ),
       ),

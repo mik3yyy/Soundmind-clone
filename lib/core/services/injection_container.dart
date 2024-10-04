@@ -14,6 +14,7 @@ import 'package:sound_mind/features/Authentication/domain/repositories/Authentic
 import 'package:sound_mind/features/Authentication/domain/usecases/change_password.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/check_user.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/create_account.dart';
+import 'package:sound_mind/features/Authentication/domain/usecases/log_out.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/login.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/update_user.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/verify_email.dart';
@@ -53,6 +54,12 @@ import 'package:sound_mind/features/chat/data/repositories/chat_repository_impl.
 import 'package:sound_mind/features/chat/domain/repositories/chat_repository.dart';
 import 'package:sound_mind/features/chat/domain/usecases/get_chat_data.dart';
 import 'package:sound_mind/features/chat/presentation/blocs/chat_bloc.dart';
+import 'package:sound_mind/features/notification/data/datasources/notification_hive_data_source.dart';
+import 'package:sound_mind/features/notification/data/datasources/notification_remote_data_source.dart';
+import 'package:sound_mind/features/notification/data/repositories/notification_repository_impl.dart';
+import 'package:sound_mind/features/notification/domain/repositories/notification_repository.dart';
+import 'package:sound_mind/features/notification/domain/usecases/get_notification_data.dart';
+import 'package:sound_mind/features/notification/presentation/blocs/notification_bloc.dart';
 import 'package:sound_mind/features/setting/data/datasources/setting_hive_data_source.dart';
 import 'package:sound_mind/features/setting/data/datasources/setting_remote_data_source.dart';
 import 'package:sound_mind/features/setting/data/repositories/setting_repository_impl.dart';
@@ -104,8 +111,13 @@ Future<void> init() async {
 
   sl
     ..registerFactory(() => AuthenticationBloc(
-        createAccount: sl(), verifyEmail: sl(), login: sl(), checkUser: sl()))
+        createAccount: sl(),
+        verifyEmail: sl(),
+        login: sl(),
+        checkUser: sl(),
+        logOutUsecase: sl()))
     ..registerLazySingleton(() => CreateAccount(repository: sl()))
+    ..registerLazySingleton(() => LogOutUsecase(repository: sl()))
     ..registerLazySingleton(() => CheckUserUseCase(repository: sl()))
     ..registerLazySingleton(() => VerifyEmail(repository: sl()))
     ..registerLazySingleton(() => Login(repository: sl()))
@@ -209,6 +221,21 @@ Future<void> init() async {
     ..registerFactory(
         () => UpcomingAppointmentCubit(getUpcomingAppointments: sl()))
     ..registerLazySingleton(() => GetUpcomingAppointments(repository: sl()));
+
+  sl
+    ..registerFactory(() => NotificationBloc(getNotificationData: sl()))
+    ..registerLazySingleton(() => GetNotificationData(repository: sl()))
+
+    // AuthenticationHiveDataSource
+    ..registerLazySingleton<NotificationRepository>(() =>
+        NotificationRepositoryImpl(
+            remoteDataSource: sl(), hiveDataSource: sl()))
+    ..registerLazySingleton<NotificationRemoteDataSource>(
+      () => NotificationRemoteDataSourceImpl(network: sl()),
+    )
+    ..registerLazySingleton<NotificationHiveDataSource>(
+      () => NotificationHiveDataSourceImpl(),
+    );
 
   sl
     ..registerFactory(() => AppointmentBloc(

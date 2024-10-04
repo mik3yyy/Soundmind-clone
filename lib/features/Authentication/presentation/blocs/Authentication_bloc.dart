@@ -4,6 +4,7 @@ import 'package:sound_mind/core/utils/typedef.dart';
 import 'package:sound_mind/features/Authentication/data/models/User_model.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/check_user.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/create_account.dart';
+import 'package:sound_mind/features/Authentication/domain/usecases/log_out.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/login.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/verify_email.dart';
 
@@ -15,10 +16,12 @@ class AuthenticationBloc
   final CreateAccount createAccount;
   final VerifyEmail verifyEmail;
   final Login login;
+  final LogOutUsecase logOutUsecase;
   final CheckUserUseCase checkUser;
   AuthenticationBloc(
       {required this.createAccount,
       required this.verifyEmail,
+      required this.logOutUsecase,
       required this.checkUser,
       required this.login})
       : super(AuthenticationInitial()) {
@@ -27,7 +30,13 @@ class AuthenticationBloc
     on<VerifyEmailEvent>(_verifyEmailHandler);
     on<CheckUser>(_checkUser);
     on<UpdateUser>(_updateuser);
+    on<LogoutEvent>(_logoutHandler);
   }
+  _logoutHandler(LogoutEvent event, Emitter emit) async {
+    var result = await logOutUsecase.call();
+    emit(AuthenticationInitial());
+  }
+
   _updateuser(UpdateUser event, Emitter emit) async {
     var result = await checkUser.call();
 

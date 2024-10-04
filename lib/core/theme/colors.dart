@@ -24,6 +24,7 @@ class _Colors {
   static const purpleDecorDark = Color(0xff3E1C96);
   static const pinkDecorDark = Color(0xff7B2050);
   static const greyDecorDark = Color(0xffEAEAEA);
+  static const lilly4 = Color(0xFFF3EEFA);
 
   // Miscellaneous
   static const white = Colors.white;

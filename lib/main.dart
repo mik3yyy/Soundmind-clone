@@ -16,6 +16,7 @@ import 'package:sound_mind/features/appointment/presentation/blocs/doctor/doctor
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor_details/doctor_details_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/physician_schedule/physician_schedule_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/upcoming_appointment/upcoming_appointment_cubit.dart';
+import 'package:sound_mind/features/notification/presentation/blocs/notification_bloc.dart';
 import 'package:sound_mind/features/setting/presentation/blocs/setting_bloc.dart';
 import 'package:sound_mind/features/wallet/presentation/blocs/get_bank_transactions/get_bank_transactions_cubit.dart';
 import 'package:sound_mind/features/wallet/presentation/blocs/top_up/topup_wallet_cubit.dart';
@@ -101,6 +102,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => sl<TopUpCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<NotificationBloc>(),
         ),
       ],
       child: MaterialApp.router(

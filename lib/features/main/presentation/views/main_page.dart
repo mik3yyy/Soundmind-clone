@@ -1,11 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sound_mind/core/routes/routes.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key, required this.child});
+  const MainPage({super.key, required this.child, required this.routeState});
   final Widget child;
-
+  final GoRouterState routeState;
   @override
   State<MainPage> createState() => _MainPageState();
 }
@@ -25,7 +26,67 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       _selectedIndex = index;
     });
-    context.goNamed(_tabs[index]);
+    _navigateWithCustomTransition(context, _tabs[index]);
+  }
+
+  void _navigateWithCustomTransition(BuildContext context, String routeName) {
+    GoRouter.of(context).goNamed(routeName, extra: _customPageTransition());
+  }
+
+  CustomTransitionPage _customPageTransition() {
+    return CustomTransitionPage(
+      child: widget.child,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: child,
+        );
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+    print(widget.routeState);
+    // if(Routes.homePath )
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didUpdateWidget(covariant MainPage oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    String path = widget.routeState.fullPath ?? "";
+    if (path.contains(Routes.homeName)) {
+      setState(() {
+        _selectedIndex = 0;
+      });
+    } else if (path.contains(Routes.findADocName)) {
+      print("object");
+      setState(() {
+        _selectedIndex = 1;
+      });
+    } else if (path.contains(Routes.walletName)) {
+      setState(() {
+        _selectedIndex = 2;
+      });
+    } else if (path.contains(Routes.chatNAme)) {
+      setState(() {
+        _selectedIndex = 3;
+      });
+    } else if (path.contains(Routes.blogName)) {
+      setState(() {
+        _selectedIndex = 4;
+      });
+    }
   }
 
   @override
@@ -42,7 +103,7 @@ class _MainPageState extends State<MainPage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.local_hospital),
+            icon: Icon(CupertinoIcons.search),
             label: 'Find a doc',
           ),
           BottomNavigationBarItem(

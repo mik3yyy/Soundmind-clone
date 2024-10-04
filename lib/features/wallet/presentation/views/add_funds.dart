@@ -6,17 +6,13 @@ import 'package:flutterwave_standard_smart/models/requests/customer.dart';
 import 'package:flutterwave_standard_smart/models/requests/customizations.dart';
 import 'package:flutterwave_standard_smart/models/responses/charge_response.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sound_mind/core/extensions/context_extensions.dart';
 import 'package:sound_mind/core/extensions/widget_extensions.dart';
-import 'package:sound_mind/core/services/injection_container.dart';
 import 'package:sound_mind/core/widgets/custom_button.dart';
 import 'package:sound_mind/core/widgets/custom_text_field.dart';
 import 'package:sound_mind/features/Authentication/presentation/blocs/Authentication_bloc.dart';
-import 'package:sound_mind/features/Security/presentation/blocs/Security_bloc.dart';
-import 'package:sound_mind/features/main/presentation/views/home_screen/home_screen.dart';
 import 'package:sound_mind/features/wallet/presentation/blocs/top_up/topup_wallet_cubit.dart';
-import 'package:sound_mind/features/wallet/presentation/views/add_amount.dart';
-import '../views/payment_checkout.dart';
 
 class AddFundsPage extends StatefulWidget {
   const AddFundsPage({super.key});
@@ -51,10 +47,16 @@ class _AddFundsPageState extends State<AddFundsPage> {
       isTestMode: true,
     );
     final ChargeResponse response = await flutterwave.charge();
-    print(response.transactionId);
-    print(response.status);
-    print(response.success);
-    print(response.toJson());
+
+    if (response.status != null) {
+      if (response.status == 'completed') {
+        context
+            .read<TopUpCubit>()
+            .confirmTopUp(response.txRef!, response.transactionId!);
+        context.pop();
+      }
+    }
+    // if(response.success){}
   }
 
   // handlePaymentInitialization(
@@ -103,11 +105,12 @@ class _AddFundsPageState extends State<AddFundsPage> {
             color: context.colors.black,
           ),
           centerTitle: false,
-          title: Text("Add Funds"),
+          title: const Text("Add Funds"),
         ),
         body: Column(
           children: [
             CustomTextField(controller: textEditingController, hintText: ""),
+            Gap(20),
             CustomButton(
                 label: "Top Up",
                 onPressed: () {

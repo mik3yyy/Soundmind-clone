@@ -16,15 +16,17 @@ import 'package:sound_mind/features/appointment/presentation/views/booking/view_
 import 'package:sound_mind/features/appointment/presentation/views/booking/view_summary.dart';
 import 'package:sound_mind/features/appointment/presentation/views/booking/view_time.dart';
 import 'package:sound_mind/features/appointment/presentation/views/view_doctor.dart';
+import 'package:sound_mind/features/chat/presentation/views/chat_page.dart';
 import 'package:sound_mind/features/main/presentation/views/home_screen/home_screen.dart';
 import 'package:sound_mind/features/main/presentation/views/main_page.dart';
+import 'package:sound_mind/features/notification/presentation/views/notification_page.dart';
 import 'package:sound_mind/features/setting/domain/usecases/change_password.dart';
 import 'package:sound_mind/features/setting/presentation/views/change_password.dart';
 import 'package:sound_mind/features/setting/presentation/views/change_pin.dart';
 import 'package:sound_mind/features/setting/presentation/views/new_pin.dart';
 import 'package:sound_mind/features/setting/presentation/views/personal_details.dart';
 import 'package:sound_mind/features/setting/presentation/views/setting_page.dart';
-import 'package:sound_mind/features/wallet/presentation/views/add_amount.dart';
+import 'package:sound_mind/features/wallet/presentation/views/withdraw_amount.dart';
 import 'package:sound_mind/features/wallet/presentation/views/add_funds.dart';
 import 'package:sound_mind/features/wallet/presentation/views/wallet_page.dart';
 import 'package:sound_mind/features/wallet/presentation/views/withdraw_page.dart';
@@ -92,6 +94,10 @@ class Routes {
 
   static const String loginName = 'login';
   static const String loginPath = 'login';
+
+  static const String notificationName = 'notification';
+  static const String notificationPath = 'notification';
+
   static const String verifyName = 'verify';
   static const String verifyPath = '/verify';
   static const String securityName = 'security';
@@ -187,15 +193,37 @@ class Routes {
         navigatorKey: shellNavigatorKey,
         builder: (context, state, child) => MainPage(
           child: child,
+          routeState: state,
         ),
         routes: [
           GoRoute(
               path: homePath,
               name: homeName,
               parentNavigatorKey: shellNavigatorKey,
-              builder: (context, state) =>
-                  HomeScreen(), // Replace with actual screen widget
+              pageBuilder: (context, state) {
+                return CustomTransitionPage(
+                  key: state.pageKey,
+                  child: HomeScreen(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                );
+              },
+              // builder: (context, state) =>
+              //     HomeScreen(),
               routes: [
+                GoRoute(
+                  path: notificationPath,
+                  name: notificationName,
+                  parentNavigatorKey: shellNavigatorKey,
+
+                  builder: (context, state) =>
+                      NotificationPage(), // Replace with actual screen widget
+                ),
                 GoRoute(
                   path: settingsPath,
                   name: settingsName,
@@ -242,14 +270,39 @@ class Routes {
             path: chatPath,
             name: chatNAme,
             parentNavigatorKey: shellNavigatorKey,
-            builder: (context, state) =>
-                Placeholder(), // Replace with actual screen widget
+            // builder: (context, state) => const ChatPage(),
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                key: state.pageKey,
+                child: ChatPage(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+              );
+            },
           ),
           GoRoute(
             path: findADocPath,
             name: findADocName,
             parentNavigatorKey: shellNavigatorKey,
-            builder: (context, state) => AppointmentPage(),
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                key: state.pageKey,
+                child: AppointmentPage(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+              );
+            },
+            // builder: (context, state) => AppointmentPage(),
             routes: [
               GoRoute(
                 path: view_docPath,
@@ -303,9 +356,21 @@ class Routes {
               path: walletPath,
               name: walletName,
               parentNavigatorKey: shellNavigatorKey,
-              builder: (context, state) =>
-                  WalletPage(), // Replace with actual screen widget
-
+              // builder: (context, state) =>
+              //     WalletPage(), // Replace with actual screen widget
+              pageBuilder: (context, state) {
+                return CustomTransitionPage(
+                  key: state.pageKey,
+                  child: WalletPage(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                );
+              },
               routes: [
                 GoRoute(
                   path: addFundPath,

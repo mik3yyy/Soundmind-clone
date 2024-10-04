@@ -5,7 +5,6 @@ import 'package:sound_mind/core/extensions/context_extensions.dart';
 import 'package:sound_mind/core/extensions/list_extensions.dart';
 import 'package:sound_mind/core/extensions/widget_extensions.dart';
 import 'package:sound_mind/core/gen/assets.gen.dart';
-// ignore: depend_on_referenced_packages
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:sound_mind/core/routes/routes.dart';
 import 'package:sound_mind/features/Authentication/presentation/widgets/question_widget.dart';

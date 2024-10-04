@@ -14,10 +14,12 @@ ThemeData get darkTheme => _buildDarkTheme();
 ThemeData _buildLightTheme() {
   const Color primaryColor = _Colors.primaryColor;
   const Color secondaryColor = _Colors.secondaryColor;
+  const Color tertiary = _Colors.lilly4;
 
   final ColorScheme colorScheme = const ColorScheme.light().copyWith(
     primary: primaryColor,
     secondary: secondaryColor,
+    tertiary: tertiary,
     error: _Colors.red,
   );
 
@@ -102,6 +104,7 @@ ThemeData _buildLightTheme() {
     ),
     extensions: [
       AppColorExtension(
+        lilly4: _Colors.lilly4,
         green: _Colors.green,
         white: _Colors.white,
         red: _Colors.red,
@@ -218,6 +221,7 @@ ThemeData _buildDarkTheme() {
     extensions: [
       AppColorExtension(
         green: _Colors.green,
+        lilly4: _Colors.lilly4,
         white: _Colors.white,
         red: _Colors.red,
         orange: _Colors.orange,

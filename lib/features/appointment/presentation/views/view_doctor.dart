@@ -50,6 +50,22 @@ class _ViewDoctorPageState extends State<ViewDoctorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFFF3EEFA),
+        leadingWidth: 30,
+        leading: BackButton(
+          color: context.colors.black,
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.message,
+              color: context.colors.black,
+            ),
+          )
+        ],
+      ),
       // appBar: AppBar(
       //   leading: Icon(
       //     Icons.chevron_left,
@@ -81,37 +97,36 @@ class _ViewDoctorPageState extends State<ViewDoctorPage> {
                     decoration: BoxDecoration(color: Color(0xFFF3EEFA)),
                     child: Column(
                       children: [
-                        AppBar(
-                          backgroundColor: Colors.transparent,
-                          leadingWidth: 30,
-                          leading: BackButton(
-                            color: context.colors.black,
-                          ),
-                          actions: [
-                            IconButton(
-                              onPressed: () {
-                                context.pop();
-                              },
-                              icon: Icon(
-                                Icons.message,
-                                color: context.colors.black,
-                              ),
-                            )
-                          ],
-                        ),
+                        // AppBar(
+                        //   backgroundColor: Colors.transparent,
+                        //   leadingWidth: 30,
+                        //   leading: BackButton(
+                        //     color: context.colors.black,
+                        //   ),
+                        //   actions: [
+                        //     IconButton(
+                        //       onPressed: () {},
+                        //       icon: Icon(
+                        //         Icons.message,
+                        //         color: context.colors.black,
+                        //       ),
+                        //     )
+                        //   ],
+                        // ),
                         const Gap(10),
                         Row(
                           children: [
                             CircleAvatar(
-                              radius: 70,
+                              radius: 50,
                               backgroundColor: context.colors.white,
                               child: Image.network(
                                 detailModel.profilePicture,
-                                height: 120,
-                                width: 120,
+                                height: 80,
+                                width: 80,
                                 fit: BoxFit.cover,
                               ).withClip(60),
                             ),
+                            Gap(20),
                             Column(
                               children: [
                                 AutoSizeText(
@@ -125,7 +140,7 @@ class _ViewDoctorPageState extends State<ViewDoctorPage> {
                               ],
                             )
                           ],
-                        ),
+                        ).withCustomPadding(),
                         const Gap(5),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -306,7 +321,7 @@ class _ViewDoctorPageState extends State<ViewDoctorPage> {
                 height: 100,
                 color: context.secondaryColor,
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,

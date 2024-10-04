@@ -44,7 +44,7 @@ class _ViewSummaryState extends State<ViewSummary> {
           showDialog(
               useSafeArea: false,
               context: context,
-              builder: (context) => BookingSuccessfulWidget());
+              builder: (context) => const BookingSuccessfulWidget());
         }
         if (state is CreateBookingError) {
           context.showSnackBar(state.message);
@@ -149,7 +149,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                 ),
               );
             } else {
-              return CircularProgressIndicator().toCenter();
+              return const CircularProgressIndicator().toCenter();
             }
           },
         ),

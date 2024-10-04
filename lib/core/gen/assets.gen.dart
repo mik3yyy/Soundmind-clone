@@ -173,6 +173,10 @@ class $ApplicationAssetsSvgsGen {
   SvgGenImage get fi16973516 =>
       const SvgGenImage('application/assets/svgs/fi_16973516.svg');
 
+  /// File path: application/assets/svgs/find_therapist_sc.svg
+  SvgGenImage get findTherapistSc =>
+      const SvgGenImage('application/assets/svgs/find_therapist_sc.svg');
+
   /// File path: application/assets/svgs/question.svg
   SvgGenImage get question =>
       const SvgGenImage('application/assets/svgs/question.svg');
@@ -186,7 +190,7 @@ class $ApplicationAssetsSvgsGen {
 
   /// List of all assets
   List<SvgGenImage> get values =>
-      [vector, email, fi16973516, question, star, walletBg];
+      [vector, email, fi16973516, findTherapistSc, question, star, walletBg];
 }
 
 class $ApplicationAssetsFontsOutfitGen {

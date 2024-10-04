@@ -131,4 +131,16 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       return Left(ServerFailure(e.errorDescription));
     }
   }
+
+  @override
+  ResultFuture<void> logout() async {
+    // TODO: implement logout
+    try {
+      await _authenticationHiveDataSource.deleteUser();
+
+      return const Right(null);
+    } catch (e) {
+      return const Left(CacheFailure("No User"));
+    }
+  }
 }

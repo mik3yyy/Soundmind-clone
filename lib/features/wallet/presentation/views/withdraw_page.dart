@@ -39,7 +39,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
       if (_controller.text.length == 10) {
         context
             .read<ResolveBankAccountCubit>()
-            .resolveAccount(_controller.text, bank!['name']!);
+            .resolveAccount(_controller.text, bank!['code']!);
       }
     }
   }
@@ -175,7 +175,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                         ),
                       ),
                     ),
-                    Gap(10),
+                    const Gap(10),
                     if (state is ResolveBankAccountLoading) ...[
                       const CircularProgressIndicator()
                     ]
@@ -193,8 +193,11 @@ class _WithdrawPageState extends State<WithdrawPage> {
                 _controller.text.isNotEmpty &&
                 _controller.text.length == 10,
             onPressed: () {
-              context.goNamed(Routes.add_amountName,
-                  extra: _controller.text, queryParameters: bank!);
+              context.goNamed(
+                Routes.add_amountName,
+                extra: _controller.text,
+                queryParameters: bank!,
+              );
             },
           ).toCenter(),
         ),

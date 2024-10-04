@@ -25,6 +25,7 @@ class AppColorExtension extends ThemeExtension<AppColorExtension> {
   final Color purpleDecorDark;
   final Color pinkDecorDark;
   final Color greyDecorDark;
+  final Color lilly4;
 
   AppColorExtension({
     required this.green,
@@ -33,6 +34,7 @@ class AppColorExtension extends ThemeExtension<AppColorExtension> {
     required this.red,
     required this.captionGrey,
     required this.black,
+    required this.lilly4,
     required this.borderGrey,
     required this.greenDecor,
     required this.blueDecor,
@@ -71,9 +73,11 @@ class AppColorExtension extends ThemeExtension<AppColorExtension> {
     Color? pinkDecorDark,
     Color? greyDecorDark,
     Color? greyOutline,
+    Color? lilly4,
   }) {
     return AppColorExtension(
       green: green ?? this.green,
+      lilly4: lilly4 ?? this.lilly4,
       white: white ?? this.white,
       red: red ?? this.red,
       orange: orange ?? this.orange,

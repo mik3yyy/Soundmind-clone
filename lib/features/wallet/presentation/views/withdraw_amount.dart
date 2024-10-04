@@ -111,19 +111,25 @@ class _AddAmountPageState extends State<AddAmountPage> {
             ),
           ],
         ).withSafeArea().withCustomPadding(),
-        bottomNavigationBar: SizedBox(
-          height: 150,
-          child: CustomButton(
-            label: "withdraw",
-            enable: _controller.text.isNotEmpty,
-            onPressed: () {
-              context.read<WithdrawToBankCubit>().withdrawToBankHandler(
-                    double.parse(_controller.text),
-                    widget.number,
-                    widget.bank['name']!,
-                  );
-            },
-          ).toCenter(),
+        bottomNavigationBar:
+            BlocBuilder<WithdrawToBankCubit, WithdrawToBankState>(
+          builder: (context, state) {
+            return SizedBox(
+              height: 150,
+              child: CustomButton(
+                label: "withdraw",
+                notifier: ValueNotifier(state is WithdrawToBankLoading),
+                enable: _controller.text.isNotEmpty,
+                onPressed: () {
+                  context.read<WithdrawToBankCubit>().withdrawToBankHandler(
+                        double.parse(_controller.text),
+                        widget.number,
+                        widget.bank['code']!,
+                      );
+                },
+              ).toCenter(),
+            );
+          },
         ),
       ),
     );
