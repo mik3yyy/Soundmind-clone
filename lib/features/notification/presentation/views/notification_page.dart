@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:sound_mind/core/extensions/context_extensions.dart';
 import 'package:sound_mind/core/extensions/widget_extensions.dart';
 import 'package:sound_mind/core/services/injection_container.dart';
@@ -39,7 +40,8 @@ class _NotificationPageState extends State<NotificationPage> {
             var notifications = state.notifications;
             return Column(
               children: [
-                ListView.builder(
+                ListView.separated(
+                  separatorBuilder: (context, index) => Gap(10),
                   itemCount: notifications.length,
                   itemBuilder: (context, index) {
                     return NotificationWidget(

@@ -57,6 +57,7 @@ class AppointmentRemoteDataSourceImpl extends AppointmentRemoteDataSource {
       "/UserDashboard/GetUpcomingAppointment",
       RequestMethod.get,
     );
+    print(response.data);
     return AppointmentDto.fromJson(response.data['data']);
   }
 

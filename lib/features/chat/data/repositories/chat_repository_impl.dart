@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:sound_mind/core/error/failures.dart';
 import 'package:sound_mind/core/utils/typedef.dart';
-import 'package:sound_mind/features/Chat/data/datasources/chat_remote_data_source.dart';
+import 'package:sound_mind/features/chat/data/datasources/chat_remote_data_source.dart';
 import 'package:sound_mind/features/chat/data/models/chat_message.dart';
 import 'package:sound_mind/features/chat/data/models/chat_room.dart';
 import 'package:sound_mind/features/chat/domain/repositories/chat_repository.dart';

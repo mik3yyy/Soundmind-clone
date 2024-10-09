@@ -6,6 +6,7 @@ import 'package:sound_mind/core/extensions/context_extensions.dart';
 import 'package:sound_mind/core/extensions/widget_extensions.dart';
 import 'package:sound_mind/core/gen/assets.gen.dart';
 import 'package:sound_mind/core/routes/routes.dart';
+import 'package:sound_mind/core/utils/date_formater.dart';
 import 'package:sound_mind/features/Authentication/presentation/blocs/Authentication_bloc.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/upcoming_appointment/upcoming_appointment_cubit.dart';
 import 'package:sound_mind/features/wallet/presentation/views/withdraw_page.dart';
@@ -22,7 +23,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    context.read<UpcomingAppointmentCubit>().fetchUpcomingAppointments();
+    var state = context.read<UpcomingAppointmentCubit>().state;
+    if (state is! UpcomingAppointmentsLoaded) {
+      context.read<UpcomingAppointmentCubit>().fetchUpcomingAppointments();
+    }
   }
 
 //disclaimer, imfo
@@ -120,6 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: context.textTheme.bodyLarge
                           ?.copyWith(fontWeight: FontWeight.w500),
                     ),
+                    Gap(10),
                     Container(
                       padding: EdgeInsets.all(10),
                       width: context.screenWidth * .9,
@@ -132,29 +137,87 @@ class _HomeScreenState extends State<HomeScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Image.network(doc.profilePicture!),
+                              Image.network(
+                                doc.profilePicture!,
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ).withClip(4),
+                              Gap(20),
                               Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(doc.therapistName),
+                                  Text(
+                                    doc.therapistName,
+                                    style: context.textTheme.displayMedium
+                                        ?.copyWith(
+                                      color: context.colors.white,
+                                    ),
+                                  ),
+                                  Text(
+                                    doc.areaOfSpecialization ?? "",
+                                    style: context.textTheme.bodyMedium
+                                        ?.copyWith(color: context.colors.white),
+                                  ),
+                                  Text(
+                                    "Google Meet",
+                                    style: context.textTheme.displaySmall
+                                        ?.copyWith(
+                                      color: context.colors.white,
+                                    ),
+                                  )
                                 ],
                               ),
                             ],
                           ),
+                          Gap(10),
                           Container(
-                            height: 34,
+                            height: 40,
+                            padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(28),
+                              color: Colors.purple[900]?.withOpacity(.5),
                             ),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.timer,
+                                      color: context.colors.white,
                                     ),
-                                    Text(doc.booking.date)
+                                    const Gap(5),
+                                    Text(
+                                      DateFormater.formatTimeRange(
+                                          doc.schedule.startTime,
+                                          doc.schedule.endTime),
+                                      style: context.textTheme.bodyMedium
+                                          ?.copyWith(
+                                        color: context.colors.white,
+                                      ),
+                                    ),
                                   ],
-                                )
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.calendar_month,
+                                      color: context.colors.white,
+                                    ),
+                                    const Gap(5),
+                                    Text(
+                                      DateFormater.formatDateTime(
+                                        doc.booking.date,
+                                      ),
+                                      style: context.textTheme.bodyMedium
+                                          ?.copyWith(
+                                        color: context.colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           )

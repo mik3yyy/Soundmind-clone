@@ -48,6 +48,7 @@ dependencies:
   flutterwave_standard_smart: ^1.0.4
   webview_flutter: ^4.9.0
   signalr_flutter: ^0.2.0
+  signalr_netcore: ^1.4.0
 
 
 dev_dependencies:

@@ -14,8 +14,11 @@ import 'package:sound_mind/features/appointment/presentation/blocs/appointment_b
 import 'package:sound_mind/features/appointment/presentation/blocs/booking/booking_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor/doctor_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor_details/doctor_details_cubit.dart';
+import 'package:sound_mind/features/appointment/presentation/blocs/payment/payment_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/physician_schedule/physician_schedule_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/upcoming_appointment/upcoming_appointment_cubit.dart';
+import 'package:sound_mind/features/chat/presentation/blocs/get_chat_room_messages/get_chat_room_messages_cubit.dart';
+import 'package:sound_mind/features/chat/presentation/blocs/get_user_chat_rooms/get_user_chat_rooms_cubit.dart';
 import 'package:sound_mind/features/notification/presentation/blocs/notification_bloc.dart';
 import 'package:sound_mind/features/setting/presentation/blocs/setting_bloc.dart';
 import 'package:sound_mind/features/wallet/presentation/blocs/get_bank_transactions/get_bank_transactions_cubit.dart';
@@ -105,6 +108,15 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => sl<NotificationBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<PaymentCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<GetUserChatRoomsCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<GetChatRoomMessagesCubit>(),
         ),
       ],
       child: MaterialApp.router(

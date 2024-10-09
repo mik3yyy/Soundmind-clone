@@ -39,12 +39,14 @@ import 'package:sound_mind/features/appointment/domain/usecases/get_doctor.detai
 import 'package:sound_mind/features/appointment/domain/usecases/get_doctors.dart';
 import 'package:sound_mind/features/appointment/domain/usecases/get_pending_appointment.dart';
 import 'package:sound_mind/features/appointment/domain/usecases/get_physician_schedule.dart';
+import 'package:sound_mind/features/appointment/domain/usecases/make_appointment_payment.dart';
 import 'package:sound_mind/features/appointment/domain/usecases/rejected_appointment.dart';
 import 'package:sound_mind/features/appointment/domain/usecases/upcoming_appointment.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/appointment_bloc.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/booking/booking_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor/doctor_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor_details/doctor_details_cubit.dart';
+import 'package:sound_mind/features/appointment/presentation/blocs/payment/payment_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/physician_schedule/physician_schedule_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/upcoming_appointment/upcoming_appointment_cubit.dart';
 
@@ -53,6 +55,8 @@ import 'package:sound_mind/features/chat/data/datasources/chat_remote_data_sourc
 import 'package:sound_mind/features/chat/data/repositories/chat_repository_impl.dart';
 import 'package:sound_mind/features/chat/domain/repositories/chat_repository.dart';
 import 'package:sound_mind/features/chat/domain/usecases/get_chat_data.dart';
+import 'package:sound_mind/features/chat/presentation/blocs/get_chat_room_messages/get_chat_room_messages_cubit.dart';
+import 'package:sound_mind/features/chat/presentation/blocs/get_user_chat_rooms/get_user_chat_rooms_cubit.dart';
 import 'package:sound_mind/features/chat/presentation/blocs/chat_bloc.dart';
 import 'package:sound_mind/features/notification/data/datasources/notification_hive_data_source.dart';
 import 'package:sound_mind/features/notification/data/datasources/notification_remote_data_source.dart';
@@ -189,6 +193,10 @@ Future<void> init() async {
     ..registerFactory(() => DoctorCubit(getDoctorsUseCase: sl()))
     ..registerLazySingleton(() => GetDoctorsUseCase(repository: sl()));
 
+  sl
+    ..registerFactory(() => PaymentCubit(makePaymentForAppointment: sl()))
+    ..registerLazySingleton(() => MakePaymentForAppointment(repository: sl()));
+
   // ..registerLazySingleton(() => GetU[(repository: sl()));
 
   sl
@@ -275,6 +283,16 @@ Future<void> init() async {
     ..registerLazySingleton<ChatHiveDataSource>(
       () => ChatHiveDataSourceImpl(),
     );
+
+  sl
+    ..registerFactory(
+        () => GetChatRoomMessagesCubit(getChatRoomMessagesUseCase: sl()))
+    ..registerLazySingleton(() => GetChatRoomMessagesUseCase(repository: sl()));
+
+  sl
+    ..registerFactory(
+        () => GetUserChatRoomsCubit(getUserChatRoomsUseCase: sl()))
+    ..registerLazySingleton(() => GetUserChatRoomsUseCase(repository: sl()));
 
   sl
     ..registerFactory(() => WalletBloc(getUserWallet: sl()))

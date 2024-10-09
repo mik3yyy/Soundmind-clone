@@ -10,12 +10,13 @@ import 'package:sound_mind/core/routes/routes.dart';
 import 'package:sound_mind/core/utils/string_extension.dart';
 import 'package:sound_mind/core/widgets/custom_text_field.dart';
 import 'package:sound_mind/features/appointment/data/models/doctor.dart';
-import 'package:sound_mind/features/appointment/presentation/blocs/appointment_bloc.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor/doctor_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/widgets/doctor_card.dart';
 import 'package:sound_mind/features/appointment/presentation/widgets/sort_bottom_bar.dart';
 
 class AppointmentPage extends StatefulWidget {
+  const AppointmentPage({super.key});
+
   @override
   State<AppointmentPage> createState() => _AppointmentPageState();
 }
@@ -37,8 +38,8 @@ class _AppointmentPageState extends State<AppointmentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          Color(0xFFF7F7F7), // context.colors.greyDecorDark.withOpacity(.2),
+      // backgroundColor:
+      //     Color(0xFFF7F7F7), // context.colors.greyDecorDark.withOpacity(.2),
       appBar: AppBar(
         centerTitle: false,
         title: Text(

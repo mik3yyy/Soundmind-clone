@@ -11,7 +11,7 @@ class DateFormater {
     return '$year-$month-$day';
   }
 
-  String formatTimeRange(String startTimeStr, String endTimeStr) {
+  static String formatTimeRange(String startTimeStr, String endTimeStr) {
     // Parse the time strings into DateTime objects
     DateTime startTime = DateFormat("HH:mm:ss").parse(startTimeStr);
     DateTime endTime = DateFormat("HH:mm:ss").parse(endTimeStr);
@@ -22,5 +22,36 @@ class DateFormater {
     String formattedEndTime = timeFormatter.format(endTime).toLowerCase();
 
     return '$formattedStartTime - $formattedEndTime';
+  }
+
+  static String formatDateTime(DateTime dateTime) {
+    // Get the day of the month
+    int day = dateTime.day;
+
+    // Determine the suffix for the day
+    String suffix;
+    if (day >= 11 && day <= 13) {
+      suffix = 'th';
+    } else {
+      switch (day % 10) {
+        case 1:
+          suffix = 'st';
+          break;
+        case 2:
+          suffix = 'nd';
+          break;
+        case 3:
+          suffix = 'rd';
+          break;
+        default:
+          suffix = 'th';
+      }
+    }
+
+    // Format the date string
+    String formattedDate = DateFormat('EEE, d').format(dateTime) +
+        suffix +
+        DateFormat(' MMM yyyy').format(dateTime);
+    return formattedDate;
   }
 }
