@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sound_mind/core/extensions/context_extensions.dart';
+import 'package:sound_mind/core/gen/assets.gen.dart';
 import 'package:sound_mind/core/routes/routes.dart';
 import 'package:sound_mind/core/utils/date_formater.dart';
 import 'package:sound_mind/core/widgets/custom_button.dart';
@@ -35,6 +36,24 @@ class _NotificationWidgetState extends State<NotificationWidget> {
     }
   }
 
+  Widget getIcon() {
+    switch (widget.notification.type) {
+      case 1:
+        return Assets.application.assets.svgs.pendingNotification.svg();
+      case 2:
+        return Assets.application.assets.svgs.approvedNotification
+            .svg(); //"Booking request approved";
+      case 3:
+        return Assets.application.assets.svgs.rejectedNotification
+            .svg(); //"Booking request denied";
+      case 4:
+        return Assets.application.assets.svgs.messageNotification
+            .svg(); //"Message from a Therapist";
+      default:
+        return Assets.application.assets.svgs.messageNotification.svg(); //"";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,9 +69,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
           // crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             ListTile(
-              leading: const Icon(
-                Icons.safety_check,
-              ),
+              leading: getIcon(),
               title: Text(
                 getTitle(),
                 style: context.textTheme.displaySmall,

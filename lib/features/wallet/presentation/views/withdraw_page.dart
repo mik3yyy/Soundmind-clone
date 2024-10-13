@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -91,16 +92,30 @@ class _WithdrawPageState extends State<WithdrawPage> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(
-                            "Available Balance",
-                            style: context.textTheme.displayMedium
-                                ?.copyWith(color: context.colors.white),
+                          SizedBox(
+                            width: context.screenWidth * .3,
+                            child: AutoSizeText(
+                              "Available Balance",
+                              style: context.textTheme.displayMedium
+                                  ?.copyWith(color: context.colors.white),
+                              maxLines: 1,
+                              minFontSize: 5,
+                              maxFontSize: 18,
+                            ),
                           ),
-                          Text(
-                            "${Constants.Naira} ${MoneyFormatter.doubleToMoney(balance)}",
-                            style: context.textTheme.displayMedium
-                                ?.copyWith(color: context.colors.white),
+                          Gap(15),
+                          SizedBox(
+                            width: context.screenWidth * .3,
+                            child: AutoSizeText(
+                              "${Constants.Naira}${MoneyFormatter.doubleToMoney(balance)}",
+                              style: context.textTheme.displayMedium
+                                  ?.copyWith(color: context.colors.white),
+                              maxLines: 1,
+                              minFontSize: 3,
+                              maxFontSize: 18,
+                            ),
                           )
                         ],
                       ),
@@ -122,6 +137,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                     items: state.banks.map((e) => e['name']).toList(),
                     hintText: "Select Bank",
                     title: "Bank",
+                    useSearch: true,
                     itemToString: (value) => value,
                     onChanged: (value) {
                       setState(() {
@@ -135,6 +151,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                 } else {
                   return CustomDropdown(
                     items: [],
+                    // useSearch: true,
                     hintText: "Select Bank",
                     title: "Bank",
                     itemToString: (value) => value,

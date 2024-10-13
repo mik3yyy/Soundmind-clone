@@ -8,6 +8,7 @@ import 'package:sound_mind/core/extensions/widget_extensions.dart';
 import 'package:sound_mind/core/gen/assets.gen.dart';
 import 'package:sound_mind/core/routes/routes.dart';
 import 'package:sound_mind/core/utils/string_extension.dart';
+import 'package:sound_mind/core/widgets/custom_shimmer.dart';
 import 'package:sound_mind/core/widgets/custom_text_field.dart';
 import 'package:sound_mind/features/appointment/data/models/doctor.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor/doctor_cubit.dart';
@@ -33,6 +34,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
     } else {
       context.read<DoctorCubit>().fetchDoctors(pageNumber: 1, pageSize: 20);
     }
+    // context.read<DoctorCubit>().fetchDoctors(pageNumber: 1, pageSize: 20);
   }
 
   @override
@@ -47,7 +49,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
           style: context.textTheme.displayMedium,
         ),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(100),
+          preferredSize: const Size.fromHeight(80),
           child: BlocBuilder<DoctorCubit, DoctorState>(
             builder: (context, state) {
               if (state is DoctorLoaded) {
@@ -59,7 +61,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                       prefix: const Icon(Icons.search),
                       hintText: "Search",
                     ),
-                    const Gap(10),
+                    const Gap(2),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -129,6 +131,14 @@ class _AppointmentPageState extends State<AppointmentPage> {
                     )
                   ],
                 );
+              } else if (state is DoctorLoading) {
+                return Column(
+                  children: [
+                    ComplexShimmer.textFieldShimmer(),
+                    Gap(2),
+                    ComplexShimmer.circleButtonShimmer(itemCount: 2),
+                  ],
+                );
               } else {
                 return Container();
               }
@@ -139,9 +149,12 @@ class _AppointmentPageState extends State<AppointmentPage> {
       body: BlocBuilder<DoctorCubit, DoctorState>(
         builder: (context, state) {
           if (state is DoctorLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ComplexShimmer.listShimmer(itemCount: 10).withExpanded()
+              ],
+            ).withCustomPadding();
           }
 
           if (state is DoctorError) {
@@ -153,7 +166,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
             List<DoctorModel> doctors = state.doctors;
             return Column(
               children: [
-                const Gap(20),
+                // const Gap(20),
                 if (state.display == Display.list) ...[
                   ListView.separated(
                     separatorBuilder: (context, index) => const Gap(10),

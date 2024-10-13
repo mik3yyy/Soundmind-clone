@@ -67,13 +67,24 @@ class _PinInputScreenState extends State<PinInputScreen> {
         }
       },
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          actions: [
+            IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.logout,
+                  color: context.primaryColor,
+                ))
+          ],
+        ),
         backgroundColor: Colors.white,
         body: Padding(
           padding: const EdgeInsets.all(32.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Gap(30),
+              // Gap(30),
               Icon(
                 Icons.lock,
                 size: 40,
@@ -84,7 +95,7 @@ class _PinInputScreenState extends State<PinInputScreen> {
                 "Confirm your new PIN",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(
@@ -160,22 +171,22 @@ class _PinInputScreenState extends State<PinInputScreen> {
             ],
           ),
         ).withSafeArea(),
-        bottomNavigationBar: Container(
-          height: 100,
-          child: CustomTextButton(
-            label: "Log out?",
-            textStyle: context.textTheme.titleMedium?.copyWith(
-              color: context.primaryColor,
-            ),
-            onPressed: () {
-              context.read<AuthenticationBloc>().add(LogoutEvent());
+        // bottomNavigationBar: Container(
+        //   height: 50,
+        //   child: CustomTextButton(
+        //     label: "Log out?",
+        //     textStyle: context.textTheme.titleMedium?.copyWith(
+        //       color: context.primaryColor,
+        //     ),
+        //     onPressed: () {
+        //       context.read<AuthenticationBloc>().add(LogoutEvent());
 
-              sl<Box>().deleteAll(["securityBox"]);
+        //       sl<Box>().deleteAll(["securityBox"]);
 
-              context.replaceNamed(Routes.splashName);
-            },
-          ),
-        ),
+        //       context.replaceNamed(Routes.splashName);
+        //     },
+        //   ),
+        // ),
       ),
     );
   }

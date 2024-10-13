@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -5,8 +6,11 @@ import 'package:go_router/go_router.dart';
 import 'package:sound_mind/core/extensions/context_extensions.dart';
 import 'package:sound_mind/core/extensions/widget_extensions.dart';
 import 'package:sound_mind/core/gen/assets.gen.dart';
+import 'package:sound_mind/core/gen/fonts.gen.dart';
 import 'package:sound_mind/core/routes/routes.dart';
 import 'package:sound_mind/core/utils/date_formater.dart';
+import 'package:sound_mind/core/widgets/custom_shimmer.dart';
+import 'package:sound_mind/core/widgets/error_screen.dart';
 import 'package:sound_mind/features/Authentication/presentation/blocs/Authentication_bloc.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/upcoming_appointment/upcoming_appointment_cubit.dart';
 import 'package:sound_mind/features/wallet/presentation/views/withdraw_page.dart';
@@ -27,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (state is! UpcomingAppointmentsLoaded) {
       context.read<UpcomingAppointmentCubit>().fetchUpcomingAppointments();
     }
+    // context.read<UpcomingAppointmentCubit>().fetchUpcomingAppointments();
   }
 
 //disclaimer, imfo
@@ -40,10 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
             builder: (context, state) {
               var user = (state as UserAccount).user;
               return Container(
-                height: context.screenHeight * .3,
+                // height: context.screenHeight * .3,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                      stops: [.9, 1],
+                      stops: const [.9, 1],
                       colors: [context.secondaryColor, context.colors.white],
                       begin: Alignment.bottomLeft,
                       end: Alignment.topLeft),
@@ -86,7 +91,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     Gap(20),
                     Text(
                       "How are you feeling today?",
-                      style: context.textTheme.displayMedium,
+                      style: context.textTheme.titleMedium?.copyWith(
+                          fontFamily: FontFamily.playfairDisplay,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w200),
                     ),
                     Wrap(
                       spacing: 5,
@@ -124,108 +132,124 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: context.textTheme.bodyLarge
                           ?.copyWith(fontWeight: FontWeight.w500),
                     ),
-                    Gap(10),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      width: context.screenWidth * .9,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: context.primaryColor),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Image.network(
-                                doc.profilePicture!,
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ).withClip(4),
-                              Gap(20),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    doc.therapistName,
-                                    style: context.textTheme.displayMedium
-                                        ?.copyWith(
-                                      color: context.colors.white,
-                                    ),
-                                  ),
-                                  Text(
-                                    doc.areaOfSpecialization ?? "",
-                                    style: context.textTheme.bodyMedium
-                                        ?.copyWith(color: context.colors.white),
-                                  ),
-                                  Text(
-                                    "Google Meet",
-                                    style: context.textTheme.displaySmall
-                                        ?.copyWith(
-                                      color: context.colors.white,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                          Gap(10),
-                          Container(
-                            height: 40,
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(28),
-                              color: Colors.purple[900]?.withOpacity(.5),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    const Gap(10),
+                    GestureDetector(
+                      onTap: () {
+                        context.goNamed(Routes.viewSessionName, extra: doc);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        width: context.screenWidth * .9,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: context.primaryColor),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Row(
+                                CachedNetworkImage(
+                                  imageUrl: doc.profilePicture!,
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ).withClip(4),
+                                const Gap(20),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Icon(
-                                      Icons.timer,
-                                      color: context.colors.white,
-                                    ),
-                                    const Gap(5),
                                     Text(
-                                      DateFormater.formatTimeRange(
-                                          doc.schedule.startTime,
-                                          doc.schedule.endTime),
-                                      style: context.textTheme.bodyMedium
+                                      doc.therapistName,
+                                      style: context.textTheme.displayMedium
                                           ?.copyWith(
                                         color: context.colors.white,
                                       ),
                                     ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.calendar_month,
-                                      color: context.colors.white,
-                                    ),
-                                    const Gap(5),
                                     Text(
-                                      DateFormater.formatDateTime(
-                                        doc.booking.date,
-                                      ),
+                                      doc.areaOfSpecialization ?? "",
                                       style: context.textTheme.bodyMedium
+                                          ?.copyWith(
+                                              color: context.colors.white),
+                                    ),
+                                    Text(
+                                      "Google Meet",
+                                      style: context.textTheme.displaySmall
                                           ?.copyWith(
                                         color: context.colors.white,
                                       ),
-                                    ),
+                                    )
                                   ],
                                 ),
                               ],
                             ),
-                          )
-                        ],
+                            Gap(10),
+                            Container(
+                              height: 40,
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(28),
+                                color: Colors.purple[900]?.withOpacity(.5),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.timer,
+                                        color: context.colors.white,
+                                      ),
+                                      const Gap(5),
+                                      Text(
+                                        DateFormater.formatTimeRange(
+                                            doc.schedule.startTime,
+                                            doc.schedule.endTime),
+                                        style: context.textTheme.bodyMedium
+                                            ?.copyWith(
+                                          color: context.colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.calendar_month,
+                                        color: context.colors.white,
+                                      ),
+                                      const Gap(5),
+                                      Text(
+                                        DateFormater.formatDateTime(
+                                          doc.booking.date,
+                                        ),
+                                        style: context.textTheme.bodyMedium
+                                            ?.copyWith(
+                                          color: context.colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     )
                   ],
                 ).withCustomPadding();
+              } else if (state is UpcomingAppointmentLoading) {
+                return ComplexShimmer.cardShimmer(
+                        itemCount: 1,
+                        margin: EdgeInsets.symmetric(vertical: 20))
+                    .withCustomPadding();
+              } else if (state is UpcomingAppointmentError) {
+                return CustomErrorScreen(
+                  message: state.message,
+                );
               } else {
                 return Container();
               }
@@ -238,13 +262,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    width: 190,
+                    // width: 190,
                     height: 140,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: context.colors.white,
                     ),
-                    padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+                    padding:
+                        const EdgeInsets.only(top: 10, left: 10, right: 10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -272,9 +297,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ).withOnTap(() {
                     context.goNamed(Routes.findADocName);
-                  }),
+                  }).withExpanded(),
+                  const Gap(20),
                   Container(
-                    width: 190,
+                    // width: 190,
                     height: 140,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -308,7 +334,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ).withOnTap(() {
                     context.goNamed(Routes.blogName);
-                  }),
+                  }).withExpanded(),
                 ],
               ),
             ],

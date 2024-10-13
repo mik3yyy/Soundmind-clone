@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sound_mind/features/Authentication/domain/usecases/create_account.dart';
 import 'package:sound_mind/features/Authentication/presentation/views/create_account/create_account.dart';
 import 'package:sound_mind/features/Authentication/presentation/views/create_account/verify_email.dart';
 import 'package:sound_mind/features/Authentication/presentation/views/get_started/introduction_screen.dart';
@@ -11,16 +10,18 @@ import 'package:sound_mind/features/Onboarding/presentation/views/Splash_screen.
 import 'package:sound_mind/features/Security/presentation/views/Security_page.dart';
 import 'package:sound_mind/features/Security/presentation/views/pin_page.dart';
 import 'package:sound_mind/features/Security/presentation/views/set_pin_page.dart';
+import 'package:sound_mind/features/appointment/data/models/appointment.dart';
 import 'package:sound_mind/features/appointment/presentation/views/appointment_page.dart';
 import 'package:sound_mind/features/appointment/presentation/views/booking/view_day.dart';
-import 'package:sound_mind/features/appointment/presentation/views/booking/view_summary.dart';
 import 'package:sound_mind/features/appointment/presentation/views/booking/view_time.dart';
 import 'package:sound_mind/features/appointment/presentation/views/view_doctor.dart';
+import 'package:sound_mind/features/chat/data/models/chat_room.dart';
 import 'package:sound_mind/features/chat/presentation/views/chat_page.dart';
+import 'package:sound_mind/features/chat/presentation/views/chat_room.dart';
 import 'package:sound_mind/features/main/presentation/views/home_screen/home_screen.dart';
+import 'package:sound_mind/features/main/presentation/views/home_screen/view_session.dart';
 import 'package:sound_mind/features/main/presentation/views/main_page.dart';
 import 'package:sound_mind/features/notification/presentation/views/notification_page.dart';
-import 'package:sound_mind/features/setting/domain/usecases/change_password.dart';
 import 'package:sound_mind/features/setting/presentation/views/change_password.dart';
 import 'package:sound_mind/features/setting/presentation/views/change_pin.dart';
 import 'package:sound_mind/features/setting/presentation/views/new_pin.dart';
@@ -44,7 +45,9 @@ class Routes {
   static const String blogPath = '/blog';
 
   static const String chatPath = '/chat';
-  static const String chatNAme = 'chat';
+  static const String chatName = 'chat';
+  static const String chatRoomPath = 'room/:id'; // Avoid redundancy
+  static const String chatRoomName = 'chatRoom';
   static const String settingsPath = 'settings';
 
   static const String settingsName = 'settings';
@@ -84,6 +87,9 @@ class Routes {
 
   static const String setPinName = 'setPin';
   static const String setPinPath = 'setPin';
+
+  static const String viewSessionName = 'viewSession';
+  static const String viewSessionPath = 'viewSession';
 
   static const String createAccountName = 'createAccount';
 
@@ -203,7 +209,7 @@ class Routes {
               pageBuilder: (context, state) {
                 return CustomTransitionPage(
                   key: state.pageKey,
-                  child: HomeScreen(),
+                  child: const HomeScreen(),
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
                     return FadeTransition(
@@ -216,6 +222,14 @@ class Routes {
               // builder: (context, state) =>
               //     HomeScreen(),
               routes: [
+                GoRoute(
+                  path: viewSessionPath,
+                  name: viewSessionName,
+                  parentNavigatorKey: rootNavigatorKey,
+                  builder: (context, state) => ViewSessionScreen(
+                    appointment: state.extra as AppointmentDto,
+                  ),
+                ),
                 GoRoute(
                   path: notificationPath,
                   name: notificationName,
@@ -267,24 +281,33 @@ class Routes {
                 ),
               ]),
           GoRoute(
-            path: chatPath,
-            name: chatNAme,
-            parentNavigatorKey: shellNavigatorKey,
-            // builder: (context, state) => const ChatPage(),
-            pageBuilder: (context, state) {
-              return CustomTransitionPage(
-                key: state.pageKey,
-                child: ChatPage(),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
-                },
-              );
-            },
-          ),
+              path: chatPath,
+              name: chatName,
+              parentNavigatorKey: shellNavigatorKey,
+              pageBuilder: (context, state) {
+                return CustomTransitionPage(
+                  key: state.pageKey,
+                  child: const ChatPage(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: chatRoomPath,
+                  name: chatRoomName,
+                  parentNavigatorKey: rootNavigatorKey,
+                  builder: (context, state) => ChattRoomScreen(
+                    chat_id: int.parse(state.pathParameters['id']!),
+                    user_id: state.extra as ChatRoomDto,
+                  ),
+                ),
+              ]),
           GoRoute(
             path: findADocPath,
             name: findADocName,

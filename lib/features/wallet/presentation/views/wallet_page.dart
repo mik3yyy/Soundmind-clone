@@ -10,6 +10,7 @@ import 'package:sound_mind/core/routes/routes.dart';
 import 'package:sound_mind/core/utils/constants.dart';
 import 'package:sound_mind/core/utils/money_formatter.dart';
 import 'package:sound_mind/core/widgets/custom_button.dart';
+import 'package:sound_mind/core/widgets/custom_shimmer.dart';
 import 'package:sound_mind/features/main/presentation/views/home_screen/home_screen.dart';
 import 'package:sound_mind/features/wallet/presentation/blocs/get_bank_transactions/get_bank_transactions_cubit.dart';
 import 'package:sound_mind/features/wallet/presentation/blocs/top_up/topup_wallet_cubit.dart';
@@ -63,6 +64,15 @@ class _WalletPageState extends State<WalletPage> {
               builder: (context, state) {
                 if (state is WalletLoaded) {
                   var wallet = state.wallet;
+
+                  // Retrieve the token (this function could get the token from secure storage or elsewhere)
+                  final box = Hive.box(
+                      'userBox'); // Replace 'authBox' with your box name
+
+                  // Retrieve the token from Hive using the 'token' key
+                  var hide = box.get('hide', defaultValue: false);
+
+                  bool isHidden = hide ?? false;
                   return Container(
                     width: context.screenWidth * .9,
                     height: 188,
@@ -99,7 +109,7 @@ class _WalletPageState extends State<WalletPage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "${Constants.Naira} ${MoneyFormatter.doubleToMoney(wallet['balance'])}",
+                                      "${Constants.Naira} ${isHidden ? "********" : MoneyFormatter.doubleToMoney(wallet['balance'])}",
                                       style: context.textTheme.displayMedium
                                           ?.copyWith(
                                         color: context.colors.white,
@@ -110,9 +120,17 @@ class _WalletPageState extends State<WalletPage> {
                                           .withOpacity(.3),
                                       child: IconButton(
                                         padding: EdgeInsets.zero,
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          setState(() {
+                                            isHidden = !isHidden;
+                                          });
+
+                                          box.put('hide', isHidden);
+                                        },
                                         icon: Icon(
-                                          Icons.visibility_off,
+                                          isHidden
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
                                           color: context.colors.white,
                                         ),
                                       ),
@@ -144,7 +162,7 @@ class _WalletPageState extends State<WalletPage> {
                                         ],
                                       ),
                                     ).withExpanded(),
-                                    Gap(20),
+                                    const Gap(20),
                                     CustomButton(
                                       label: "",
                                       color: context.colors.borderGrey
@@ -177,6 +195,9 @@ class _WalletPageState extends State<WalletPage> {
                       ],
                     ),
                   );
+                } else if (state is WalletLoading) {
+                  return ComplexShimmer.cardShimmer(
+                      itemCount: 1, useTitle: false);
                 } else {
                   return Container();
                 }
@@ -198,27 +219,31 @@ class _WalletPageState extends State<WalletPage> {
                   List<Map<String, dynamic>> transactions = state.transactions
                       .where((e) => e['status'] == 1)
                       .toList();
-
                   return ListView.builder(
                     // physics: Al(),
                     itemCount: transactions.length,
                     itemBuilder: (context, index) {
                       Map<String, dynamic> transaction = transactions[index];
+                      bool isCredit = transaction['transactionType'] == 1;
 
                       return ListTile(
                         contentPadding: EdgeInsets.zero,
                         title: Text(transaction['purpose']),
                         leading: CircleAvatar(
-                          backgroundColor:
-                              context.colors.green.withOpacity(0.4),
+                          backgroundColor: isCredit
+                              ? context.colors.green.withOpacity(0.4)
+                              : context.colors.red.withOpacity(0.4),
                           // radius: 20,
-                          child: Icon(
-                            Icons.arrow_outward_rounded,
-                            color: context.colors.green,
-                          ),
+                          child: isCredit
+                              ? Assets.application.assets.svgs.creditArrow.svg()
+                              : Assets.application.assets.svgs.debitArrow.svg(),
                         ),
                         trailing: Text(
-                          "${Constants.Naira} ${transaction['amount']}",
+                          "${isCredit ? "+" : "-"}${Constants.Naira}${transaction['amount']}",
+                          style: context.textTheme.bodyMedium?.copyWith(
+                              color: isCredit
+                                  ? context.colors.green
+                                  : context.colors.red),
                         ),
                       );
                     },
@@ -235,6 +260,9 @@ class _WalletPageState extends State<WalletPage> {
                       Text(state.message)
                     ],
                   );
+                } else if (state is GetBankTransactionsLoading) {
+                  return ComplexShimmer.listShimmer(itemCount: 7)
+                      .withExpanded();
                 }
                 return Container();
               },

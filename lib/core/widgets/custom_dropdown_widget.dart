@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:sound_mind/core/extensions/context_extensions.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 
 class CustomDropdown<T> extends StatefulWidget {
   final List<T> items;
@@ -9,6 +10,7 @@ class CustomDropdown<T> extends StatefulWidget {
   final ValueChanged<T?> onChanged;
   final String hintText;
   final String title;
+  final bool useSearch; // New parameter to toggle between dropdown types
 
   const CustomDropdown({
     super.key,
@@ -18,6 +20,7 @@ class CustomDropdown<T> extends StatefulWidget {
     this.selectedItem,
     required this.onChanged,
     this.hintText = 'Select an item',
+    this.useSearch = false, // Defaults to not using the search dropdown
   });
 
   @override
@@ -40,56 +43,90 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
       children: [
         Text(widget.title),
         const Gap(10),
-        DropdownButtonHideUnderline(
-          child: Container(
-            height: 50,
-            width: context.screenWidth,
-            decoration: BoxDecoration(
-              color: context.colors.greyOutline,
-              borderRadius: BorderRadius.circular(6),
-              // border: widget.border,
-              // boxShadow:  [
-              //         BoxShadow(
-              //           color: Theme.of(context)
-              //               .colorScheme
-              //               .tertiary
-              //               .withOpacity(0.2),
-              //           spreadRadius: 0,
-              //           blurRadius: 23,
-              //           offset: Offset(0, 4), // changes position of shadow
-              //         ),
-              //       ]
+        if (widget.useSearch)
+          // Use DropdownSearch when useSearch is true
+          DropdownSearch<T>(
+            items: (filter, infiniteScrollProps) =>
+                widget.items, // Directly pass the static list here
+            selectedItem: _selectedItem,
+            compareFn: (T item1, T item2) =>
+                widget.itemToString(item1) ==
+                widget.itemToString(item2), // Compare items
+
+            popupProps: PopupProps.menu(
+              fit: FlexFit.loose,
+              showSearchBox: true, // Enable search box
+              searchFieldProps: TextFieldProps(
+                decoration: InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                  filled: true,
+                  fillColor: context.colors.greyOutline,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6),
+                    borderSide: BorderSide.none,
+                  ),
+                  hintText: widget.hintText,
+                ),
+              ),
             ),
-            child: ButtonTheme(
-              alignedDropdown: true,
-              child: DropdownButton<T>(
-                menuWidth: context.screenWidth * .9,
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                value: _selectedItem,
-                hint: Text(widget.hintText),
-                isExpanded: true,
-                items: widget.items.map((T item) {
-                  return DropdownMenuItem<T>(
-                    value: item,
-                    child: Container(
-                      width: context.screenWidth *
-                          .8, // Set the maximum width of the dropdown items
-                      child: Text(
-                        widget.itemToString(item),
+            dropdownBuilder: (context, selectedItem) {
+              return Text(
+                selectedItem != null
+                    ? widget.itemToString(selectedItem)
+                    : widget.hintText,
+                style: TextStyle(
+                  color: selectedItem != null ? Colors.black : Colors.grey,
+                ),
+              );
+            },
+            onChanged: (T? newValue) {
+              setState(() {
+                _selectedItem = newValue;
+              });
+              widget.onChanged(newValue);
+            },
+          )
+        else
+          // Use your original DropdownButton when useSearch is false
+          DropdownButtonHideUnderline(
+            child: Container(
+              height: 50,
+              width: context.screenWidth,
+              decoration: BoxDecoration(
+                color: context.colors.greyOutline,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: ButtonTheme(
+                alignedDropdown: true,
+                child: DropdownButton<T>(
+                  menuMaxHeight: 400,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  value: _selectedItem,
+                  hint: Text(widget.hintText),
+                  isExpanded: true,
+                  items: widget.items.map((T item) {
+                    return DropdownMenuItem<T>(
+                      value: item,
+                      child: SizedBox(
+                        width: context.screenWidth *
+                            .8, // Limit dropdown item width
+                        child: Text(
+                          widget.itemToString(item),
+                        ),
                       ),
-                    ),
-                  );
-                }).toList(),
-                onChanged: (T? newValue) {
-                  setState(() {
-                    _selectedItem = newValue;
-                  });
-                  widget.onChanged(newValue);
-                },
+                    );
+                  }).toList(),
+                  onChanged: (T? newValue) {
+                    setState(() {
+                      _selectedItem = newValue;
+                    });
+                    widget.onChanged(newValue);
+                  },
+                ),
               ),
             ),
           ),
-        ),
       ],
     );
   }

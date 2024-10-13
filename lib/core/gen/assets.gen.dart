@@ -107,6 +107,10 @@ class $ApplicationAssetsFontsGen {
   $ApplicationAssetsFontsOutfitGen get outfit =>
       const $ApplicationAssetsFontsOutfitGen();
 
+  /// Directory path: application/assets/fonts/playfair
+  $ApplicationAssetsFontsPlayfairGen get playfair =>
+      const $ApplicationAssetsFontsPlayfairGen();
+
   /// List of all assets
   List<String> get values => [
         montserratBlack,
@@ -165,6 +169,26 @@ class $ApplicationAssetsSvgsGen {
   SvgGenImage get vector =>
       const SvgGenImage('application/assets/svgs/Vector.svg');
 
+  /// File path: application/assets/svgs/approved_notification.svg
+  SvgGenImage get approvedNotification =>
+      const SvgGenImage('application/assets/svgs/approved_notification.svg');
+
+  /// File path: application/assets/svgs/blog-1.svg
+  SvgGenImage get blog1 =>
+      const SvgGenImage('application/assets/svgs/blog-1.svg');
+
+  /// File path: application/assets/svgs/blog-2.svg
+  SvgGenImage get blog2 =>
+      const SvgGenImage('application/assets/svgs/blog-2.svg');
+
+  /// File path: application/assets/svgs/credit_arrow.svg
+  SvgGenImage get creditArrow =>
+      const SvgGenImage('application/assets/svgs/credit_arrow.svg');
+
+  /// File path: application/assets/svgs/debit_arrow.svg
+  SvgGenImage get debitArrow =>
+      const SvgGenImage('application/assets/svgs/debit_arrow.svg');
+
   /// File path: application/assets/svgs/email.svg
   SvgGenImage get email =>
       const SvgGenImage('application/assets/svgs/email.svg');
@@ -177,20 +201,102 @@ class $ApplicationAssetsSvgsGen {
   SvgGenImage get findTherapistSc =>
       const SvgGenImage('application/assets/svgs/find_therapist_sc.svg');
 
+  /// File path: application/assets/svgs/home-1.svg
+  SvgGenImage get home1 =>
+      const SvgGenImage('application/assets/svgs/home-1.svg');
+
+  /// File path: application/assets/svgs/home-2.svg
+  SvgGenImage get home2 =>
+      const SvgGenImage('application/assets/svgs/home-2.svg');
+
+  /// File path: application/assets/svgs/message-2.svg
+  SvgGenImage get message2 =>
+      const SvgGenImage('application/assets/svgs/message-2.svg');
+
+  /// File path: application/assets/svgs/message.svg
+  SvgGenImage get message =>
+      const SvgGenImage('application/assets/svgs/message.svg');
+
+  /// File path: application/assets/svgs/message_notification.svg
+  SvgGenImage get messageNotification =>
+      const SvgGenImage('application/assets/svgs/message_notification.svg');
+
+  /// File path: application/assets/svgs/pending_notification.svg
+  SvgGenImage get pendingNotification =>
+      const SvgGenImage('application/assets/svgs/pending_notification.svg');
+
+  /// File path: application/assets/svgs/people.svg
+  SvgGenImage get people =>
+      const SvgGenImage('application/assets/svgs/people.svg');
+
   /// File path: application/assets/svgs/question.svg
   SvgGenImage get question =>
       const SvgGenImage('application/assets/svgs/question.svg');
 
+  /// File path: application/assets/svgs/rejected_notification.svg
+  SvgGenImage get rejectedNotification =>
+      const SvgGenImage('application/assets/svgs/rejected_notification.svg');
+
+  /// File path: application/assets/svgs/search-1.svg
+  SvgGenImage get search1 =>
+      const SvgGenImage('application/assets/svgs/search-1.svg');
+
+  /// File path: application/assets/svgs/search-2.svg
+  SvgGenImage get search2 =>
+      const SvgGenImage('application/assets/svgs/search-2.svg');
+
+  /// File path: application/assets/svgs/send_message.svg
+  SvgGenImage get sendMessage =>
+      const SvgGenImage('application/assets/svgs/send_message.svg');
+
   /// File path: application/assets/svgs/star.svg
   SvgGenImage get star => const SvgGenImage('application/assets/svgs/star.svg');
+
+  /// File path: application/assets/svgs/therapist_message.svg
+  SvgGenImage get therapistMessage =>
+      const SvgGenImage('application/assets/svgs/therapist_message.svg');
+
+  /// File path: application/assets/svgs/wallet-1.svg
+  SvgGenImage get wallet1 =>
+      const SvgGenImage('application/assets/svgs/wallet-1.svg');
+
+  /// File path: application/assets/svgs/wallet-2.svg
+  SvgGenImage get wallet2 =>
+      const SvgGenImage('application/assets/svgs/wallet-2.svg');
 
   /// File path: application/assets/svgs/wallet_bg.svg
   SvgGenImage get walletBg =>
       const SvgGenImage('application/assets/svgs/wallet_bg.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values =>
-      [vector, email, fi16973516, findTherapistSc, question, star, walletBg];
+  List<SvgGenImage> get values => [
+        vector,
+        approvedNotification,
+        blog1,
+        blog2,
+        creditArrow,
+        debitArrow,
+        email,
+        fi16973516,
+        findTherapistSc,
+        home1,
+        home2,
+        message2,
+        message,
+        messageNotification,
+        pendingNotification,
+        people,
+        question,
+        rejectedNotification,
+        search1,
+        search2,
+        sendMessage,
+        star,
+        therapistMessage,
+        wallet1,
+        wallet2,
+        walletBg
+      ];
 }
 
 class $ApplicationAssetsFontsOutfitGen {
@@ -239,6 +345,74 @@ class $ApplicationAssetsFontsOutfitGen {
         outfitRegular,
         outfitSemiBold,
         outfitThin
+      ];
+}
+
+class $ApplicationAssetsFontsPlayfairGen {
+  const $ApplicationAssetsFontsPlayfairGen();
+
+  /// File path: application/assets/fonts/playfair/PlayfairDisplay-Black.ttf
+  String get playfairDisplayBlack =>
+      'application/assets/fonts/playfair/PlayfairDisplay-Black.ttf';
+
+  /// File path: application/assets/fonts/playfair/PlayfairDisplay-BlackItalic.ttf
+  String get playfairDisplayBlackItalic =>
+      'application/assets/fonts/playfair/PlayfairDisplay-BlackItalic.ttf';
+
+  /// File path: application/assets/fonts/playfair/PlayfairDisplay-Bold.ttf
+  String get playfairDisplayBold =>
+      'application/assets/fonts/playfair/PlayfairDisplay-Bold.ttf';
+
+  /// File path: application/assets/fonts/playfair/PlayfairDisplay-BoldItalic.ttf
+  String get playfairDisplayBoldItalic =>
+      'application/assets/fonts/playfair/PlayfairDisplay-BoldItalic.ttf';
+
+  /// File path: application/assets/fonts/playfair/PlayfairDisplay-ExtraBold.ttf
+  String get playfairDisplayExtraBold =>
+      'application/assets/fonts/playfair/PlayfairDisplay-ExtraBold.ttf';
+
+  /// File path: application/assets/fonts/playfair/PlayfairDisplay-ExtraBoldItalic.ttf
+  String get playfairDisplayExtraBoldItalic =>
+      'application/assets/fonts/playfair/PlayfairDisplay-ExtraBoldItalic.ttf';
+
+  /// File path: application/assets/fonts/playfair/PlayfairDisplay-Italic.ttf
+  String get playfairDisplayItalic =>
+      'application/assets/fonts/playfair/PlayfairDisplay-Italic.ttf';
+
+  /// File path: application/assets/fonts/playfair/PlayfairDisplay-Medium.ttf
+  String get playfairDisplayMedium =>
+      'application/assets/fonts/playfair/PlayfairDisplay-Medium.ttf';
+
+  /// File path: application/assets/fonts/playfair/PlayfairDisplay-MediumItalic.ttf
+  String get playfairDisplayMediumItalic =>
+      'application/assets/fonts/playfair/PlayfairDisplay-MediumItalic.ttf';
+
+  /// File path: application/assets/fonts/playfair/PlayfairDisplay-Regular.ttf
+  String get playfairDisplayRegular =>
+      'application/assets/fonts/playfair/PlayfairDisplay-Regular.ttf';
+
+  /// File path: application/assets/fonts/playfair/PlayfairDisplay-SemiBold.ttf
+  String get playfairDisplaySemiBold =>
+      'application/assets/fonts/playfair/PlayfairDisplay-SemiBold.ttf';
+
+  /// File path: application/assets/fonts/playfair/PlayfairDisplay-SemiBoldItalic.ttf
+  String get playfairDisplaySemiBoldItalic =>
+      'application/assets/fonts/playfair/PlayfairDisplay-SemiBoldItalic.ttf';
+
+  /// List of all assets
+  List<String> get values => [
+        playfairDisplayBlack,
+        playfairDisplayBlackItalic,
+        playfairDisplayBold,
+        playfairDisplayBoldItalic,
+        playfairDisplayExtraBold,
+        playfairDisplayExtraBoldItalic,
+        playfairDisplayItalic,
+        playfairDisplayMedium,
+        playfairDisplayMediumItalic,
+        playfairDisplayRegular,
+        playfairDisplaySemiBold,
+        playfairDisplaySemiBoldItalic
       ];
 }
 

@@ -1,6 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sound_mind/core/extensions/context_extensions.dart';
+import 'package:sound_mind/core/gen/assets.gen.dart';
 import 'package:sound_mind/core/routes/routes.dart';
 
 class MainPage extends StatefulWidget {
@@ -18,7 +19,7 @@ class _MainPageState extends State<MainPage> {
     Routes.homeName,
     Routes.findADocName,
     Routes.walletName,
-    Routes.chatNAme,
+    Routes.chatName,
     Routes.blogName,
   ];
 
@@ -47,22 +48,11 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
     super.initState();
-    print(widget.routeState);
-    // if(Routes.homePath )
-  }
-
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
   }
 
   @override
   void didUpdateWidget(covariant MainPage oldWidget) {
-    // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     String path = widget.routeState.fullPath ?? "";
     if (path.contains(Routes.homeName)) {
@@ -78,7 +68,7 @@ class _MainPageState extends State<MainPage> {
       setState(() {
         _selectedIndex = 2;
       });
-    } else if (path.contains(Routes.chatNAme)) {
+    } else if (path.contains(Routes.chatName)) {
       setState(() {
         _selectedIndex = 3;
       });
@@ -95,27 +85,38 @@ class _MainPageState extends State<MainPage> {
       body: widget.child,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
+        selectedItemColor: context.colors.black,
         onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: _selectedIndex == 0
+                ? Assets.application.assets.svgs.home2.svg()
+                : Assets.application.assets.svgs.home1.svg(),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.search),
+            icon: _selectedIndex == 1
+                ? Assets.application.assets.svgs.search2.svg()
+                : Assets.application.assets.svgs.search1.svg(),
             label: 'Find a doc',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.wallet),
+            icon: _selectedIndex == 2
+                ? Assets.application.assets.svgs.wallet2.svg()
+                : Assets.application.assets.svgs.wallet1.svg(),
             label: 'Wallet',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
+            icon: _selectedIndex == 3
+                ? Assets.application.assets.svgs.message2.svg()
+                : Assets.application.assets.svgs.message.svg(),
             label: 'Chats',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.library_books),
+            icon: _selectedIndex == 4
+                ? Assets.application.assets.svgs.blog2.svg()
+                : Assets.application.assets.svgs.blog1.svg(),
             label: 'Blogs',
           ),
         ],

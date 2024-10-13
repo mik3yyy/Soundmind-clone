@@ -15,4 +15,7 @@ class FontFamily {
 
   /// Font family: Outfit
   static const String outfit = 'Outfit';
+
+  /// Font family: PlayfairDisplay
+  static const String playfairDisplay = 'PlayfairDisplay';
 }

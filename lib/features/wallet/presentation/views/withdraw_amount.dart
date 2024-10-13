@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -47,7 +48,7 @@ class _AddAmountPageState extends State<AddAmountPage> {
             color: context.colors.black,
           ),
           centerTitle: false,
-          title: Text("Withdraw funds"),
+          title: const Text("Withdraw funds"),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,7 +57,8 @@ class _AddAmountPageState extends State<AddAmountPage> {
               builder: (context, state) {
                 var balance = (state as WalletLoaded).wallet['balance'];
                 return Container(
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   height: 100,
                   width: context.screenWidth * .9,
                   decoration: BoxDecoration(
@@ -77,16 +79,30 @@ class _AddAmountPageState extends State<AddAmountPage> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(
-                            "Available Balance",
-                            style: context.textTheme.displayMedium
-                                ?.copyWith(color: context.colors.white),
+                          SizedBox(
+                            width: context.screenWidth * .3,
+                            child: AutoSizeText(
+                              "Available Balance",
+                              style: context.textTheme.displayMedium
+                                  ?.copyWith(color: context.colors.white),
+                              maxLines: 1,
+                              minFontSize: 5,
+                              maxFontSize: 18,
+                            ),
                           ),
-                          Text(
-                            "${Constants.Naira} ${MoneyFormatter.doubleToMoney(balance)}",
-                            style: context.textTheme.displayMedium
-                                ?.copyWith(color: context.colors.white),
+                          const Gap(15),
+                          SizedBox(
+                            width: context.screenWidth * .3,
+                            child: AutoSizeText(
+                              "${Constants.Naira}${MoneyFormatter.doubleToMoney(balance)}",
+                              style: context.textTheme.displayMedium
+                                  ?.copyWith(color: context.colors.white),
+                              maxLines: 1,
+                              minFontSize: 3,
+                              maxFontSize: 18,
+                            ),
                           )
                         ],
                       ),

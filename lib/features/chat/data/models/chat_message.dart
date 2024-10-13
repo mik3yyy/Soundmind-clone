@@ -1,25 +1,61 @@
 class ChatMessageDto {
-  final int id;
-  final int chatroomId;
-  final String sender;
+  final int senderId;
+  final int chatId;
   final String message;
-  final String timestamp;
+  final int id;
+  final DateTime timeCreated;
+  final DateTime timeUpdated;
 
   ChatMessageDto({
-    required this.id,
-    required this.chatroomId,
-    required this.sender,
+    required this.senderId,
+    required this.chatId,
     required this.message,
-    required this.timestamp,
+    required this.id,
+    required this.timeCreated,
+    required this.timeUpdated,
   });
 
+  // Factory constructor to create a ChatMessageDto from JSON
   factory ChatMessageDto.fromJson(Map<String, dynamic> json) {
     return ChatMessageDto(
-      id: json['id'],
-      chatroomId: json['chatroomId'],
-      sender: json['sender'],
+      senderId: json['senderId'],
+      chatId: json['chatId'],
       message: json['message'],
-      timestamp: json['timestamp'],
+      id: json['id'],
+      timeCreated: DateTime.parse(json['timeCreated']),
+      timeUpdated: DateTime.parse(json['timeUpdated']),
     );
+  }
+  // Factory constructor to create a ChatMessageDto from JSON
+  factory ChatMessageDto.fromMessage(
+      {required String message,
+      required int chatId,
+      required int senderId,
+      required int receiverId}) {
+    return ChatMessageDto(
+      senderId: senderId,
+      chatId: chatId,
+      message: message,
+      id: chatId,
+      timeCreated: DateTime.now(),
+      timeUpdated: DateTime.now(),
+    );
+  }
+
+  // Method to convert a ChatMessageDto to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'senderId': senderId,
+      'chatId': chatId,
+      'message': message,
+      'id': id,
+      'timeCreated': timeCreated.toIso8601String(),
+      'timeUpdated': timeUpdated.toIso8601String(),
+    };
+  }
+
+  @override
+  String toString() {
+    return 'ChatMessageDto(senderId: $senderId, chatId: $chatId, message: $message, id: $id, timeCreated: $timeCreated, timeUpdated: $timeUpdated)';
   }
 }

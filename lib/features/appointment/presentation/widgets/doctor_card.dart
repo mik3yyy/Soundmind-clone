@@ -1,4 +1,7 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:sound_mind/core/extensions/context_extensions.dart';
 import 'package:sound_mind/core/extensions/widget_extensions.dart';
 
 import 'package:sound_mind/features/appointment/data/models/doctor.dart';
@@ -31,43 +34,56 @@ class DoctorCard extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 8),
-                Text(
-                  "${doctor.firstName} ${doctor.lastName}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  "₦${doctor.consultationRate}/session",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Row(
-                  children: [
-                    Icon(Icons.star, color: Colors.amber, size: 16),
-                    Text(
-                      "${doctor.ratingAverage}",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+            Container(
+              width: (context.screenWidth / 2) - 20,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 8),
+                  AutoSizeText(
+                    "${doctor.firstName} ${doctor.lastName}",
+                    maxFontSize: 16,
+                    minFontSize: 2,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      // fontSize: 16,
                     ),
-                    // Text(" (${doctor.})"),
-                    Spacer(),
-                    Text(
-                      "${doctor.yoe}yrs experience",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  AutoSizeText(
+                    "₦${doctor.consultationRate}/session",
+                    maxLines: 1,
+                    minFontSize: 8,
+                    maxFontSize: 16,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
-                ),
-              ],
-            ).withCustomPadding(),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.star, color: Colors.amber, size: 16),
+                          Text(
+                            "${doctor.ratingAverage}",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      Gap(10),
+                      AutoSizeText(
+                        "${doctor.yoe}yrs experience",
+                        minFontSize: 4,
+                        maxFontSize: 16,
+                        maxLines: 1,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ).withExpanded(),
+                    ],
+                  ),
+                ],
+              ).withCustomPadding(),
+            ),
           ],
         ),
       ),

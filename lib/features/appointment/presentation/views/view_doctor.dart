@@ -10,6 +10,7 @@ import 'package:sound_mind/core/gen/assets.gen.dart';
 import 'package:sound_mind/core/routes/routes.dart';
 import 'package:sound_mind/core/utils/string_extension.dart';
 import 'package:sound_mind/core/widgets/custom_button.dart';
+import 'package:sound_mind/core/widgets/custom_shimmer.dart';
 import 'package:sound_mind/features/appointment/data/models/doctor_detail.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor_details/doctor_details_cubit.dart';
 
@@ -50,22 +51,6 @@ class _ViewDoctorPageState extends State<ViewDoctorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFFF3EEFA),
-        leadingWidth: 30,
-        leading: BackButton(
-          color: context.colors.black,
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.message,
-              color: context.colors.black,
-            ),
-          )
-        ],
-      ),
       // appBar: AppBar(
       //   leading: Icon(
       //     Icons.chevron_left,
@@ -89,6 +74,19 @@ class _ViewDoctorPageState extends State<ViewDoctorPage> {
           if (state is DoctorDetailsLoaded) {
             DoctorDetailModel detailModel = state.doctor;
             return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Color(0xFFF3EEFA),
+                leadingWidth: 30,
+                leading: BackButton(
+                  color: context.colors.black,
+                ),
+                actions: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: Assets.application.assets.svgs.therapistMessage.svg(),
+                  )
+                ],
+              ),
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -202,7 +200,8 @@ class _ViewDoctorPageState extends State<ViewDoctorPage> {
                           titleWidget: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.message, color: context.primaryColor),
+                              Assets.application.assets.svgs.therapistMessage
+                                  .svg(),
                               Text(
                                 " Message Therapist",
                                 style: context.textTheme.bodyLarge?.copyWith(
@@ -348,18 +347,29 @@ class _ViewDoctorPageState extends State<ViewDoctorPage> {
                             ],
                           )
                         ],
-                      ),
+                      ).withExpanded(flex: 2),
                       CustomButton(
                         label: "Book Now",
                         onPressed: () {
                           context.goNamed(Routes.viewDayName, extra: widget.id);
                         },
-                        width: context.screenWidth * .4,
-                      )
+                        // width: context.screenWidth * .4,
+                      ).withExpanded()
                     ],
                   ),
                 ),
               ),
+            );
+          } else if (state is DoctorDetailsLoading) {
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Color(0xFFF3EEFA),
+                leadingWidth: 30,
+                leading: BackButton(
+                  color: context.colors.black,
+                ),
+              ),
+              body: ComplexShimmer.therapistProfileShimmer(context),
             );
           }
           return CircularProgressIndicator().toCenter();

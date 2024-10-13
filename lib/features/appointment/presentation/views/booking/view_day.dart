@@ -9,6 +9,7 @@ import 'package:sound_mind/core/routes/routes.dart';
 import 'package:sound_mind/core/services/injection_container.dart';
 import 'package:sound_mind/core/utils/string_extension.dart';
 import 'package:sound_mind/core/widgets/custom_button.dart';
+import 'package:sound_mind/core/widgets/custom_shimmer.dart';
 import 'package:sound_mind/features/appointment/data/models/doctor_detail.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor_details/doctor_details_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/physician_schedule/physician_schedule_cubit.dart';
@@ -73,15 +74,16 @@ class _SelectDayPageState extends State<SelectDayPage> {
                         Row(
                           children: [
                             CircleAvatar(
-                              radius: 70,
+                              radius: 50,
                               backgroundColor: context.colors.white,
                               child: Image.network(
                                 detailModel.profilePicture,
-                                height: 120,
-                                width: 120,
+                                height: 90,
+                                width: 90,
                                 fit: BoxFit.cover,
                               ).withClip(60),
                             ),
+                            Gap(20),
                             Column(
                               children: [
                                 AutoSizeText(
@@ -163,7 +165,7 @@ class _SelectDayPageState extends State<SelectDayPage> {
                         )
                       ],
                     ).withSafeArea().withCustomPadding(),
-                    bottomNavigationBar: Container(
+                    bottomNavigationBar: SizedBox(
                       height: 100,
                       child: Center(
                         child: CustomButton(
@@ -181,12 +183,14 @@ class _SelectDayPageState extends State<SelectDayPage> {
                     ),
                   );
                 } else {
-                  return CircularProgressIndicator().toCenter();
+                  return const CircularProgressIndicator().toCenter();
                 }
               },
             );
           } else {
-            return CircularProgressIndicator().toCenter();
+            return Scaffold(
+              body: ComplexShimmer.bookingScreenShimmer(context),
+            );
           }
           // var physicianSchedule= state as
         },
