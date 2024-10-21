@@ -25,7 +25,68 @@ class _QuestionScreenState extends State<QuestionScreen> {
       '2': 'More than half the days',
       '3': 'Nearly every day',
     },
+    {
+      'question': 'Feeling down, depressed, or hopeless?',
+      '0': 'Not at all',
+      '1': 'Several days',
+      '2': 'More than half the days',
+      '3': 'Nearly every day',
+    },
+    {
+      'question': 'Trouble falling or staying asleep, or sleeping too much?',
+      '0': 'Not at all',
+      '1': 'Several days',
+      '2': 'More than half the days',
+      '3': 'Nearly every day',
+    },
+    {
+      'question': 'Feeling tired or having little energy?',
+      '0': 'Not at all',
+      '1': 'Several days',
+      '2': 'More than half the days',
+      '3': 'Nearly every day',
+    },
+    {
+      'question': 'Poor appetite or overeating?',
+      '0': 'Not at all',
+      '1': 'Several days',
+      '2': 'More than half the days',
+      '3': 'Nearly every day',
+    },
+    {
+      'question':
+          'Feeling bad about yourself or that you are a failure or have let yourself or your family down?',
+      '0': 'Not at all',
+      '1': 'Several days',
+      '2': 'More than half the days',
+      '3': 'Nearly every day',
+    },
+    {
+      'question':
+          'Trouble concentrating on things, such as reading the newspaper or watching television?',
+      '0': 'Not at all',
+      '1': 'Several days',
+      '2': 'More than half the days',
+      '3': 'Nearly every day',
+    },
+    {
+      'question':
+          'Moving or speaking so slowly that other people could have noticed. Or the opposite being so fidgety or restless that you have been moving around a lot more than usual?',
+      '0': 'Not at all',
+      '1': 'Several days',
+      '2': 'More than half the days',
+      '3': 'Nearly every day',
+    },
+    {
+      'question':
+          'Thoughts that you would be better off dead, or of hurting yourself?',
+      '0': 'Not at all',
+      '1': 'Several days',
+      '2': 'More than half the days',
+      '3': 'Nearly every day',
+    },
   ];
+
   List<int> answers = [];
   int currentPage = 0;
   final PageController _controller = PageController();

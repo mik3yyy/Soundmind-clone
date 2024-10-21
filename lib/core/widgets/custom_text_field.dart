@@ -17,6 +17,7 @@ class CustomTextField extends StatefulWidget {
       this.errorText,
       this.onChanged,
       this.textAlign,
+      this.minLines,
       this.prefix,
       this.enabled,
       this.borderColor,
@@ -27,6 +28,7 @@ class CustomTextField extends StatefulWidget {
       this.titleText,
       this.onEditingComplete,
       this.validator,
+      this.expands = false,
       this.textInputAction,
       this.isPasswordField = false});
   final TextEditingController controller;
@@ -40,6 +42,8 @@ class CustomTextField extends StatefulWidget {
   final Widget? suffixIcon;
   final Widget? prefix;
   final bool obscureText;
+
+  final bool expands;
   final bool? enabled;
   final FocusNode? focusNode;
   final Color? fillColor;
@@ -50,6 +54,8 @@ class CustomTextField extends StatefulWidget {
   final int? maxLength;
   final double radius;
   final int? maxLines;
+
+  final int? minLines;
   final TextAlign? textAlign;
   final FormFieldValidator<String>? validator;
   final bool isPasswordField;
@@ -88,8 +94,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
             validator: widget.validator,
             textInputAction: widget.textInputAction,
             maxLength: widget.maxLength,
+            minLines: widget.minLines,
             focusNode: widget.focusNode,
             onTap: widget.onTap,
+            expands: widget.expands,
 
             onEditingComplete: widget.onEditingComplete,
 

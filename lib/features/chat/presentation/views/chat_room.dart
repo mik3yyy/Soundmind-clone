@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -216,82 +217,140 @@ class _ChattRoomScreenState extends State<ChattRoomScreen> {
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
                     ChatMessageDto message = messages[index];
-                    if (message.senderId == user.uid) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(16),
-                                topRight: Radius.circular(2),
-                                bottomLeft: Radius.circular(16),
-                                bottomRight: Radius.circular(16),
-                              ),
-                              color: context.primaryColor,
-                            ),
-                            padding: EdgeInsets.all(10),
-                            child: Center(
-                              child: Text(
-                                message.message,
-                                style: context.textTheme.bodyMedium
-                                    ?.copyWith(color: context.colors.white),
-                              ),
-                            ),
+                    bool isUser = message.senderId == user.uid;
+
+                    return Column(
+                      crossAxisAlignment: isUser
+                          ? CrossAxisAlignment.end
+                          : CrossAxisAlignment.start,
+                      children: [
+                        if (!isUser)
+                          CircleAvatar(
+                            radius: 10,
+                            child: CachedNetworkImage(
+                              imageUrl: isUser
+                                  ? widget.user_id.senderProfilePhoto
+                                  : widget.user_id.senderProfilePhoto,
+                              height: 20,
+                              width: 20,
+                              fit: BoxFit.cover,
+                            ).withClip(50),
                           ),
-                        ],
-                      );
-                    } else {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(2),
-                                topRight: Radius.circular(16),
-                                bottomLeft: Radius.circular(16),
-                                bottomRight: Radius.circular(16),
+                        Gap(2),
+                        Row(
+                          mainAxisAlignment: isUser
+                              ? MainAxisAlignment.end
+                              : MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              constraints: BoxConstraints(
+                                minWidth: 20, // Minimum width for the container
+                                maxWidth: context.screenWidth *
+                                    .6, // Max width is 60% of the screen width
                               ),
-                              color: context.colors.greyDecor,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: isUser
+                                      ? const Radius.circular(16)
+                                      : const Radius.circular(2),
+                                  topRight: isUser
+                                      ? const Radius.circular(2)
+                                      : const Radius.circular(16),
+                                  bottomLeft: const Radius.circular(16),
+                                  bottomRight: const Radius.circular(16),
+                                ),
+                                color: isUser
+                                    ? context.primaryColor
+                                    : context.colors.greyDecor,
+                              ),
+                              padding: const EdgeInsets.all(10),
+                              child: IntrinsicWidth(
+                                child: Text(
+                                  message.message,
+                                  style: isUser
+                                      ? context.textTheme.bodyMedium?.copyWith(
+                                          color: context.colors.white)
+                                      : context.textTheme.bodyMedium,
+                                ),
+                              ),
                             ),
-                            padding: const EdgeInsets.all(10),
-                            child: Center(
-                              child: Text(message.message),
-                            ),
-                          ),
-                        ],
-                      );
-                    }
+                          ],
+                        ),
+                      ],
+                    );
                   },
                 ).withExpanded(),
-                const Gap(100)
-              ]
-            ],
-          ).withCustomPadding(),
-          bottomSheet: SizedBox(
-            height: 100,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 52,
-                  width: context.screenWidth * .7,
-                  child: CustomTextField(
-                    controller: controller,
-                    radius: 57,
-                    hintText: "Enter a message",
+                const Gap(20)
+              ],
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    // Use Flexible to constrain the TextField's width and allow resizing
+                    child: Container(
+                      // height: 100,
+                      constraints: BoxConstraints(
+                        maxWidth: context.screenWidth *
+                            .7, // Set max width as 70% of screen
+                      ),
+                      child: CustomTextField(
+                        controller: controller,
+                        radius: 57,
+                        hintText: "Enter a message",
+                        minLines: 1, // TextField will start with 1 line
+                        maxLines:
+                            2, // TextField will expand to a maximum of 4 lines
+                        expands:
+                            false, // This ensures the field grows naturally based on content
+                      ),
+                    ),
                   ),
-                ),
-                IconButton(
+                  IconButton(
                     onPressed: () {
                       _sendMessage(controller.text);
                     },
-                    icon: Assets.application.assets.svgs.sendMessage.svg())
-              ],
-            ).withCustomPadding(),
-          ),
+                    icon: Assets.application.assets.svgs.sendMessage.svg(),
+                  )
+                ],
+              ).toCenter().withCustomPadding(),
+            ],
+          ).withSafeArea().withCustomPadding(),
+          // bottomSheet: SizedBox(
+          //   height: 100,
+          //   child: Row(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: [
+          //       Flexible(
+          //         // Use Flexible to constrain the TextField's width and allow resizing
+          //         child: Container(
+          //           height: 100,
+          //           constraints: BoxConstraints(
+          //             maxWidth: context.screenWidth *
+          //                 .7, // Set max width as 70% of screen
+          //           ),
+          //           child: CustomTextField(
+          //             controller: controller,
+          //             radius: 57,
+          //             hintText: "Enter a message",
+          //             minLines: 1, // TextField will start with 1 line
+          //             maxLines:
+          //                 2, // TextField will expand to a maximum of 4 lines
+          //             expands:
+          //                 false, // This ensures the field grows naturally based on content
+          //           ),
+          //         ),
+          //       ),
+          //       IconButton(
+          //         onPressed: () {
+          //           _sendMessage(controller.text);
+          //         },
+          //         icon: Assets.application.assets.svgs.sendMessage.svg(),
+          //       )
+          //     ],
+          //   ).toCenter().withCustomPadding(),
+          // ),
         );
       },
     );
