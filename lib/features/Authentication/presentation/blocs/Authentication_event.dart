@@ -50,3 +50,9 @@ class CheckUser extends AuthenticationEvent {}
 class LogoutEvent extends AuthenticationEvent {}
 
 class UpdateUser extends AuthenticationEvent {}
+
+class ResendOtpEvent extends AuthenticationEvent {
+  final String signupKey;
+
+  ResendOtpEvent({required this.signupKey});
+}

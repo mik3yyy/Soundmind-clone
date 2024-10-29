@@ -16,10 +16,12 @@ import 'package:sound_mind/features/Authentication/domain/usecases/check_user.da
 import 'package:sound_mind/features/Authentication/domain/usecases/create_account.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/log_out.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/login.dart';
+import 'package:sound_mind/features/Authentication/domain/usecases/resend_otp.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/update_user.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/verify_email.dart';
 import 'package:sound_mind/features/Authentication/presentation/blocs/Authentication_bloc.dart';
 import 'package:sound_mind/features/Authentication/presentation/blocs/change_password/change_password_cubit.dart';
+import 'package:sound_mind/features/Authentication/presentation/blocs/cubit/resend_otp_cubit.dart';
 import 'package:sound_mind/features/Authentication/presentation/blocs/update_user/update_user_cubit.dart';
 import 'package:sound_mind/features/Security/data/datasources/Security_hive_data_source.dart';
 import 'package:sound_mind/features/Security/data/repositories/Security_repository_impl.dart';
@@ -46,6 +48,9 @@ import 'package:sound_mind/features/appointment/presentation/blocs/appointment_b
 import 'package:sound_mind/features/appointment/presentation/blocs/booking/booking_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor/doctor_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor_details/doctor_details_cubit.dart';
+import 'package:sound_mind/features/appointment/presentation/blocs/get_accepted_appointments/get_accepted_appointments_cubit.dart';
+import 'package:sound_mind/features/appointment/presentation/blocs/get_pending_appointments/get_pending_appointments_cubit.dart';
+import 'package:sound_mind/features/appointment/presentation/blocs/get_rejected_appointments/get_rejected_appointments_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/payment/payment_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/physician_schedule/physician_schedule_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/upcoming_appointment/upcoming_appointment_cubit.dart';
@@ -112,14 +117,16 @@ Future<void> init() async {
   await hiveService.init();
   await Hive.openBox("userBox");
   sl.registerLazySingleton(() => hiveService);
-
+  sl..registerFactory(() => ResendOtpCubit(resendVerificationOtp: sl()));
   sl
     ..registerFactory(() => AuthenticationBloc(
-        createAccount: sl(),
-        verifyEmail: sl(),
         login: sl(),
+        createAccount: sl(),
         checkUser: sl(),
-        logOutUsecase: sl()))
+        logOutUsecase: sl(),
+        verifyEmail: sl(),
+        resendVerificationOtp: sl()))
+    ..registerLazySingleton(() => ResendVerificationOtp(repository: sl()))
     ..registerLazySingleton(() => CreateAccount(repository: sl()))
     ..registerLazySingleton(() => LogOutUsecase(repository: sl()))
     ..registerLazySingleton(() => CheckUserUseCase(repository: sl()))
@@ -245,6 +252,16 @@ Future<void> init() async {
       () => NotificationHiveDataSourceImpl(),
     );
 
+  // Cubits
+  sl.registerFactory<RejectedAppointmentsCubit>(
+    () => RejectedAppointmentsCubit(sl<GetRejectedAppointments>()),
+  );
+  sl.registerFactory<AcceptedAppointmentsCubit>(
+    () => AcceptedAppointmentsCubit(sl<GetAcceptedAppointments>()),
+  );
+  sl.registerFactory<PendingAppointmentsCubit>(
+    () => PendingAppointmentsCubit(sl<GetPendingAppointments>()),
+  );
   sl
     ..registerFactory(() => AppointmentBloc(
         getUpcomingAppointments: sl(),

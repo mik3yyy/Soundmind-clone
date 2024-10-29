@@ -181,6 +181,10 @@ class $ApplicationAssetsSvgsGen {
   SvgGenImage get blog2 =>
       const SvgGenImage('application/assets/svgs/blog-2.svg');
 
+  /// File path: application/assets/svgs/booking.svg
+  SvgGenImage get booking =>
+      const SvgGenImage('application/assets/svgs/booking.svg');
+
   /// File path: application/assets/svgs/credit_arrow.svg
   SvgGenImage get creditArrow =>
       const SvgGenImage('application/assets/svgs/credit_arrow.svg');
@@ -274,6 +278,7 @@ class $ApplicationAssetsSvgsGen {
         approvedNotification,
         blog1,
         blog2,
+        booking,
         creditArrow,
         debitArrow,
         email,

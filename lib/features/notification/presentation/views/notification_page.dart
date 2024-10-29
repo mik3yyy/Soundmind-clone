@@ -5,6 +5,7 @@ import 'package:sound_mind/core/extensions/context_extensions.dart';
 import 'package:sound_mind/core/extensions/widget_extensions.dart';
 import 'package:sound_mind/core/services/injection_container.dart';
 import 'package:sound_mind/core/widgets/custom_shimmer.dart';
+import 'package:sound_mind/core/widgets/error_screen.dart';
 import 'package:sound_mind/features/notification/presentation/widgets/notification_widget.dart';
 import '../blocs/notification_bloc.dart';
 
@@ -20,8 +21,11 @@ class _NotificationPageState extends State<NotificationPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    context.read<NotificationBloc>().add(GetNotificationsEvent());
+    if (context.read<NotificationBloc>().state is NotificationLoading ||
+        context.read<NotificationBloc>().state is NotificationData) {
+    } else {
+      context.read<NotificationBloc>().add(GetNotificationsEvent());
+    }
   }
 
   @override
@@ -56,6 +60,10 @@ class _NotificationPageState extends State<NotificationPage> {
             return ComplexShimmer.listShimmer(itemCount: 6)
                 .withExpanded()
                 .withCustomPadding();
+          } else if (state is NotificationFailure) {
+            return CustomErrorScreen(onTap: () {
+              context.read<NotificationBloc>().add(GetNotificationsEvent());
+            });
           } else {
             return CircularProgressIndicator().toCenter();
           }

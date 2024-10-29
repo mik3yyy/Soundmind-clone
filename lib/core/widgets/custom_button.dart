@@ -57,7 +57,7 @@ class _CustomButtonState extends State<CustomButton> {
               decoration: BoxDecoration(
                 color: widget.enable
                     ? widget.color ?? context.primaryColor
-                    : Color(0xFFE3E4E8),
+                    : const Color(0xFFE3E4E8),
                 borderRadius: BorderRadius.circular(36),
                 border: widget.border,
                 boxShadow: widget.isshadow
@@ -69,7 +69,7 @@ class _CustomButtonState extends State<CustomButton> {
                               .withOpacity(0.2),
                           spreadRadius: 0,
                           blurRadius: 23,
-                          offset: Offset(0, 4), // changes position of shadow
+                          offset: const Offset(0, 4),
                         ),
                       ]
                     : [],
@@ -85,7 +85,7 @@ class _CustomButtonState extends State<CustomButton> {
                               TextStyle(
                                 color: widget.enable
                                     ? widget.textColor ?? context.colors.white
-                                    : Color(0xFF8692A6),
+                                    : const Color(0xFF8692A6),
                                 fontWeight: FontWeight.w500,
                                 fontSize: widget.textSize ?? 16,
                               ),

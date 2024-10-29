@@ -28,114 +28,120 @@ class _LoginscreenState extends State<Loginscreen> with Validators {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthenticationBloc, AuthenticationState>(
+    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
         if (state is UserAccount) {
           context.replaceNamed(Routes.securityName);
         }
       },
-      child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Assets.application.assets.images.logoPurple
-                .image(width: 132, height: 132)
-                .toCenter(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Welcome back,",
-                  style: context.textTheme.displayMedium,
-                ),
-                Text(
-                  "Login to your SoundMind account",
-                  style: context.textTheme.bodyMedium,
-                ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomTextField(
-                  controller: _emailController,
-                  titleText: "Email",
-                  hintText: "Enter your email",
-                  validator: validateEmail,
-                ),
-                CustomTextField(
-                  controller: _passwordController,
-                  isPasswordField: true,
-                  titleText: "Password",
-                  validator: validatePassword,
-                  hintText: "",
-                ),
-                CustomTextButton(label: "Forgot Password?", onPressed: () {}),
-              ],
-            ),
-            CustomButton(
-              label: "Login",
-              onPressed: () {
-                if (!loginForm.currentState!.validate()) return;
-                context.read<AuthenticationBloc>().add(LoginEvent(
-                    email: _emailController.text,
-                    password: _passwordController.text));
-              },
-            ),
-            RichText(
-              text: TextSpan(
-                text: "By continuing you are agreeing to Sound Mind’s ",
-                style: context.textTheme.bodyMedium,
+      builder: (BuildContext context, AuthenticationState state) {
+        return Scaffold(
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Assets.application.assets.images.logoPurple
+                  .image(width: 132, height: 132)
+                  .toCenter(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextSpan(
-                    text: 'Terms of service',
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      decoration: TextDecoration.underline,
-                      color: context.primaryColor,
-                    ),
-                    recognizer: TapGestureRecognizer()..onTap = () {},
+                  Text(
+                    "Welcome back,",
+                    style: context.textTheme.displayMedium,
                   ),
-                  TextSpan(
-                    text: ' and ',
-                    recognizer: TapGestureRecognizer()..onTap = () {},
-                  ),
-                  TextSpan(
-                    text: 'privacy policy',
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      decoration: TextDecoration.underline,
-                      color: context.primaryColor,
-                    ),
-                    recognizer: TapGestureRecognizer()..onTap = () {},
+                  Text(
+                    "Login to your SoundMind account",
+                    style: context.textTheme.bodyMedium,
                   ),
                 ],
               ),
-            ),
-          ].addSpacer(const Gap(10)),
-        ).withSafeArea().withCustomPadding().withForm(loginForm),
-        bottomSheet: SizedBox(
-          height: 70,
-          child: RichText(
-            text: TextSpan(
-              text: "Don’t have an account? ",
-              style: context.textTheme.bodyMedium,
-              children: [
-                TextSpan(
-                  text: 'Signup',
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    decoration: TextDecoration.underline,
-                    color: context.primaryColor,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomTextField(
+                    controller: _emailController,
+                    titleText: "Email",
+                    hintText: "Enter your email",
+                    enabled: state is! LoginingAccount,
+                    validator: validateEmail,
                   ),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      context.pushNamed(Routes.introName);
-                    },
+                  CustomTextField(
+                    controller: _passwordController,
+                    isPasswordField: true,
+                    titleText: "Password",
+                    enabled: state is! LoginingAccount,
+                    validator: validatePassword,
+                    hintText: "",
+                  ),
+                  CustomTextButton(label: "Forgot Password?", onPressed: () {}),
+                ],
+              ),
+              CustomButton(
+                label: "Login",
+                notifier: ValueNotifier(state is LoginingAccount),
+                onPressed: () {
+                  if (!loginForm.currentState!.validate()) return;
+                  context.read<AuthenticationBloc>().add(LoginEvent(
+                      email: _emailController.text,
+                      password: _passwordController.text));
+                  setState(() {});
+                },
+              ),
+              RichText(
+                text: TextSpan(
+                  text: "By continuing you are agreeing to Sound Mind’s ",
+                  style: context.textTheme.bodyMedium,
+                  children: [
+                    TextSpan(
+                      text: 'Terms of service',
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        decoration: TextDecoration.underline,
+                        color: context.primaryColor,
+                      ),
+                      recognizer: TapGestureRecognizer()..onTap = () {},
+                    ),
+                    TextSpan(
+                      text: ' and ',
+                      recognizer: TapGestureRecognizer()..onTap = () {},
+                    ),
+                    TextSpan(
+                      text: 'privacy policy',
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        decoration: TextDecoration.underline,
+                        color: context.primaryColor,
+                      ),
+                      recognizer: TapGestureRecognizer()..onTap = () {},
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ).toTop().toCenter(),
-        ),
-      ),
+              ),
+            ].addSpacer(const Gap(10)),
+          ).withSafeArea().withCustomPadding().withForm(loginForm),
+          bottomSheet: SizedBox(
+            height: 70,
+            child: RichText(
+              text: TextSpan(
+                text: "Don’t have an account? ",
+                style: context.textTheme.bodyMedium,
+                children: [
+                  TextSpan(
+                    text: 'Signup',
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      decoration: TextDecoration.underline,
+                      color: context.primaryColor,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        context.pushNamed(Routes.introName);
+                      },
+                  ),
+                ],
+              ),
+            ).toTop().toCenter(),
+          ),
+        );
+      },
     );
   }
 }

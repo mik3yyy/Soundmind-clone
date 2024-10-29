@@ -11,6 +11,7 @@ import 'package:sound_mind/core/routes/routes.dart';
 import 'package:sound_mind/core/utils/string_extension.dart';
 import 'package:sound_mind/core/widgets/custom_button.dart';
 import 'package:sound_mind/core/widgets/custom_shimmer.dart';
+import 'package:sound_mind/core/widgets/error_screen.dart';
 import 'package:sound_mind/features/appointment/data/models/doctor_detail.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor_details/doctor_details_cubit.dart';
 
@@ -81,10 +82,10 @@ class _ViewDoctorPageState extends State<ViewDoctorPage> {
                   color: context.colors.black,
                 ),
                 actions: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: Assets.application.assets.svgs.therapistMessage.svg(),
-                  )
+                  // IconButton(
+                  //   onPressed: () {},
+                  //   icon: Assets.application.assets.svgs.therapistMessage.svg(),
+                  // )
                 ],
               ),
               body: Column(
@@ -194,19 +195,25 @@ class _ViewDoctorPageState extends State<ViewDoctorPage> {
                         ),
                         const Gap(10),
                         CustomButton(
-                          color: context.secondaryColor,
+                          color: context.colors.greyDecor,
                           label: "Message Therapist",
-                          onPressed: () {},
+                          onPressed: () {
+                            context.showSnackBar(
+                                "Book a Therapist before you message");
+                          },
                           titleWidget: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Assets.application.assets.svgs.therapistMessage
-                                  .svg(),
+                                  .svg(
+                                      color:
+                                          context.colors.black.withOpacity(.5)),
                               Text(
                                 " Message Therapist",
                                 style: context.textTheme.bodyLarge?.copyWith(
                                     fontWeight: FontWeight.w700,
-                                    color: context.primaryColor),
+                                    color:
+                                        context.colors.black.withOpacity(.5)),
                               )
                             ],
                           ),
@@ -227,7 +234,7 @@ class _ViewDoctorPageState extends State<ViewDoctorPage> {
                       Gap(5),
                       Container(
                         height: 70,
-                        width: context.screenWidth * .5,
+                        width: context.screenWidth * .6,
                         padding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         decoration: BoxDecoration(
@@ -371,6 +378,19 @@ class _ViewDoctorPageState extends State<ViewDoctorPage> {
               ),
               body: ComplexShimmer.therapistProfileShimmer(context),
             );
+          } else if (state is DoctorDetailsError) {
+            return Scaffold(
+                appBar: AppBar(
+                  backgroundColor: Color(0xFFF3EEFA),
+                  leadingWidth: 30,
+                  leading: BackButton(
+                    color: context.colors.black,
+                  ),
+                ),
+                body: CustomErrorScreen(
+                  onTap: () {},
+                  message: state.message,
+                ));
           }
           return CircularProgressIndicator().toCenter();
         },

@@ -6,6 +6,7 @@ import 'package:sound_mind/features/Authentication/domain/usecases/check_user.da
 import 'package:sound_mind/features/Authentication/domain/usecases/create_account.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/log_out.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/login.dart';
+import 'package:sound_mind/features/Authentication/domain/usecases/resend_otp.dart';
 import 'package:sound_mind/features/Authentication/domain/usecases/verify_email.dart';
 
 part 'Authentication_event.dart';
@@ -18,11 +19,14 @@ class AuthenticationBloc
   final Login login;
   final LogOutUsecase logOutUsecase;
   final CheckUserUseCase checkUser;
+  final ResendVerificationOtp resendVerificationOtp;
+
   AuthenticationBloc(
       {required this.createAccount,
       required this.verifyEmail,
       required this.logOutUsecase,
       required this.checkUser,
+      required this.resendVerificationOtp,
       required this.login})
       : super(AuthenticationInitial()) {
     on<CreateAccountEvent>(_createAccountEventHandler);
@@ -30,8 +34,12 @@ class AuthenticationBloc
     on<VerifyEmailEvent>(_verifyEmailHandler);
     on<CheckUser>(_checkUser);
     on<UpdateUser>(_updateuser);
+    on<ResendOtpEvent>(_resendOtp); // Add this line
+
     on<LogoutEvent>(_logoutHandler);
   }
+  _resendOtp(ResendOtpEvent event, Emitter emit) async {}
+
   _logoutHandler(LogoutEvent event, Emitter emit) async {
     var result = await logOutUsecase.call();
     emit(AuthenticationInitial());

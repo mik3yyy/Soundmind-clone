@@ -12,9 +12,9 @@ import 'package:sound_mind/features/appointment/data/models/physician_schedule.d
 
 abstract class AppointmentRemoteDataSource {
   Future<AppointmentDto> getUpcomingAppointment();
-  Future<List<Booking>> getAcceptedAppointments();
-  Future<List<Booking>> getPendingAppointments();
-  Future<List<Booking>> getRejectedAppointments();
+  Future<List<AppointmentDto>> getAcceptedAppointments();
+  Future<List<AppointmentDto>> getPendingAppointments();
+  Future<List<AppointmentDto>> getRejectedAppointments();
   Future<void> createBooking(CreateBookingRequest request);
   Future<void> makePaymentForAppointment(
       MakePaymentForAppointmentRequest request);
@@ -29,7 +29,44 @@ class AppointmentRemoteDataSourceImpl extends AppointmentRemoteDataSource {
 
   AppointmentRemoteDataSourceImpl({required Network network})
       : _network = network;
+  static String dummyJsonResponse = '''
+{
+  "booking": {
+    "physicianId": 9,
+    "physicianUserID": 32,
+    "patientId": 31,
+    "scheduleId": 139,
+    "date": "2024-10-07",
+    "status": 2,
+    "paymentStatus": 2,
+    "amount": 12000,
+    "notes": "",
+    "link": "",
+    "transactionReference": "cc068f10-c5b6-48ec-8f97-255fcccad9a9",
+    "code": "50WNcn",
+    "id": 7,
+    "timeCreated": "2024-10-05T17:11:04.509549+00:00",
+    "timeUpdated": "2024-10-05T17:11:04.509549+00:00"
+  },
+  "schedule": {
+    "physicianId": 9,
+    "userId": 32,
+    "dayOfWeek": 1,
+    "isTaken": true,
+    "dayOfWeekTitle": "Monday",
+    "startTime": "10:00:00",
+    "endTime": "11:00:00",
+    "id": 139,
+    "timeCreated": "2024-10-05T13:49:39.529582+00:00",
+    "timeUpdated": "2024-10-05T13:49:39.529582+00:00"
+  },
+  "therapistName": "Okpechi Michael",
+  "profilePicture": "https://res.cloudinary.com/dwwzrtzb8/image/upload/v1723891089/Therapist/degree.png",
+  "areaOfSpecialization": "Dialectical Behavior Therapy (DBT)"
+}
+''';
 
+  List appointments = [dummyJsonResponse];
   @override
   Future<List<Map<String, dynamic>>> getDoctors(
       {required int pageNumber, required int pageSize}) async {
@@ -62,35 +99,41 @@ class AppointmentRemoteDataSourceImpl extends AppointmentRemoteDataSource {
   }
 
   @override
-  Future<List<Booking>> getAcceptedAppointments() async {
+  Future<List<AppointmentDto>> getAcceptedAppointments() async {
     final response = await _network.call(
       "/UserDashboard/GetAcceptedAppointments",
       RequestMethod.get,
     );
     return (response.data['data'] as List)
-        .map((booking) => Booking.fromJson(booking))
+        .map((booking) => AppointmentDto.fromJson(booking))
         .toList();
   }
 
   @override
-  Future<List<Booking>> getPendingAppointments() async {
+  Future<List<AppointmentDto>> getPendingAppointments() async {
     final response = await _network.call(
       "/UserDashboard/GetPendingAppointments",
       RequestMethod.get,
     );
+
+    print((response.data['data'] as List)
+        .map((booking) =>
+            AppointmentDto.fromJson(booking as Map<String, dynamic>))
+        .toList());
     return (response.data['data'] as List)
-        .map((booking) => Booking.fromJson(booking))
+        .map((booking) =>
+            AppointmentDto.fromJson(booking as Map<String, dynamic>))
         .toList();
   }
 
   @override
-  Future<List<Booking>> getRejectedAppointments() async {
+  Future<List<AppointmentDto>> getRejectedAppointments() async {
     final response = await _network.call(
       "/UserDashboard/GetRejectedAppointments",
       RequestMethod.get,
     );
     return (response.data['data'] as List)
-        .map((booking) => Booking.fromJson(booking))
+        .map((booking) => AppointmentDto.fromJson(booking))
         .toList();
   }
 

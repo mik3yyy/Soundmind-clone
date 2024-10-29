@@ -23,19 +23,20 @@ class DoctorCubit extends Cubit<DoctorState> {
     );
   }
 
-  chnageState({Sort? sort, Display? display}) {
+  chnageState({Sort? sort, Display? display, String? search}) {
     if (state is DoctorLoaded) {
       var s = state as DoctorLoaded;
       List<DoctorModel> doctors = s.doctors;
       if (sort != null) {
         doctors = sortDoctors(doctors, sort);
       }
+
       emit(
         DoctorLoaded(
-          doctors: doctors,
-          sort: sort ?? s.sort,
-          display: display ?? s.display,
-        ),
+            doctors: doctors,
+            sort: sort ?? s.sort,
+            display: display ?? s.display,
+            search: search ?? s.search),
       );
     }
   }

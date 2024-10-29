@@ -4,13 +4,14 @@ class CustomErrorScreen extends StatelessWidget {
   final String message;
   final IconData? icon;
   final String? imageUrl;
-
+  final VoidCallback onTap;
   // Default values
   const CustomErrorScreen({
     Key? key,
     this.message = "Something went wrong. Please try again.",
     this.icon,
     this.imageUrl,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -47,10 +48,7 @@ class CustomErrorScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                // Define action to retry, navigate, or reload
-                Navigator.of(context).pop();
-              },
+              onPressed: onTap,
               child: const Text('Retry'),
             ),
           ],

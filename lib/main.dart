@@ -10,10 +10,14 @@ import 'package:sound_mind/features/Authentication/presentation/blocs/change_pas
 import 'package:sound_mind/features/Authentication/presentation/blocs/update_user/update_user_cubit.dart';
 import 'package:sound_mind/features/Security/presentation/blocs/Security_bloc.dart';
 import 'package:sound_mind/features/Security/presentation/blocs/change_pin/change_pin_cubit.dart';
+import 'package:sound_mind/features/appointment/domain/usecases/get_pending_appointment.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/appointment_bloc.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/booking/booking_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor/doctor_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor_details/doctor_details_cubit.dart';
+import 'package:sound_mind/features/appointment/presentation/blocs/get_accepted_appointments/get_accepted_appointments_cubit.dart';
+import 'package:sound_mind/features/appointment/presentation/blocs/get_pending_appointments/get_pending_appointments_cubit.dart';
+import 'package:sound_mind/features/appointment/presentation/blocs/get_rejected_appointments/get_rejected_appointments_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/payment/payment_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/physician_schedule/physician_schedule_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/upcoming_appointment/upcoming_appointment_cubit.dart';
@@ -117,6 +121,15 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => sl<GetChatRoomMessagesCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<PendingAppointmentsCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<AcceptedAppointmentsCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<RejectedAppointmentsCubit>(),
         ),
       ],
       child: MaterialApp.router(

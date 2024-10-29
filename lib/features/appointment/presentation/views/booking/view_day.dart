@@ -10,6 +10,7 @@ import 'package:sound_mind/core/services/injection_container.dart';
 import 'package:sound_mind/core/utils/string_extension.dart';
 import 'package:sound_mind/core/widgets/custom_button.dart';
 import 'package:sound_mind/core/widgets/custom_shimmer.dart';
+import 'package:sound_mind/core/widgets/error_screen.dart';
 import 'package:sound_mind/features/appointment/data/models/doctor_detail.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/doctor_details/doctor_details_cubit.dart';
 import 'package:sound_mind/features/appointment/presentation/blocs/physician_schedule/physician_schedule_cubit.dart';
@@ -187,11 +188,21 @@ class _SelectDayPageState extends State<SelectDayPage> {
                 }
               },
             );
+          } else if (state is PhysicianScheduleError) {
+            return CustomErrorScreen(
+              onTap: () {
+                context
+                    .read<PhysicianScheduleCubit>()
+                    .fetchPhysicianSchedule(widget.id as int);
+              },
+              message: state.message,
+            );
           } else {
             return Scaffold(
               body: ComplexShimmer.bookingScreenShimmer(context),
             );
           }
+
           // var physicianSchedule= state as
         },
       ),

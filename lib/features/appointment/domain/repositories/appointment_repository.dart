@@ -9,9 +9,9 @@ import 'package:sound_mind/features/appointment/data/models/physician_schedule.d
 
 abstract class AppointmentRepository {
   ResultFuture<AppointmentDto> getUpcomingAppointment();
-  ResultFuture<List<Booking>> getAcceptedAppointments();
-  ResultFuture<List<Booking>> getPendingAppointments();
-  ResultFuture<List<Booking>> getRejectedAppointments();
+  ResultFuture<List<AppointmentDto>> getAcceptedAppointments();
+  ResultFuture<List<AppointmentDto>> getPendingAppointments();
+  ResultFuture<List<AppointmentDto>> getRejectedAppointments();
   ResultFuture<void> createBooking(CreateBookingRequest request);
   ResultFuture<void> makePaymentForAppointment(
       MakePaymentForAppointmentRequest request);

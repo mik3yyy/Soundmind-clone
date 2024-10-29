@@ -41,38 +41,11 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
   }
 
   Future<void> _fetchAcceptedAppointments(FetchAcceptedAppointmentsEvent event,
-      Emitter<AppointmentState> emit) async {
-    emit(AppointmentLoading());
-
-    final result = await getAcceptedAppointments.call();
-    result.fold(
-      (failure) => emit(AppointmentError(message: failure.message)),
-      (appointments) =>
-          emit(AcceptedAppointmentsLoaded(acceptedAppointments: appointments)),
-    );
-  }
+      Emitter<AppointmentState> emit) async {}
 
   Future<void> _fetchPendingAppointments(FetchPendingAppointmentsEvent event,
-      Emitter<AppointmentState> emit) async {
-    emit(AppointmentLoading());
-
-    final result = await getPendingAppointments.call();
-    result.fold(
-      (failure) => emit(AppointmentError(message: failure.message)),
-      (appointments) =>
-          emit(PendingAppointmentsLoaded(pendingAppointments: appointments)),
-    );
-  }
+      Emitter<AppointmentState> emit) async {}
 
   Future<void> _fetchRejectedAppointments(FetchRejectedAppointmentsEvent event,
-      Emitter<AppointmentState> emit) async {
-    emit(AppointmentLoading());
-
-    final result = await getRejectedAppointments.call();
-    result.fold(
-      (failure) => emit(AppointmentError(message: failure.message)),
-      (appointments) =>
-          emit(RejectedAppointmentsLoaded(rejectedAppointments: appointments)),
-    );
-  }
+      Emitter<AppointmentState> emit) async {}
 }

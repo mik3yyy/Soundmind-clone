@@ -59,7 +59,7 @@ class _SetPinPageState extends State<SetPinPage> {
                   bgColorBuilder: FixedColorBuilder(context.colors.greyOutline),
                   obscureStyle: ObscureStyle(
                     isTextObscure: true!,
-                    obscureText: '0',
+                    obscureText: '●',
                   ),
                 ),
                 controller: _pinEditingController,

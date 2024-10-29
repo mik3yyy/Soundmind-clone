@@ -98,6 +98,9 @@ class _AddFundsPageState extends State<AddFundsPage> {
             ref: state.topUpDetails['data'],
           );
         }
+        if (state is TopUpError) {
+          context.showSnackBar(state.message);
+        }
       },
       child: Scaffold(
         appBar: AppBar(
@@ -111,13 +114,17 @@ class _AddFundsPageState extends State<AddFundsPage> {
           children: [
             CustomTextField(controller: textEditingController, hintText: ""),
             Gap(20),
-            CustomButton(
-                label: "Top Up",
-                onPressed: () {
-                  context
-                      .read<TopUpCubit>()
-                      .initiateTopUp(double.parse(textEditingController.text));
-                })
+            BlocBuilder<TopUpCubit, TopUpState>(
+              builder: (context, state) {
+                return CustomButton(
+                    label: "Top Up",
+                    notifier: ValueNotifier(state is TopUpLoading),
+                    onPressed: () {
+                      context.read<TopUpCubit>().initiateTopUp(
+                          double.parse(textEditingController.text));
+                    });
+              },
+            )
           ],
         ).withSafeArea().withCustomPadding(),
       ),

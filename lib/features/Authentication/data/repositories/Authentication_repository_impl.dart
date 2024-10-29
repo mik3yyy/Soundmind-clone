@@ -143,4 +143,19 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       return const Left(CacheFailure("No User"));
     }
   }
+
+  @override
+  ResultFuture<DataMap> resendVerificationOtp({
+    required String signupKey,
+  }) async {
+    try {
+      DataMap result =
+          await _authenticationRemoteDataSource.resendVerificationOtp(
+        signupKey: signupKey,
+      );
+      return Right(result);
+    } on ApiError catch (e) {
+      return Left(ServerFailure(e.errorDescription));
+    }
+  }
 }

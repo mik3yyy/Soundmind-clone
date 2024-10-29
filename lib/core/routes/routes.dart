@@ -12,6 +12,7 @@ import 'package:sound_mind/features/Security/presentation/views/pin_page.dart';
 import 'package:sound_mind/features/Security/presentation/views/set_pin_page.dart';
 import 'package:sound_mind/features/appointment/data/models/appointment.dart';
 import 'package:sound_mind/features/appointment/presentation/views/appointment_page.dart';
+import 'package:sound_mind/features/appointment/presentation/views/booking/view_booking.dart';
 import 'package:sound_mind/features/appointment/presentation/views/booking/view_day.dart';
 import 'package:sound_mind/features/appointment/presentation/views/booking/view_time.dart';
 import 'package:sound_mind/features/appointment/presentation/views/view_doctor.dart';
@@ -120,6 +121,9 @@ class Routes {
 
   static const String input_new_pinName = 'input_new_pin';
   static const String input_new_pinPath = 'input_new_pin';
+
+  static const String view_bookingName = 'view_booking';
+  static const String view_bookingPath = 'view_booking';
   // Navigator keys for nested navigation
   static final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
@@ -138,8 +142,9 @@ class Routes {
           GoRoute(
             path: onboardingPath,
             name: onboardingName,
-            builder: (context, state) =>
-                const OnboardingScreen(), // Replace with actual screen widget
+            builder: (context, state) => OnboardingScreen(
+              page: state.extra,
+            ), // Replace with actual screen widget
             routes: [
               GoRoute(
                 path: introPath,
@@ -231,9 +236,17 @@ class Routes {
                   ),
                 ),
                 GoRoute(
+                  path: view_bookingPath,
+                  name: view_bookingName,
+                  parentNavigatorKey: rootNavigatorKey,
+
+                  builder: (context, state) =>
+                      ViewBookingScreen(), // Replace with actual screen widget
+                ),
+                GoRoute(
                   path: notificationPath,
                   name: notificationName,
-                  parentNavigatorKey: shellNavigatorKey,
+                  parentNavigatorKey: rootNavigatorKey,
 
                   builder: (context, state) =>
                       NotificationPage(), // Replace with actual screen widget

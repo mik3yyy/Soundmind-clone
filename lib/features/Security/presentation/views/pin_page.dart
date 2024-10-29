@@ -12,6 +12,7 @@ import 'package:sound_mind/core/services/injection_container.dart';
 import 'package:sound_mind/core/widgets/custom_text_button.dart';
 import 'package:sound_mind/features/Authentication/presentation/blocs/Authentication_bloc.dart';
 import 'package:sound_mind/features/Security/presentation/blocs/Security_bloc.dart';
+import 'package:sound_mind/features/setting/presentation/widgets/are_you_sure.dart';
 
 class PinPage extends StatefulWidget {
   const PinPage({super.key});
@@ -35,12 +36,17 @@ class PinInputScreen extends StatefulWidget {
 class _PinInputScreenState extends State<PinInputScreen> {
   String pin = '';
   final LocalAuthentication auth = LocalAuthentication();
+  var box = Hive.box('userBox');
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    setAuth();
+
+    bool enableBiometrics = box.get("EB", defaultValue: true);
+    if (enableBiometrics) {
+      setAuth();
+    }
   }
 
   setAuth() async {
@@ -71,7 +77,9 @@ class _PinInputScreenState extends State<PinInputScreen> {
           backgroundColor: Colors.transparent,
           actions: [
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  showLogoutConfirmationDialog(context);
+                },
                 icon: Icon(
                   Icons.logout,
                   color: context.primaryColor,
@@ -85,17 +93,17 @@ class _PinInputScreenState extends State<PinInputScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               // Gap(30),
-              Icon(
+              const Icon(
                 Icons.lock,
                 size: 40,
                 color: Colors.black,
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 "Confirm your new PIN",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(
@@ -150,10 +158,14 @@ class _PinInputScreenState extends State<PinInputScreen> {
                         onTap: () => _onNumberTap((index + 1).toString()),
                       );
                     } else if (index == 9) {
-                      return GestureDetector(
-                        onTap: _onFingerprintTap,
-                        child: Icon(Icons.fingerprint, size: 80),
-                      ); // Fingerprint icon on the left
+                      return box.get("EB", defaultValue: true) == true
+                          ? GestureDetector(
+                              onTap: _onFingerprintTap,
+                              child: Icon(Icons.fingerprint, size: 80),
+                            )
+                          : Container(
+                              width: 100,
+                            ); // Fingerprint icon on the left
                     } else if (index == 10) {
                       return PinButton(
                         number: '0',

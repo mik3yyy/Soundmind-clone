@@ -13,8 +13,8 @@ import 'package:sound_mind/core/routes/routes.dart';
 import 'package:sound_mind/core/widgets/custom_button.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key});
-
+  const OnboardingScreen({super.key, this.page});
+  final Object? page;
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
@@ -58,6 +58,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       fit: BoxFit.fill,
     ),
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.page != null) {
+      _pageController = PageController(initialPage: (widget.page as int));
+      currentPage = (widget.page as int);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

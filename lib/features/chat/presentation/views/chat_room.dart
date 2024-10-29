@@ -15,6 +15,7 @@ import 'package:sound_mind/core/extensions/widget_extensions.dart';
 import 'package:sound_mind/core/gen/assets.gen.dart';
 import 'package:sound_mind/core/widgets/custom_shimmer.dart';
 import 'package:sound_mind/core/widgets/custom_text_field.dart';
+import 'package:sound_mind/core/widgets/error_screen.dart';
 import 'package:sound_mind/features/Authentication/presentation/blocs/Authentication_bloc.dart';
 import 'package:sound_mind/features/chat/data/models/chat_message.dart';
 import 'package:sound_mind/features/chat/data/models/chat_room.dart';
@@ -210,6 +211,11 @@ class _ChattRoomScreenState extends State<ChattRoomScreen> {
             children: [
               if (state is GetChatRoomMessagesLoading) ...[
                 ComplexShimmer.messagingShimmer(context).withExpanded()
+              ] else if (state is GetChatRoomMessagesError) ...[
+                CustomErrorScreen(
+                  onTap: () {},
+                  message: state.failure.message,
+                )
               ] else ...[
                 ListView.separated(
                   controller: _scrollController,

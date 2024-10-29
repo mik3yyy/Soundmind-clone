@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sound_mind/core/extensions/context_extensions.dart';
 import 'package:sound_mind/core/extensions/widget_extensions.dart';
 import 'package:sound_mind/core/gen/assets.gen.dart';
@@ -9,10 +10,37 @@ import 'package:sound_mind/core/widgets/custom_text_button.dart';
 import 'package:sound_mind/features/Authentication/data/models/User_model.dart';
 import 'package:sound_mind/features/Authentication/presentation/blocs/Authentication_bloc.dart';
 import 'package:sound_mind/features/Security/presentation/blocs/Security_bloc.dart';
+import 'package:sound_mind/features/setting/presentation/widgets/are_you_sure.dart';
 import 'package:sound_mind/features/wallet/presentation/views/withdraw_page.dart';
 import '../blocs/setting_bloc.dart';
 
-class SettingPage extends StatelessWidget {
+class SettingPage extends StatefulWidget {
+  @override
+  State<SettingPage> createState() => _SettingPageState();
+}
+
+class _SettingPageState extends State<SettingPage> {
+  toggleBiometrics() {
+    var box = Hive.box('userBox');
+
+    bool enableBiometrics = box.get("EB", defaultValue: true);
+
+    enableBiometrics = !enableBiometrics;
+
+    box.put('EB', enableBiometrics);
+  }
+
+  late bool enableBiometrics;
+  var box = Hive.box('userBox');
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    enableBiometrics = box.get("EB", defaultValue: true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,16 +122,6 @@ class SettingPage extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.notifications),
-            title: Text("Notifications"),
-            trailing: IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.toggle_on,
-                  color: context.colors.green,
-                )),
-          ),
-          ListTile(
             leading: Icon(Icons.lock),
             title: Text("Change PIN"),
             onTap: () {
@@ -113,8 +131,20 @@ class SettingPage extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.fingerprint),
-            title: Text("Enable Biometrics"),
-            trailing: IconButton(onPressed: () {}, icon: Icon(Icons.toggle_on)),
+            title: const Text("Enable Biometrics"),
+            trailing: IconButton(
+                onPressed: () {
+                  toggleBiometrics();
+                  setState(() {});
+                },
+                icon: Icon(
+                  box.get("EB", defaultValue: true) == true
+                      ? Icons.toggle_on
+                      : Icons.toggle_off,
+                ),
+                color: box.get("EB", defaultValue: true) == true
+                    ? context.colors.green
+                    : context.colors.borderGrey),
           ),
           ListTile(
             leading: const Icon(Icons.password),
@@ -123,7 +153,7 @@ class SettingPage extends StatelessWidget {
               onPressed: () {
                 context.goNamed(Routes.change_passwordName);
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.chevron_right,
               ),
             ),
@@ -145,7 +175,9 @@ class SettingPage extends StatelessWidget {
         height: 150,
         child: CustomTextButton(
           label: "Log out",
-          onPressed: () {},
+          onPressed: () {
+            showLogoutConfirmationDialog(context);
+          },
           textStyle: context.textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: context.colors.red,

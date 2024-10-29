@@ -55,7 +55,7 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
             Container(
               width: context.screenWidth * .9,
               height: 72,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: BoxDecoration(
                   color: context.secondaryColor.withOpacity(.5),
                   borderRadius: BorderRadius.circular(20),
@@ -66,7 +66,7 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Time"),
+                  const Text("Time"),
                   Text(
                     DateFormater.formatTimeRange(
                         widget.appointment.schedule.startTime,
@@ -80,7 +80,7 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
             Container(
               width: context.screenWidth * .9,
               height: 72,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: BoxDecoration(
                   color: context.secondaryColor.withOpacity(.5),
                   borderRadius: BorderRadius.circular(20),
@@ -104,7 +104,7 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
             Container(
               width: context.screenWidth * .9,
               // height: 90,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: BoxDecoration(
                   color: context.secondaryColor.withOpacity(.5),
                   borderRadius: BorderRadius.circular(20),
@@ -117,42 +117,47 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
                 children: [
                   const Text("Video Call link"),
                   AutoSizeText(
-                    "https://meet.google.com/?authuser=${widget.appointment.booking.physicianId}",
+                    widget.appointment.booking.link?.isNotEmpty ??
+                            false || widget.appointment.booking.link != null
+                        ? widget.appointment.booking.link!
+                        : "Link would be ready before the meeting time",
                     maxLines: 1,
                     maxFontSize: 16,
                     minFontSize: 9,
                     style: context.textTheme.displaySmall,
                   ),
-                  Gap(10),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: context.secondaryColor,
-                      borderRadius: BorderRadius.circular(36),
-                    ),
-                    child: SizedBox(
-                      width: 100,
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.copy,
-                            color: context.primaryColor,
-                            size: 20,
-                          ),
-                          Text(
-                            "Copy Link",
-                            style: context.textTheme.bodyMedium
-                                ?.copyWith(color: context.primaryColor),
-                          ),
-                        ],
+                  const Gap(10),
+                  if (widget.appointment.booking.link?.isNotEmpty ?? false)
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: context.secondaryColor,
+                        borderRadius: BorderRadius.circular(36),
                       ),
-                    ),
-                  ).withOnTap(() {
-                    FlutterClipboard.copy(
-                      "https://meet.google.com/?authuser=${widget.appointment.booking.physicianId}",
-                      // ignore: avoid_print
-                    ).then((value) => context.showSnackBar("Copied"));
-                  })
+                      child: SizedBox(
+                        width: 100,
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.copy,
+                              color: context.primaryColor,
+                              size: 20,
+                            ),
+                            Text(
+                              "Copy Link",
+                              style: context.textTheme.bodyMedium
+                                  ?.copyWith(color: context.primaryColor),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ).withOnTap(() {
+                      FlutterClipboard.copy(widget.appointment.booking.link!
+                              // ignore: avoid_print
+                              )
+                          // ignore: use_build_context_synchronously
+                          .then((value) => context.showSnackBar("Copied"));
+                    })
                 ],
               ),
             ),

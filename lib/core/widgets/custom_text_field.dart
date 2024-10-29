@@ -100,7 +100,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             expands: widget.expands,
 
             onEditingComplete: widget.onEditingComplete,
-
+            obscuringCharacter: '●',
             decoration: InputDecoration(
               prefixIcon: widget.prefix,
               fillColor: widget.fillColor ?? context.colors.greyOutline,
@@ -137,7 +137,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 ),
                 gapPadding: 0,
               ),
-              hintText: widget.isPasswordField ? "●●●●●●●●" : widget.hintText,
+
+              hintText:
+                  widget.isPasswordField ? "Enter password" : widget.hintText,
               hintStyle: context.textTheme.bodyMedium
                   ?.copyWith(color: context.colors.black),
               suffixIcon: widget.isPasswordField

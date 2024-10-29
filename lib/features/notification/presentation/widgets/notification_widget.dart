@@ -101,6 +101,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
                   if (state is PaymentLoading) {
                     showDialog(
                       context: context,
+                      useSafeArea: false,
                       builder: (context) => const LoadingScreen(),
                     );
                   }

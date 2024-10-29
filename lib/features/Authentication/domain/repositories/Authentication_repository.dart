@@ -32,4 +32,8 @@ abstract class AuthenticationRepository {
       {required String old,
       required String newPassword,
       required String confirmPassword});
+
+  ResultFuture<DataMap> resendVerificationOtp({
+    required String signupKey,
+  });
 }

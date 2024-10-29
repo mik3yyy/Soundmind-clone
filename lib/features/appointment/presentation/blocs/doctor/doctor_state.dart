@@ -19,12 +19,16 @@ class DoctorLoaded extends DoctorState {
   final List<DoctorModel> doctors;
   final Sort? sort;
   final Display display;
+  final String search;
 
   const DoctorLoaded(
-      {required this.doctors, this.sort, this.display = Display.list});
+      {required this.doctors,
+      this.sort,
+      this.display = Display.list,
+      this.search = ''});
 
   @override
-  List<Object?> get props => [doctors, sort, display];
+  List<Object?> get props => [doctors, sort, display, search];
 }
 
 class DoctorError extends DoctorState {

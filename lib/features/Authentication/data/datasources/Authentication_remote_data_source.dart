@@ -30,6 +30,7 @@ abstract class AuthenticationRemoteDataSource {
       {required String old,
       required String newPassword,
       required String confirmPassword});
+  Future<DataMap> resendVerificationOtp({required String signupKey});
 }
 
 class AuthenticationRemoteDataSourceImpl
@@ -127,6 +128,18 @@ class AuthenticationRemoteDataSourceImpl
         "firstName": firstName,
         "lastName": lastName,
         "phoneNumber": phoneNumber
+      },
+    );
+    return response.data;
+  }
+
+  @override
+  Future<DataMap> resendVerificationOtp({required String signupKey}) async {
+    Response response = await _network.call(
+      "/Registration/ResendVerificationOtp",
+      RequestMethod.post,
+      data: {
+        "signupKey": signupKey,
       },
     );
     return response.data;

@@ -59,7 +59,7 @@ class AppointmentRepositoryImpl extends AppointmentRepository {
   }
 
   @override
-  ResultFuture<List<Booking>> getAcceptedAppointments() async {
+  ResultFuture<List<AppointmentDto>> getAcceptedAppointments() async {
     try {
       final appointments = await _remoteDataSource.getAcceptedAppointments();
       return Right(appointments);
@@ -69,17 +69,18 @@ class AppointmentRepositoryImpl extends AppointmentRepository {
   }
 
   @override
-  ResultFuture<List<Booking>> getPendingAppointments() async {
-    try {
-      final appointments = await _remoteDataSource.getPendingAppointments();
-      return Right(appointments);
-    } catch (error) {
-      return const Left(ServerFailure("Failed to fetch pending appointments"));
-    }
+  ResultFuture<List<AppointmentDto>> getPendingAppointments() async {
+    // try {
+    final appointments = await _remoteDataSource.getPendingAppointments();
+    return Right(appointments);
+    // } catch (error) {
+    //   print(error);
+    //   return const Left(ServerFailure("Failed to fetch pending appointments"));
+    // }
   }
 
   @override
-  ResultFuture<List<Booking>> getRejectedAppointments() async {
+  ResultFuture<List<AppointmentDto>> getRejectedAppointments() async {
     try {
       final appointments = await _remoteDataSource.getRejectedAppointments();
       return Right(appointments);
